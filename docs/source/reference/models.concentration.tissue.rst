@@ -1,7 +1,7 @@
 Tissue models
 ^^^^^^^^^^^^^
 
-.. currentmodule:: osipi.dc.models.concentration.tissue
+.. currentmodule:: osipi
 
 .. note::
 

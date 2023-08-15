@@ -8,10 +8,10 @@ Generate an AIF and plot it:
 
     import numpy as np
     import matplotlib.pyplot as plt
-    import osipi.dc.models.concentration.aif as aif
+    import osipi
 
     t = np.arange(0, 6*60, 1)
-    ca = aif.parker(t)
+    ca = osipi.aif_parker(t)
     plt.plot(t, ca)
     plt.show()
 

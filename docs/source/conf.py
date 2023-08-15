@@ -34,7 +34,37 @@ extensions = [
     'sphinx_copybutton', # copy button for code blocks
     'sphinx_design', # sphinx web design components
     'sphinx_remove_toctrees', # selectively remove toctree objects from pages
+    'sphinx_gallery.gen_gallery', # thumbnail galleries
 ]
+
+# Settings for sphinx-gallery, see
+# https://sphinx-gallery.github.io/stable/getting_started.html#create-simple-gallery
+sphinx_gallery_conf = {
+    # path to the example scripts relative to conf.py
+    'examples_dirs': '../examples',   
+
+    # path to where to save gallery generated output
+    'gallery_dirs': 'generated/examples',  
+    
+    # directory where function/class granular galleries are stored
+    'backreferences_dir': 'generated/backreferences',
+
+    # Modules for which function/class level galleries are created. 
+    'doc_module': ('osipi', ),
+
+    # objects to exclude from implicit backreferences. The default option
+    # is an empty set, i.e. exclude nothing.
+    'exclude_implicit_doc': {},
+
+    # thumbnail for examples that do not generate any plot
+    'default_thumb_file': '_static/osipi.png',
+
+    # Disabling download button of all scripts
+    'download_all_examples': False,
+}
+
+# This way a link to other methods, classes, or modules can be made with back ticks so that you don't have to use qualifiers like :class:, :func:, :meth: and the likes
+default_role = 'obj'
 
 # Add any paths that contain templates here, relative to this directory
 templates_path = ['_templates']
@@ -46,18 +76,19 @@ exclude_patterns = []
 
 # -- Extension configuration -------------------------------------------------
 # Map intersphinx to pre-exisiting documentation from other projects used in this project
-intersphinx_mapping = {'python': ('https://docs.python.org/3/', None),
-                        'numpy': ('https://numpy.org/doc/stable/', None),
-                        'matplotlib': ('https://matplotlib.org/stable/', None),
-                        'pydicom': ('https://pydicom.github.io/pydicom/stable/', None),
-                        'nilabel': ('https://nipy.org/nibabel/', None),
-                        'pandas': ('https://pandas.pydata.org/docs/', None)
-                        }
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3/', None),
+    'numpy': ('https://numpy.org/doc/stable/', None),
+    'matplotlib': ('https://matplotlib.org/stable/', None),
+    'pydicom': ('https://pydicom.github.io/pydicom/stable/', None),
+    'nibabel': ('https://nipy.org/nibabel/', None),
+    'pandas': ('https://pandas.pydata.org/docs/', None),
+    'skimage': ('https://scikit-image.org/docs/stable/', None),
+}
 
 autosummary_generate = True # enable autosummary extension
 
-# Tell sphinx-autodoc-typehints to generate stub parameter annotations including
-# types, even if the parameters aren't explicitly documented.
+# Tell sphinx-autodoc-typehints to generate stub parameter annotations including types, even if the parameters aren't explicitly documented.
 always_document_param_types = True
 
 # Remove auto-generated API docs from sidebars.
@@ -70,13 +101,11 @@ remove_from_toctrees = ["_autosummary/*"]
 html_theme = 'pydata_sphinx_theme'
 
 html_theme_options = {
-    "github_url": "https://github.com/plaresmedima/osipi",
+    "github_url": "https://osipi.github.io/pypi",
     "collapse_navigation": True,
     }
 
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css"
+# Add any paths that contain custom static files (such as style sheets) here, relative to this directory. They are copied after the builtin static files, so a file named "default.css" will overwrite the builtin "default.css"
 html_static_path = ['_static']
 
 # The suffix(es) of source filenames.
@@ -84,4 +113,4 @@ source_suffix = ['.rst', '.md']
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = 'images/osipi.png'
+html_logo = '_static/osipi.png'

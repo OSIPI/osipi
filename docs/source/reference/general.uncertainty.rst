@@ -1,7 +1,7 @@
 Uncertainty
 ===========
 
-.. currentmodule:: osipi.dc.general.uncertainty
+.. currentmodule:: osipi
 
 .. note::
 

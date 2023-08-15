@@ -1,7 +1,7 @@
 Descriptive models
 ==================
 
-.. currentmodule:: osipi.dc.models.descriptive
+.. currentmodule:: osipi
 
 .. note::
 

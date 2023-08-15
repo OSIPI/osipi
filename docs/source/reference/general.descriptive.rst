@@ -1,7 +1,7 @@
 Descriptive
 ===========
 
-.. currentmodule:: osipi.dc.general.descriptive
+.. currentmodule:: osipi
 
 .. note::
 

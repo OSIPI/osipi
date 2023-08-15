@@ -1,7 +1,7 @@
 Leakage
 =======
 
-.. currentmodule:: osipi.dc.processes.leakage
+.. currentmodule:: osipi
 
 .. note::
 

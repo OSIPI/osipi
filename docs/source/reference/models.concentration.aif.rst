@@ -1,18 +1,19 @@
 AIF models
 ^^^^^^^^^^
 
-.. currentmodule:: osipi.dc.models.concentration.aif
+.. currentmodule:: osipi
 
 
 Population AIFs
 ---------------
 
 .. autosummary::
-   :toctree: generated/
+   :toctree: ../generated/api/
+   :template: autosummary.rst
 
-   parker
-   georgiou
-   weinmann
+   aif_parker
+   aif_georgiou
+   aif_weinmann
 
 
 

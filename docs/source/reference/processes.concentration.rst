@@ -1,7 +1,7 @@
 Concentration
 =============
 
-.. currentmodule:: osipi.dc.processes.concentration
+.. currentmodule:: osipi
 
 .. note::
 

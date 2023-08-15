@@ -18,12 +18,11 @@ The ``osipi`` package structure and logic follows the lexicon defined by OSIPI, 
    ``osipi`` is developed in public but is work in progress. This version contains mostly temporary placeholder functionalty.
 
 
-
 .. toctree::
    :maxdepth: 2
    
    user_guide/index
    reference/index
-   tutorials/index
+   generated/examples/index
    developers_guide/index
    about/index

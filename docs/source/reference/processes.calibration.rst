@@ -1,7 +1,7 @@
 Calibration
 ===========
 
-.. currentmodule:: osipi.dc.processes.calibration
+.. currentmodule:: osipi
 
 .. note::
 

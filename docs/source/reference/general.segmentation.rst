@@ -1,7 +1,7 @@
 Segmentation
 ============
 
-.. currentmodule:: osipi.dc.general.segmentation
+.. currentmodule:: osipi
 
 .. note::
 

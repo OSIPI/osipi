@@ -1,7 +1,7 @@
 Perfusion identities
 ====================
 
-.. currentmodule:: osipi.dc.models.identities
+.. currentmodule:: osipi
 
 
 .. note::

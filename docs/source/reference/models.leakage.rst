@@ -1,7 +1,7 @@
 Leakage correction models
 =========================
 
-.. currentmodule:: osipi.dc.models.leakage
+.. currentmodule:: osipi
 
 .. note::
 

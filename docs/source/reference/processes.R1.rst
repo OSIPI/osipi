@@ -1,7 +1,7 @@
 R1 measurement
 ==============
 
-.. currentmodule:: osipi.dc.processes.R1
+.. currentmodule:: osipi
 
 .. note::
 

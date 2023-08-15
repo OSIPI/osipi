@@ -1,7 +1,7 @@
 Signal models
 =============
 
-.. currentmodule:: osipi.dc.models.signal
+.. currentmodule:: osipi
 
 .. note::
 

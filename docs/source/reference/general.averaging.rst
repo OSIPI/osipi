@@ -1,7 +1,7 @@
 Averaging
 =========
 
-.. currentmodule:: osipi.dc.general.averaging
+.. currentmodule:: osipi
 
 .. note::
 

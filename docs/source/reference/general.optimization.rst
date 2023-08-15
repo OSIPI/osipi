@@ -1,7 +1,7 @@
 Optimization
 ============
 
-.. currentmodule:: osipi.dc.general.optimization
+.. currentmodule:: osipi
 
 .. note::
 

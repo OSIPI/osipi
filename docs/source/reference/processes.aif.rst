@@ -1,7 +1,7 @@
 AIF
 ===
 
-.. currentmodule:: osipi.dc.processes.aif
+.. currentmodule:: osipi
 
 .. note::
 

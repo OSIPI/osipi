@@ -39,7 +39,7 @@ keywords = ['python', "medical imaging", "perfusion", "MRI"]
 requires-python = ">=3.6"
 
 [project.urls]
-"Homepage" = "https://osipi.github.io"
+"Homepage" = "https://osipi.github.io/pypi"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -64,6 +64,7 @@ docs = [
     "sphinxcontrib-jsmath",
     "sphinxcontrib-qthelp",
     "sphinxcontrib-serializinghtml",
+    "sphinx-gallery",
 ]
 
 

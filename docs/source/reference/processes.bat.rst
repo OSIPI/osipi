@@ -1,7 +1,7 @@
 Bolus Arrival Time
 ==================
 
-.. currentmodule:: osipi.dc.processes.bat
+.. currentmodule:: osipi
 
 .. note::
 

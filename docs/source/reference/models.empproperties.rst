@@ -1,7 +1,7 @@
 Models for electromagnetic tissue properties
 ============================================
 
-.. currentmodule:: osipi.dc.models.empproperties
+.. currentmodule:: osipi
 
 .. note::
 

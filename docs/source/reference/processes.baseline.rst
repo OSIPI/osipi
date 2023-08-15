@@ -1,7 +1,7 @@
 Baseline
 ========
 
-.. currentmodule:: osipi.dc.processes.baseline
+.. currentmodule:: osipi
 
 .. note::
 

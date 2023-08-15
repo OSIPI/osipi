@@ -1,7 +1,7 @@
 Deconvolution
 =============
 
-.. currentmodule:: osipi.dc.general.deconvolution
+.. currentmodule:: osipi
 
 .. note::
 

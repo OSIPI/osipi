@@ -16,6 +16,7 @@ This reference guide, like the ``osipi`` package itself, adheres closely to the 
 .. toctree::
    :maxdepth: 2
 
+   alphabetical
    models
    processes
    general

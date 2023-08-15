@@ -1,7 +1,7 @@
 Forward
 =======
 
-.. currentmodule:: osipi.dc.general.forward
+.. currentmodule:: osipi
 
 .. note::
 

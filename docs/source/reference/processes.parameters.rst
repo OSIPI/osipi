@@ -1,7 +1,7 @@
 Parameters
 ==========
 
-.. currentmodule:: osipi.dc.processes.parameters
+.. currentmodule:: osipi
 
 .. note::
 
