@@ -1,6 +1,6 @@
 `osipi` is the authorative python package for perfusion MRI. 
 
-For more detail please see the [documentation](https://plaresmedima.github.io/osipi).
+For more detail please see the [documentation]().
 
 `osipi` is developed by the Open Source Initiative for Perfusion Imaging [OSIPI](www.osipi.org), an initiative of the perfusion study group of the International Society for Magnetic Resonance in Medicine [ISMRM](www.ismrm.org). 
 
