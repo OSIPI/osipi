@@ -1,0 +1,42 @@
+# GitHub Actions Configuration for integrated testing using pytest
+name: Test osipi
+
+on: [push]
+
+jobs:
+  build:
+
+    strategy:
+      matrix:
+         os: [windows-latest, macos-latest, ubuntu-latest]
+      fail-fast: false
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          architecture: x64
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Install osipi
+        run: |
+          python -m pip install -e .[docs]
+          python -m pip install -e .[tests]
+      - name: Test with pytest
+        run: |
+          python -m pip install pytest pytest-cov
+          pytest --junitxml=junit/test-results.xml --cov=dbdicom tests/
+      - name: Upload coverage to Codecov
+        if: runner.os == 'Windows'
+        uses: codecov/codecov-action@v3
