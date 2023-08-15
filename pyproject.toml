@@ -1,0 +1,74 @@
+# https://python-poetry.org/docs/pyproject
+# minimal required information
+
+[project]
+name = "osipi"
+version = "0.1.1"
+dependencies = [ 
+  "numpy",
+]
+
+# optional information
+
+description = "The authorative python package for perfusion MRI"
+readme = "README.md"
+authors = [
+  { name = "Luis Torres", email = "luistorres@flywheel.io" }, 
+  { name = "Steven Sourbron", email = "s.sourbron@sheffield.ac.uk" },
+  ]
+license = { file = "LICENSE" }
+classifiers = [
+  # How mature is this project? Common values are
+  #   3 - Alpha
+  #   4 - Beta
+  #   5 - Production/Stable
+  'Development Status :: 3 - Alpha',
+
+  # Indicate who your project is intended for
+  'Intended Audience :: Developers',
+  'Intended Audience :: Science/Research',
+  'Topic :: Scientific/Engineering',
+  'Operating System :: OS Independent',
+
+  'License :: OSI Approved :: Apache Software License',
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3"
+]
+keywords = ['python', "medical imaging", "perfusion", "MRI"]
+
+requires-python = ">=3.6"
+
+[project.urls]
+"Homepage" = "https://osipi.github.io"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.optional-dependencies]
+tests = [
+  "pytest",
+  "matplotlib",
+]
+docs = [
+    "sphinx",
+    "pydata-sphinx-theme",
+    "myst-parser", 
+    "sphinx-copybutton",
+    "sphinx-design",
+    "sphinx-remove-toctrees",
+    "autodocsumm",
+    "docutils",
+    "sphinxcontrib-applehelp",
+    "sphinxcontrib-devhelp",
+    "sphinxcontrib-htmlhelp",
+    "sphinxcontrib-jsmath",
+    "sphinxcontrib-qthelp",
+    "sphinxcontrib-serializinghtml",
+]
+
+
+
+
+
+
+
