@@ -5,6 +5,10 @@ from ._aif import (
     aif_weinmann,
 )
 
-from ._indicator_kinetic_model import (
+from ._tissue import (
     tofts
+)
+
+from ._convolution import (
+    exp_conv
 )

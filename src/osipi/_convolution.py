@@ -1,12 +1,12 @@
 import numpy as np
 
 
-def exp_conv(T:float, t:np.ndarray, a:np.ndarray)->np.ndarray:
+def exp_conv(T: float, t: np.ndarray, a: np.ndarray) -> np.ndarray:
     """Exponential convolution operation of (1/T)exp(-t/T) with a
-    
+
     Args:
-        T (float): exponent 
-        t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
+        T (float): exponent in time units
+        t (np.ndarray): array of time points
         a (np.ndarray): array to be convolved with time exponential
 
     Returns:
@@ -14,7 +14,7 @@ def exp_conv(T:float, t:np.ndarray, a:np.ndarray)->np.ndarray:
 
     """
     if T == 0:
-        return (a)
+        return a
 
     n = len(t)
     f = np.zeros((n,))
@@ -32,5 +32,5 @@ def exp_conv(T:float, t:np.ndarray, a:np.ndarray)->np.ndarray:
         f[i + 1] = E[i] * f[i] + add[i]
 
     f[n - 1] = f[n - 2]
-    return (f)
+    return f
 

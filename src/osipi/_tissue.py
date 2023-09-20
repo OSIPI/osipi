@@ -1,9 +1,10 @@
 import numpy as np
 from scipy.interpolate import interp1d
-from _helpers import exp_conv
+from osipi import exp_conv
 
 
-def tofts(t:np.ndarray, ca:np.ndarray, Ktrans:float, ve:float, t_offset:float=0.0, discretization_method:str="conv")->np.ndarray:
+def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, t_offset: float = 0.0,
+          discretization_method: str = "conv") -> np.ndarray:
     """Tofts model as defined by zzz et al (year)
 
     Args:
@@ -43,20 +44,24 @@ def tofts(t:np.ndarray, ca:np.ndarray, Ktrans:float, ve:float, t_offset:float=0.
         Calculate tissue concentrations and plot
         >>> Ktrans = 0.6 # in units of 1/min
         >>> ve = 0.2 # takes values from 0 to 1
-        >>> ct = osipi._indicator_kinetic_model.tofts(t, ca, Ktrans, ve)
+        >>> ct = osipi.tofts(t, ca, Ktrans, ve)
         >>> plt.plot(t, ca, 'r', t, ct, 'b')
     """
 
     # Convert from OSIPI units (sec) to mins
-    t_min = t/60
-    t_off_min = t_offset/60
+    t_min = t / 60
+    t_off_min = t_offset / 60
 
     # Shift the AIF by the toff (if not zero)
     if t_off_min != 0:
         f = interp1d(t, ca, kind='linear', bounds_error=False, fill_value=0)
         ca = (t_min > t_off_min) * f(t_min - t_off_min)
 
-    if discretization_method is 'conv':  # Use convolution
+    if discretization_method == 'exp_conv':  # Use exponential convolution
+        Tc = ve / Ktrans
+        ct = ve * exp_conv(Tc, t_min, ca)
+
+    else:  # Use convolution by default
         # Calculate the impulse response function
         imp = Ktrans * np.exp(-1 * Ktrans * t / ve)
 
@@ -66,9 +71,4 @@ def tofts(t:np.ndarray, ca:np.ndarray, Ktrans:float, ve:float, t_offset:float=0.
         # Discard unwanted points and make sure time spacing is correct
         ct = convolution[0:len(t_min)] * t_min[1]
 
-    elif discretization_method is 'exp_conv':  # Use exponential convolution
-        Tc = ve / Ktrans
-        ct = ve * exp_conv(Tc, t_min, ca)
-
     return ct
-
