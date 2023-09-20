@@ -1,11 +1,11 @@
 import numpy as np
 from scipy.interpolate import interp1d
-from osipi import exp_conv
+from ._convolution import exp_conv
 
 
 def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, t_offset: float = 0.0,
           discretization_method: str = "conv") -> np.ndarray:
-    """Tofts model as defined by zzz et al (year)
+    """Tofts model as defined by Tofts and Kermode (1991)
 
     Args:
         t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
@@ -13,7 +13,13 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, t_offset: flo
         Ktrans (float): Volume transfer constant in units of 1/min. [OSIPI code Q.PH1.008]
         ve (float): Relative volume fraction of the extracellular extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
         t_offset (float, optional): Difference in onset time between tissue curve and aif in units of sec. [OSIPI code ????]
-        discretization_method (str, optional): Defines the discretization method used in the model definition. [OSIPI code ????]
+        discretization_method (str, optional): Defines the discretization method used in the model definition. Options include
+             'conv': Numerical convolution [OSIPI code G.DI1.001]
+             'bc': Block-circulant convolution [OSIPI code G.DI1.002]
+             'vl': Volterra linear convolution [OSIPI code G.DI1.003]
+             'singular': Singular convolution [OSIPI code G.DI1.004]
+             'hyrbid': Hybrid convolution [OSIPI code G.DI1.005]
+             'exp': Exponential convolution [OSIPI code G.DI1.006]
 
     Returns:
         np.ndarray: Tissue concentrations in mM for each time point in t.
@@ -22,7 +28,7 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, t_offset: flo
         'extended_tofts'
 
     References:
-        - Lexicon url:
+        - Lexicon url: https://osipi.github.io/OSIPI_CAPLEX/generalPurposeProcesses/#discretization-methods
         - Lexicon code: M.IC1.004
         - OSIPI name: Tofts Model
         - Adapted from contributions by: LEK_UoEdinburgh_UK, ST_USyd_AUS
@@ -57,13 +63,13 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, t_offset: flo
         f = interp1d(t, ca, kind='linear', bounds_error=False, fill_value=0)
         ca = (t_min > t_off_min) * f(t_min - t_off_min)
 
-    if discretization_method == 'exp_conv':  # Use exponential convolution
+    if discretization_method == 'exp':  # Use exponential convolution
         Tc = ve / Ktrans
         ct = ve * exp_conv(Tc, t_min, ca)
 
     else:  # Use convolution by default
         # Calculate the impulse response function
-        imp = Ktrans * np.exp(-1 * Ktrans * t / ve)
+        imp = Ktrans * np.exp(-1 * Ktrans * t_min / ve)
 
         # Convolve impulse response with AIF
         convolution = np.convolve(ca, imp)

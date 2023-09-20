@@ -78,9 +78,9 @@ Plot the tissue concentrations for an extracellular volume fraction of 0.2 and 3
     ct = osipi.tofts(t, ca, Ktrans[0], ve)
     plt.plot(t, ct, 'b-', label=f'Ktrans = {Ktrans[0]} /min')
     ct = osipi.tofts(t, ca, Ktrans[1], ve)
-    plt.plot(t, ct, 'r-', label=f'Ktrans = {Ktrans[1]} /min')
+    plt.plot(t, ct, 'g-', label=f'Ktrans = {Ktrans[1]} /min')
     ct = osipi.tofts(t, ca, Ktrans[2], ve)
-    plt.plot(t, ct, 'g-', label=f'Ktrans = {Ktrans[2]} /min')
+    plt.plot(t, ct, 'm-', label=f'Ktrans = {Ktrans[2]} /min')
     plt.xlabel('Time (sec)')
     plt.ylabel('Tissue concentration (mM)')
     plt.legend()
@@ -109,7 +109,7 @@ Comparing different discretization methods for an extracellular volume fraction 
     ct = osipi.tofts(t, ca, Ktrans[1], ve) # Defaults to Convolution
     plt.plot(t, ct, 'b-', label='Convolution')
     ct = osipi.tofts(t, ca, Ktrans[1], ve, discretization_method='exp_conv')
-    plt.plot(t, ct, 'r-', label='Exponential Convolution')
+    plt.plot(t, ct, 'g-', label='Exponential Convolution')
     plt.title(f'Ktrans = {Ktrans[1]} /min')
     plt.xlabel('Time (sec)')
     plt.ylabel('Tissue concentration (mM)')
@@ -133,7 +133,7 @@ Comparing different discretization methods for an extracellular volume fraction 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.185 seconds)
+   **Total running time of the script:** (0 minutes 0.184 seconds)
 
 
 .. _sphx_glr_download_generated_examples_tissue_plot_tofts.py:
