@@ -13,13 +13,13 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, t_offset: flo
         Ktrans (float): Volume transfer constant in units of 1/min. [OSIPI code Q.PH1.008]
         ve (float): Relative volume fraction of the extracellular extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
         t_offset (float, optional): Difference in onset time between tissue curve and aif in units of sec. [OSIPI code ????]
-        discretization_method (str, optional): Defines the discretization method used in the model definition. Options include
-             'conv': Numerical convolution [OSIPI code G.DI1.001]
-             'bc': Block-circulant convolution [OSIPI code G.DI1.002]
-             'vl': Volterra linear convolution [OSIPI code G.DI1.003]
-             'singular': Singular convolution [OSIPI code G.DI1.004]
-             'hyrbid': Hybrid convolution [OSIPI code G.DI1.005]
-             'exp': Exponential convolution [OSIPI code G.DI1.006]
+        discretization_method (str, optional): Defines the discretization method. Options include
+                                               'conv': Numerical convolution [OSIPI code G.DI1.001]
+                                               'bc': Block-circulant convolution [OSIPI code G.DI1.002]
+                                               'vl': Volterra linear convolution [OSIPI code G.DI1.003]
+                                               'singular': Singular convolution [OSIPI code G.DI1.004]
+                                               'hyrbid': Hybrid convolution [OSIPI code G.DI1.005]
+                                               'exp': Exponential convolution [OSIPI code G.DI1.006]
 
     Returns:
         np.ndarray: Tissue concentrations in mM for each time point in t.
@@ -28,7 +28,7 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, t_offset: flo
         'extended_tofts'
 
     References:
-        - Lexicon url: https://osipi.github.io/OSIPI_CAPLEX/generalPurposeProcesses/#discretization-methods
+        - Lexicon url: https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#indicator-kinetic-models
         - Lexicon code: M.IC1.004
         - OSIPI name: Tofts Model
         - Adapted from contributions by: LEK_UoEdinburgh_UK, ST_USyd_AUS
