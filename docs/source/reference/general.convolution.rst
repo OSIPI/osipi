@@ -1,7 +1,8 @@
 Convolution
-=============
+^^^^^^^^^^^
 
 .. currentmodule:: osipi
+
 
 Exponential Convolution
 -----------------------

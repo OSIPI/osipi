@@ -2,7 +2,7 @@ import numpy as np
 import osipi
 
 
-def test_tofts():
+def test_tissue_tofts():
 
     t = np.arange(0, 6*60, 1)
     ca = osipi.aif_parker(t)
@@ -14,7 +14,7 @@ def test_tofts():
 
 if __name__ == "__main__":
 
-    test_tofts()
+    test_tissue_tofts()
 
-    print('All Tofts model tests passed!!')
+    print('All tissue concentration model tests passed!!')
 

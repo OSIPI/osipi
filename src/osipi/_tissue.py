@@ -17,11 +17,17 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, t_offset: flo
         discretization_method (str, optional): Defines the discretization method. Options include
 
             – 'conv': Numerical convolution (default) [OSIPI code G.DI1.001]
+
             – 'bc': Block-circulant convolution [OSIPI code G.DI1.002]
+
             – 'vl': Volterra linear convolution [OSIPI code G.DI1.003]
+
             – 'singular': Singular convolution [OSIPI code G.DI1.004]
-            – 'hyrbid': Hybrid convolution [OSIPI code G.DI1.005]
+
+            – 'hybrid': Hybrid convolution [OSIPI code G.DI1.005]
+
             – 'exp': Exponential convolution [OSIPI code G.DI1.006]
+
 
     Returns:
         np.ndarray: Tissue concentrations in mM for each time point in t.
