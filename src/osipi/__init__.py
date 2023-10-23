@@ -8,7 +8,3 @@ from ._aif import (
 from ._tissue import (
     tofts
 )
-
-from ._convolution import (
-    exp_conv
-)

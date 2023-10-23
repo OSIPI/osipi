@@ -1,12 +1,12 @@
 import numpy as np
 
 
-def aif_parker(t:np.ndarray, BAT:float=30.0, Hct:float=0.0, dose:float=0.1)->np.ndarray:
+def aif_parker(t:np.ndarray, BAT:float=0.0, Hct:float=0.0, dose:float=0.1)->np.ndarray:
     """AIF model as defined by Parker et al (2005)
 
     Args:
         t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
-        BAT (float, optional): Time in seconds before the bolus arrives. Defaults to 30sec. [OSIPI code Q.BA1.001]
+        BAT (float, optional): Time in seconds before the bolus arrives. Defaults to 0. [OSIPI code Q.BA1.001]
         Hct (float, optional): Hematocrit. Defaults to 0.0. [OSIPI code Q.PH1.012]
         dose (float, optional): Injected contrast agent dose in units of [???]. Defaults to 0.1. [OSIPI code Q.IC1.999]
 

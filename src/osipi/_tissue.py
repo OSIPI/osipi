@@ -3,7 +3,7 @@ from scipy.interpolate import interp1d
 from ._convolution import exp_conv
 
 
-def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, t_offset: float = 0.0,
+def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, t_offset: float = 30.0,
           discretization_method: str = "conv") -> np.ndarray:
 
     """Tofts model as defined by Tofts and Kermode (1991)
@@ -13,18 +13,10 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, t_offset: flo
         ca (np.ndarray): Arterial concentrations in mM for each time point in t. [OSIPI code Q.IC1.001]
         Ktrans (float): Volume transfer constant in units of 1/min. [OSIPI code Q.PH1.008]
         ve (float): Relative volume fraction of the extracellular extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
-        t_offset (float, optional): Difference in onset time between tissue curve and aif in units of sec. Defaults to 0. [OSIPI code ????]
+        t_offset (float, optional): Difference in onset time between tissue curve and aif in units of sec. Defaults to 30 seconds. [OSIPI code ????]
         discretization_method (str, optional): Defines the discretization method. Options include
 
             – 'conv': Numerical convolution (default) [OSIPI code G.DI1.001]
-
-            – 'bc': Block-circulant convolution [OSIPI code G.DI1.002]
-
-            – 'vl': Volterra linear convolution [OSIPI code G.DI1.003]
-
-            – 'singular': Singular convolution [OSIPI code G.DI1.004]
-
-            – 'hybrid': Hybrid convolution [OSIPI code G.DI1.005]
 
             – 'exp': Exponential convolution [OSIPI code G.DI1.006]
 
