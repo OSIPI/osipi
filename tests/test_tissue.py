@@ -1,7 +1,6 @@
 import numpy as np
 import osipi
 import math
-import matplotlib.pyplot as plt
 
 def test_tissue_tofts():
     Ktrans = 0.6
@@ -28,10 +27,24 @@ def test_tissue_tofts():
     assert math.isclose(np.trapz(ct_conv, t)/np.trapz(ca, t), ve, abs_tol=1e-1)
     assert math.isclose(np.trapz(ct_exp, t)/np.trapz(ca, t), ve, abs_tol=1e-1)
 
+def test_tissue_extended_tofts():
+
+    # Not implemented yet so need to raise an error
+    Ktrans = 0.6
+    ve = 0.2
+    t = np.arange(0, 6 * 60, 0.01)
+    ca = osipi.aif_parker(t)
+    try:
+        ct = osipi.extended_tofts(t, ca, Ktrans=Ktrans, ve=ve)
+    except:
+        assert True
+    else:
+        assert False
 
 if __name__ == "__main__":
 
     test_tissue_tofts()
+    test_tissue_extended_tofts()
 
     print('All tissue concentration model tests passed!!')
 

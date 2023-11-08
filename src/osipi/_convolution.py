@@ -13,6 +13,7 @@ def exp_conv(T: float, t: np.ndarray, a: np.ndarray) -> np.ndarray:
         np.ndarray: convolved array
 
     """
+
     if T == 0:
         return a
 

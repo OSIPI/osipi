@@ -6,5 +6,6 @@ from ._aif import (
 )
 
 from ._tissue import (
-    tofts
+    tofts,
+    extended_tofts
 )

@@ -13,7 +13,5 @@ Alphabetic list of all currently available `osipi` code snippets.
    aif_parker
    aif_georgiou
    aif_weinmann
-   exp_conv
-
-
-
+   tofts
+   extended_tofts

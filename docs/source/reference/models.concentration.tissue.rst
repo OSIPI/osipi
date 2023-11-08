@@ -12,3 +12,4 @@ Tofts model
    :template: autosummary.rst
 
    tofts
+   extended_tofts

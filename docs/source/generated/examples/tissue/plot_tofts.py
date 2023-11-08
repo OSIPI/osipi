@@ -24,8 +24,8 @@ ca = osipi.aif_parker(t)
 # %%
 # Plot the tissue concentrations for an extracellular volume fraction of 0.2 and 3 different transfer rate constants of 0.05, 0.2 and 0.6 /min
 Ktrans = [0.05, 0.2, 0.6]  # in units of 1/min
-ve = 0.2  # volume fraction  between 0 and 1
-ct = osipi.tofts(t, ca, Ktrans[0], ve)
+ve = 0.2  # volume fraction between 0 and 1
+ct = osipi.tofts(t, ca, Ktrans=Ktrans[0], ve=ve)
 plt.plot(t, ct, 'b-', label=f'Ktrans = {Ktrans[0]} /min')
 ct = osipi.tofts(t, ca, Ktrans[1], ve)
 plt.plot(t, ct, 'g-', label=f'Ktrans = {Ktrans[1]} /min')
@@ -38,9 +38,9 @@ plt.show()
 
 # %%
 # Comparing different discretization methods for an extracellular volume fraction of 0.2 and Ktrans of 0.2 /min
-ct = osipi.tofts(t, ca, Ktrans[1], ve) # Defaults to Convolution
+ct = osipi.tofts(t, ca, Ktrans=Ktrans[1], ve=ve) # Defaults to Convolution
 plt.plot(t, ct, 'b-', label='Convolution')
-ct = osipi.tofts(t, ca, Ktrans[1], ve, discretization_method='exp_conv')
+ct = osipi.tofts(t, ca, Ktrans=Ktrans[1], ve=ve, discretization_method='exp')
 plt.plot(t, ct, 'g-', label='Exponential Convolution')
 plt.title(f'Ktrans = {Ktrans[1]} /min')
 plt.xlabel('Time (sec)')

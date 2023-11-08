@@ -69,7 +69,7 @@ def aif_parker(t:np.ndarray, BAT:float=0.0, Hct:float=0.0, dose:float=0.1)->np.n
     return pop_aif
 
 
-def aif_georgiou(t:np.ndarray, BAT:float=30.0)->np.ndarray:
+def aif_georgiou(t:np.ndarray, BAT:float=0.0)->np.ndarray:
     """AIF model as defined by Georgiou et al.
 
     Note:
@@ -77,7 +77,7 @@ def aif_georgiou(t:np.ndarray, BAT:float=30.0)->np.ndarray:
 
     Args:
         t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
-        BAT (float, optional): Time in seconds before the bolus arrives. Defaults to 30sec. [OSIPI code Q.BA1.001]
+        BAT (float, optional): Time in seconds before the bolus arrives. Defaults to 0sec. [OSIPI code Q.BA1.001]
 
     Returns:
         np.ndarray: Concentrations in mM for each time point in t.
@@ -115,7 +115,7 @@ def aif_georgiou(t:np.ndarray, BAT:float=30.0)->np.ndarray:
     raise NotImplementedError(msg)
 
 
-def aif_weinmann(t:np.ndarray, BAT:float=30.0)->np.ndarray:
+def aif_weinmann(t:np.ndarray, BAT:float=0.0)->np.ndarray:
     """AIF model as defined by Weinmann et al.
 
     Note:
@@ -123,7 +123,7 @@ def aif_weinmann(t:np.ndarray, BAT:float=30.0)->np.ndarray:
 
     Args:
         t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
-        BAT (float, optional): Time in seconds before the bolus arrives. Defaults to 30sec. [OSIPI code Q.BA1.001]
+        BAT (float, optional): Time in seconds before the bolus arrives. Defaults to 0sec. [OSIPI code Q.BA1.001]
 
     Returns:
         np.ndarray: Concentrations in mM for each time point in t.
