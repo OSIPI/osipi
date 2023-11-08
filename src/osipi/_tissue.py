@@ -13,7 +13,7 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, t_offset: flo
         ca (np.ndarray): Arterial concentrations in mM for each time point in t. [OSIPI code Q.IC1.001]
         Ktrans (float): Volume transfer constant in units of 1/min. [OSIPI code Q.PH1.008]
         ve (float): Relative volume fraction of the extracellular extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
-        t_offset (float, optional): Difference in onset time between tissue curve and aif in units of sec. Defaults to 30 seconds. [OSIPI code ????]
+        t_offset (float, optional): Arterial delay time, i.e., difference in onset time between tissue curve and AIF in units of sec. Defaults to 30 seconds. [OSIPI code Q.PH1.007]
         discretization_method (str, optional): Defines the discretization method. Options include
 
             – 'conv': Numerical convolution (default) [OSIPI code G.DI1.001]
@@ -92,7 +92,7 @@ def extended_tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, t_of
         ca (np.ndarray): Arterial concentrations in mM for each time point in t. [OSIPI code Q.IC1.001]
         Ktrans (float): Volume transfer constant in units of 1/min. [OSIPI code Q.PH1.008]
         ve (float): Relative volume fraction of the extracellular extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
-        t_offset (float, optional): Difference in onset time between tissue curve and aif in units of sec. Defaults to 30 seconds. [OSIPI code ????]
+        t_offset (float, optional): Arterial delay time, i.e., difference in onset time between tissue curve and AIF in units of sec. Defaults to 30 seconds. [OSIPI code Q.PH1.007]       
         discretization_method (str, optional): Defines the discretization method. Options include
 
             – 'conv': Numerical convolution (default) [OSIPI code G.DI1.001]
@@ -108,7 +108,7 @@ def extended_tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, t_of
 
     References:
         - Lexicon url: https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#indicator-kinetic-models
-        - Lexicon code: M.IC1.004
+        - Lexicon code: M.IC1.005
         - OSIPI name: Extended Tofts Model
         - Adapted from contributions by: TBC
 
