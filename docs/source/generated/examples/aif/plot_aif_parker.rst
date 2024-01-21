@@ -81,7 +81,7 @@ Generate synthetic AIF with default settings and plot the result.
 
 The bolus arrival time (BAT) defaults to 0s. What happens if we change it? Let's try, by changing it in steps of 30s:
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-47
+.. GENERATED FROM PYTHON SOURCE LINES 33-49
 
 .. code-block:: default
 
@@ -99,6 +99,8 @@ The bolus arrival time (BAT) defaults to 0s. What happens if we change it? Let's
     plt.legend()
     plt.show()
 
+    # Choose the last image as a thumbnail for the gallery
+    # sphinx_gallery_thumbnail_number = -1
 
 
 
@@ -111,46 +113,10 @@ The bolus arrival time (BAT) defaults to 0s. What happens if we change it? Let's
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-49
-
-the dose defaults to 0.1- what happens if we change it too?
-
-.. GENERATED FROM PYTHON SOURCE LINES 49-65
-
-.. code-block:: default
-
-
-    ca = osipi.aif_parker(t, BAT=0, dose=0.05)
-    plt.plot(t, ca, 'b-', label='BAT = 0s, dose = 0.05')
-    ca = osipi.aif_parker(t, BAT=30, dose=0.1)
-    plt.plot(t, ca, 'r-', label='BAT = 30s, dose = 0.1')
-    ca = osipi.aif_parker(t, BAT=60, dose=0.2)
-    plt.plot(t, ca, 'g-', label='BAT = 60s, dose = 0.2')
-    ca = osipi.aif_parker(t, BAT=90, dose=0.3)
-    plt.plot(t, ca, 'm-', label='BAT = 90s, dose = 0.3')
-    plt.xlabel('Time (sec)')
-    plt.ylabel('Plasma concentration (mM)')
-    plt.legend()
-    plt.show()
-
-    # Choose the last image as a thumbnail for the gallery
-    # sphinx_gallery_thumbnail_number = -1
-
-
-
-.. image-sg:: /generated/examples/aif/images/sphx_glr_plot_aif_parker_003.png
-   :alt: plot aif parker
-   :srcset: /generated/examples/aif/images/sphx_glr_plot_aif_parker_003.png
-   :class: sphx-glr-single-img
-
-
-
-
-
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.179 seconds)
+   **Total running time of the script:** (0 minutes 0.107 seconds)
 
 
 .. _sphx_glr_download_generated_examples_aif_plot_aif_parker.py:

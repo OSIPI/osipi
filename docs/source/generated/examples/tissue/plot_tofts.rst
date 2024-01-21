@@ -52,8 +52,8 @@ Generate Parker AIF with default settings.
 .. code-block:: default
 
 
-    # Define time points in units of seconds - in this case we use a time resolution of 0.5 sec and a total duration of 6 minutes.
-    t = np.arange(0, 6*60, 0.5)
+    # Define time points in units of seconds - in this case we use a time resolution of 1 sec and a total duration of 6 minutes.
+    t = np.arange(0, 6*60, 1)
 
     # Create an AIF with default settings
     ca = osipi.aif_parker(t)
@@ -75,11 +75,11 @@ Plot the tissue concentrations for an extracellular volume fraction of 0.2 and 3
 
     Ktrans = [0.05, 0.2, 0.6]  # in units of 1/min
     ve = 0.2  # volume fraction between 0 and 1
-    ct = osipi.tofts(t, ca, Ktrans=Ktrans[0], ve=ve)
+    ct = osipi.tofts(t, ca, Ktrans=Ktrans[0]/60, ve=ve)
     plt.plot(t, ct, 'b-', label=f'Ktrans = {Ktrans[0]} /min')
-    ct = osipi.tofts(t, ca, Ktrans[1], ve)
+    ct = osipi.tofts(t, ca, Ktrans[1]/60, ve)
     plt.plot(t, ct, 'g-', label=f'Ktrans = {Ktrans[1]} /min')
-    ct = osipi.tofts(t, ca, Ktrans[2], ve)
+    ct = osipi.tofts(t, ca, Ktrans[2]/60, ve)
     plt.plot(t, ct, 'm-', label=f'Ktrans = {Ktrans[2]} /min')
     plt.xlabel('Time (sec)')
     plt.ylabel('Tissue concentration (mM)')
@@ -106,9 +106,9 @@ Comparing different discretization methods for an extracellular volume fraction 
 
 .. code-block:: default
 
-    ct = osipi.tofts(t, ca, Ktrans=Ktrans[1], ve=ve) # Defaults to Convolution
+    ct = osipi.tofts(t, ca, Ktrans=Ktrans[1]/60, ve=ve) # Defaults to Convolution
     plt.plot(t, ct, 'b-', label='Convolution')
-    ct = osipi.tofts(t, ca, Ktrans=Ktrans[1], ve=ve, discretization_method='exp')
+    ct = osipi.tofts(t, ca, Ktrans=Ktrans[1]/60, ve=ve, discretization_method='exp')
     plt.plot(t, ct, 'g-', label='Exponential Convolution')
     plt.title(f'Ktrans = {Ktrans[1]} /min')
     plt.xlabel('Time (sec)')
@@ -133,7 +133,7 @@ Comparing different discretization methods for an extracellular volume fraction 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.168 seconds)
+   **Total running time of the script:** (0 minutes 0.097 seconds)
 
 
 .. _sphx_glr_download_generated_examples_tissue_plot_tofts.py:

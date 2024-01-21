@@ -31,7 +31,7 @@ Generate tissue concentration and plot it:
     ca = osipi.aif_parker(t)
     Ktrans = 0.6
     ve = 0.2
-    ct = osipi.tofts(t, ca, Ktrans=Ktrans, ve=ve)
+    ct = osipi.tofts(t, ca, Ktrans=Ktrans/60, ve=ve)
     plt.plot(t, ct)
     plt.show()
 
