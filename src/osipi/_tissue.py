@@ -1,11 +1,11 @@
 import numpy as np
 from scipy.interpolate import interp1d
 from ._convolution import exp_conv
+import warnings
 
 
 def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: float = 30.0,
           discretization_method: str = "conv") -> np.ndarray:
-
     """Tofts model as defined by Tofts and Kermode (1991)
 
     Args:
@@ -55,30 +55,31 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: float = 3
         >>> ct = osipi.tofts(t, ca, Ktrans, ve)
         >>> plt.plot(t, ca, 'r', t, ct, 'b')
     """
+    if not np.allclose(np.diff(t), np.diff(t)[0]):
+        warnings.warn('Non-uniform time spacing detected. Time array may be resampled.', stacklevel=2)
 
-    # Shift the AIF by the arterial delay time (if not zero)
-    if Ta != 0:
-        f = interp1d(t, ca, kind='linear', bounds_error=False, fill_value=0)
-        ca = (t > Ta) * f(t - Ta)
+    if Ktrans <= 0 or ve <= 0:
+        ct = 0 * ca
+        warnings.warn('Tissue concentration will be set to zero if Ktrans or ve are less than or equal to zero.', stacklevel=2)
+    else:
+        if discretization_method == 'exp':  # Use exponential convolution
+            # Shift the AIF by the arterial delay time (if not zero)
+            if Ta != 0:
+                f = interp1d(t, ca, kind='linear', bounds_error=False, fill_value=0)
+                ca = (t > Ta) * f(t - Ta)
 
-    if discretization_method == 'exp':  # Use exponential convolution
-        try:
             Tc = ve / Ktrans
-        except ZeroDivisionError:
-            print('Division by zero error: Ktrans assigned 0')
-            ct = 0 * ca
-        else:
             ct = ve * exp_conv(Tc, t, ca)
 
-    else:  # Use convolution by default
-        # Calculate the impulse response function
-        try:
+        else:  # Use convolution by default
+            # Calculate the impulse response function
             kep = Ktrans / ve
-        except ZeroDivisionError:
-            print('Division by zero: ve assigned 0')
-            ct = ca
-        else:
             imp = Ktrans * np.exp(-1 * kep * t)
+
+            # Shift the AIF by the arterial delay time (if not zero)
+            if Ta != 0:
+                f = interp1d(t, ca, kind='linear', bounds_error=False, fill_value=0)
+                ca = (t > Ta) * f(t - Ta)
 
             # Check if time data grid is uniformly spaced
             if np.allclose(np.diff(t), np.diff(t)[0]):

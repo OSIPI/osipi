@@ -133,7 +133,7 @@ Comparing different discretization methods for an extracellular volume fraction 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.097 seconds)
+   **Total running time of the script:** (0 minutes 0.092 seconds)
 
 
 .. _sphx_glr_download_generated_examples_tissue_plot_tofts.py:

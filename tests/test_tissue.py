@@ -38,6 +38,21 @@ def test_tissue_tofts():
     assert math.isclose(np.trapz(ct_conv, t)/np.trapz(ca, t), 0.2, abs_tol=1e-1)
     assert math.isclose(np.trapz(ct_exp, t)/np.trapz(ca, t), 0.2, abs_tol=1e-1)
 
+    # 6. Test specific use cases
+    t = np.arange(0, 6 * 60, 1)
+    ca = osipi.aif_parker(t)
+    ct_conv = osipi.tofts(t, ca, Ktrans=0, ve=0.2)
+    assert np.count_nonzero(ct_conv) == 0
+
+    ct_exp = osipi.tofts(t, ca, Ktrans=0, ve=0.2, discretization_method='exp')
+    assert np.count_nonzero(ct_exp) == 0
+
+    ct_conv = osipi.tofts(t, ca, Ktrans=0.6/60, ve=0)
+    assert np.count_nonzero(ct_conv) == 0
+
+    ct_exp = osipi.tofts(t, ca, Ktrans=0.6/60, ve=0, discretization_method='exp')
+    assert np.count_nonzero(ct_exp) == 0
+
 def test_tissue_extended_tofts():
 
     # Not implemented yet so need to raise an error

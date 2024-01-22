@@ -38,7 +38,6 @@ def aif_parker(t:np.ndarray, BAT:float=0.0, Hct:float=0.0)->np.ndarray:
         >>> plt.plot(t,ca)
         >>> plt.show()
     """
-
     # Convert from OSIPI units (sec) to units used internally (mins)
     t_min = t/60
     bat_min = BAT/60
