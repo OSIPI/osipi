@@ -11,7 +11,7 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: float = 3
     Args:
         t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
         ca (np.ndarray): Arterial concentrations in mM for each time point in t. [OSIPI code Q.IC1.001]
-        Ktrans (float): Volume transfer constant in units of 1/sec. [OSIPI code Q.PH1.008]
+        Ktrans (float): Volume transfer constant in units of 1/min. [OSIPI code Q.PH1.008]
         ve (float): Relative volume fraction of the extracellular extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
         Ta (float, optional): Arterial delay time, i.e., difference in onset time between tissue curve and AIF in units of sec. Defaults to 30 seconds. [OSIPI code Q.PH1.007]
         discretization_method (str, optional): Defines the discretization method. Options include
@@ -50,7 +50,7 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: float = 3
         >>> ca = osipi.aif_parker(t)
 
         Calculate tissue concentrations and plot:
-        >>> Ktrans = 0.6/60 # in units of 1/sec
+        >>> Ktrans = 0.6 # in units of 1/min
         >>> ve = 0.2 # takes values from 0 to 1
         >>> ct = osipi.tofts(t, ca, Ktrans, ve)
         >>> plt.plot(t, ca, 'r', t, ct, 'b')
@@ -62,6 +62,9 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: float = 3
         ct = 0 * ca
         warnings.warn('Tissue concentration will be set to zero if Ktrans or ve are less than or equal to zero.', stacklevel=2)
     else:
+        # Convert units
+        Ktrans = Ktrans/60 # from 1/min to 1/sec
+
         if discretization_method == 'exp':  # Use exponential convolution
             # Shift the AIF by the arterial delay time (if not zero)
             if Ta != 0:
@@ -89,7 +92,6 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: float = 3
                 # Discard unwanted points and make sure time spacing is correct
                 ct = convolution[0:len(t)] * t[1]
             else:
-                # Print WARNING - non-uniform time grid detected - resampling
                 # Resample at the smallest spacing
                 dt = np.min(np.diff(t))
                 t_resampled = np.linspace(t[0], t[-1], int((t[-1]-t[0])/dt))
