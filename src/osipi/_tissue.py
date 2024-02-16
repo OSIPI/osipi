@@ -112,18 +112,16 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: float = 3
     return ct
 
 
-def extended_tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: float = 30.0,
+def extended_tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, vp: float, Ta: float = 30.0,
           discretization_method: str = "conv") -> np.ndarray:
-    """Extended tofts model as defined by ???.
-
-    Note:
-        This function is not yet implemented. If you are implementing it yourself please consider submitting a code contribution to OSIPI, so nobody ever has to write this function again!
+    """Extended tofts model as defined by Tofts (1997)
 
     Args:
         t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
         ca (np.ndarray): Arterial concentrations in mM for each time point in t. [OSIPI code Q.IC1.001]
-        Ktrans (float): Volume transfer constant in units of 1/sec. [OSIPI code Q.PH1.008]
+        Ktrans (float): Volume transfer constant in units of 1/min. [OSIPI code Q.PH1.008]
         ve (float): Relative volume fraction of the extracellular extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
+        vp (float): Relative volyme fraction of the plasma compartment (p). [OSIPI code Q.PH1.001.[p]]
         Ta (float, optional): Arterial delay time, i.e., difference in onset time between tissue curve and AIF in units of sec. Defaults to 30 seconds. [OSIPI code Q.PH1.007]
         discretization_method (str, optional): Defines the discretization method. Options include
 
@@ -142,7 +140,7 @@ def extended_tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: 
         - Lexicon url: https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#indicator-kinetic-models
         - Lexicon code: M.IC1.005
         - OSIPI name: Extended Tofts Model
-        - Adapted from contributions by: TBC
+        - Adapted from contributions by: LEK_UoEdinburgh_UK, ST_USyd_AUS, MJT_UoEdinburgh_UK
 
     Example:
 
@@ -160,13 +158,68 @@ def extended_tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: 
         >>> ca = osipi.aif_parker(t)
 
         Calculate tissue concentrations and plot
-        >>> Ktrans = 0.6/60 # in units of 1/sec
+        >>> Ktrans = 0.6 # in units of 1/min
         >>> ve = 0.2 # takes values from 0 to 1
-        >>> ct = osipi.extended_tofts(t, ca, Ktrans, ve)
+        >>> vp = 0.3 # takes values from 0 to 1
+        >>> ct = osipi.extended_tofts(t, ca, Ktrans, ve, vp)
         >>> plt.plot(t, ca, 'r', t, ct, 'b')
     """
 
-    msg = 'This function is not yet implemented \n'
-    msg += 'If you implement it yourself, please consider submitting it as an OSIPI code contribution'
-    raise NotImplementedError(msg)
+    if not np.allclose(np.diff(t), np.diff(t)[0]):
+        warnings.warn('Non-uniform time spacing detected. Time array may be resampled.', stacklevel=2)
+
+    if Ktrans <= 0 or ve <= 0:
+        ct = 0 * ca
+        warnings.warn('Tissue concentration will be set to zero if Ktrans or ve are less than or equal to zero.', stacklevel=2)
+    else:
+        # Convert units
+        Ktrans = Ktrans/60 # from 1/min to 1/sec
+
+        if discretization_method == 'exp':  # Use exponential convolution
+            # Shift the AIF by the arterial delay time (if not zero)
+            if Ta != 0:
+                f = interp1d(t, ca, kind='linear', bounds_error=False, fill_value=0)
+                ca = (t > Ta) * f(t - Ta)
+
+            Tc = ve / Ktrans
+            # expconv calculates convolution of ca and (1/Tc)exp(-t/Tc), add vp*ca term for extended model
+            ct = (vp * ca) + ve * exp_conv(Tc, t, ca)
+
+
+        else:  # Use convolution by default
+            # Calculate the impulse response function
+            kep = Ktrans / ve
+            imp = Ktrans * np.exp(-1 * kep * t)
+
+            # Shift the AIF by the arterial delay time (if not zero)
+            if Ta != 0:
+                f = interp1d(t, ca, kind='linear', bounds_error=False, fill_value=0)
+                ca = (t > Ta) * f(t - Ta)
+
+            # Check if time data grid is uniformly spaced
+            if np.allclose(np.diff(t), np.diff(t)[0]):
+                # Convolve impulse response with AIF
+                convolution = np.convolve(ca, imp)
+
+                # Discard unwanted points, make sure time spacing is correct and add vp*ca term for extended model
+                ct = convolution[0:len(t)] * t[1] + (vp * ca)
+            else:
+                # Resample at the smallest spacing
+                dt = np.min(np.diff(t))
+                t_resampled = np.linspace(t[0], t[-1], int((t[-1]-t[0])/dt))
+                ca_func = interp1d(t, ca, kind='quadratic', bounds_error=False, fill_value=0)
+                imp_func = interp1d(t, imp, kind='quadratic', bounds_error=False, fill_value=0)
+                ca_resampled = ca_func(t_resampled)
+                imp_resampled = imp_func(t_resampled)
+                # Convolve impulse response with AIF
+                convolution = np.convolve(ca_resampled, imp_resampled)
+
+                # Discard unwanted points, make sure time spacing is correct and add vp*ca term for extended model
+                ct_resampled = convolution[0:len(t_resampled)] * t_resampled[1] + (vp * ca_resampled)
+
+                # Restore time grid spacing
+                ct_func = interp1d(t_resampled, ct_resampled, kind='quadratic', bounds_error=False, fill_value=0)
+                ct = ct_func(t)
+
+    return ct
 
