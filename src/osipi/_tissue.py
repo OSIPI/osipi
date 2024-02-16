@@ -50,6 +50,7 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: float = 3
         >>> ca = osipi.aif_parker(t)
 
         Calculate tissue concentrations and plot:
+
         >>> Ktrans = 0.6 # in units of 1/min
         >>> ve = 0.2 # takes values from 0 to 1
         >>> ct = osipi.tofts(t, ca, Ktrans, ve)
@@ -60,7 +61,7 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: float = 3
 
     if Ktrans <= 0 or ve <= 0:
         ct = 0 * ca
-        warnings.warn('Tissue concentration will be set to zero if Ktrans or ve are less than or equal to zero.', stacklevel=2)
+        
     else:
         # Convert units
         Ktrans = Ktrans/60 # from 1/min to 1/sec
@@ -144,7 +145,7 @@ def extended_tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, vp: 
 
     Example:
 
-        Create an array of time points covering 6min in steps of 1sec, calculate the Parker AIF at these time points, calculate tissue concentrations
+        Create an array of time points covering 6 min in steps of 1 sec, calculate the Parker AIF at these time points, calculate tissue concentrations
         using the Extended Tofts model and plot the results.
 
         Import packages:
@@ -158,6 +159,7 @@ def extended_tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, vp: 
         >>> ca = osipi.aif_parker(t)
 
         Calculate tissue concentrations and plot
+
         >>> Ktrans = 0.6 # in units of 1/min
         >>> ve = 0.2 # takes values from 0 to 1
         >>> vp = 0.3 # takes values from 0 to 1
@@ -169,8 +171,8 @@ def extended_tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, vp: 
         warnings.warn('Non-uniform time spacing detected. Time array may be resampled.', stacklevel=2)
 
     if Ktrans <= 0 or ve <= 0:
-        ct = 0 * ca
-        warnings.warn('Tissue concentration will be set to zero if Ktrans or ve are less than or equal to zero.', stacklevel=2)
+        ct = vp * ca
+        
     else:
         # Convert units
         Ktrans = Ktrans/60 # from 1/min to 1/sec

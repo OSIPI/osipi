@@ -92,16 +92,16 @@ def test_tissue_extended_tofts():
     t = np.arange(0, 6 * 60, 1)
     ca = osipi.aif_parker(t)
     ct_conv = osipi.extended_tofts(t, ca, Ktrans=0, ve=0.2, vp=0.3)
-    assert np.count_nonzero(ct_conv) == 0
+    assert math.allclose(ct_conv,ca*0.3,rtol=1e-4, atol=1e-3)
 
     ct_exp = osipi.extended_tofts(t, ca, Ktrans=0, ve=0.2, vp=0.3, discretization_method='exp')
-    assert np.count_nonzero(ct_exp) == 0
+    assert math.allclose(ct_conv,ca*0.3,rtol=1e-4, atol=1e-3)
 
     ct_conv = osipi.extended_tofts(t, ca, Ktrans=0.6, ve=0, vp=0.3)
-    assert np.count_nonzero(ct_conv) == 0
+    assert math.allclose(ct_conv,ca*0.3,rtol=1e-4, atol=1e-3)
 
     ct_exp = osipi.extended_tofts(t, ca, Ktrans=0.6, ve=0, vp=0.3, discretization_method='exp')
-    assert np.count_nonzero(ct_exp) == 0
+    assert math.allclose(ct_conv,ca*0.3,rtol=1e-4, atol=1e-3)
 
 
 if __name__ == "__main__":
