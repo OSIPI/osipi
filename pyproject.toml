@@ -6,6 +6,7 @@ name = "osipi"
 version = "0.1.2"
 dependencies = [ 
   "numpy",
+  "scipy"
 ]
 
 # optional information
