@@ -1,14 +1,13 @@
 import numpy as np
 
 
-def aif_parker(t:np.ndarray, BAT:float=30.0, Hct:float=0.0, dose:float=0.1)->np.ndarray:
+def aif_parker(t:np.ndarray, BAT:float=0.0, Hct:float=0.0)->np.ndarray:
     """AIF model as defined by Parker et al (2005)
 
     Args:
         t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
-        BAT (float, optional): Time in seconds before the bolus arrives. Defaults to 30sec. [OSIPI code Q.BA1.001]
+        BAT (float, optional): Time in seconds before the bolus arrives. Defaults to 0. [OSIPI code Q.BA1.001]
         Hct (float, optional): Hematocrit. Defaults to 0.0. [OSIPI code Q.PH1.012]
-        dose (float, optional): Injected contrast agent dose in units of [???]. Defaults to 0.1. [OSIPI code Q.IC1.999]
 
     Returns:
         np.ndarray: Concentrations in mM for each time point in t.
@@ -25,7 +24,7 @@ def aif_parker(t:np.ndarray, BAT:float=30.0, Hct:float=0.0, dose:float=0.1)->np.
 
     Example:
 
-        Create an array of time points covering 6min in steps of 1sec, calculate the Parker AIF at these time points and plot the results.
+        Create an array of time points covering 6 min in steps of 1 sec, calculate the Parker AIF at these time points and plot the results.
 
         Import packages:
 
@@ -34,12 +33,11 @@ def aif_parker(t:np.ndarray, BAT:float=30.0, Hct:float=0.0, dose:float=0.1)->np.
 
         Calculate AIF and plot
 
-        >>> t = np.arange(0, 6*60, 0.1)
+        >>> t = np.arange(0, 6*60, 1)
         >>> ca = osipi.aif_parker(t)
         >>> plt.plot(t,ca)
         >>> plt.show()
     """
-
     # Convert from OSIPI units (sec) to units used internally (mins)
     t_min = t/60
     bat_min = BAT/60
@@ -63,13 +61,13 @@ def aif_parker(t:np.ndarray, BAT:float=30.0, Hct:float=0.0, dose:float=0.1)->np.
     # alpha = 1.064, beta = 0.166, s = 37.772, tau = 0.482
     sigmoid = 1.050 * np.exp(-0.1685 * t_offset) / (1.0 + np.exp(-38.078 * (t_offset - 0.483)))
 
-    pop_aif = ((dose / 0.1) * (gaussian1 + gaussian2 + sigmoid)) / \
+    pop_aif = ((gaussian1 + gaussian2 + sigmoid)) / \
         (1.0 - Hct)
     
     return pop_aif
 
 
-def aif_georgiou(t:np.ndarray, BAT:float=30.0)->np.ndarray:
+def aif_georgiou(t:np.ndarray, BAT:float=0.0)->np.ndarray:
     """AIF model as defined by Georgiou et al.
 
     Note:
@@ -77,7 +75,7 @@ def aif_georgiou(t:np.ndarray, BAT:float=30.0)->np.ndarray:
 
     Args:
         t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
-        BAT (float, optional): Time in seconds before the bolus arrives. Defaults to 30sec. [OSIPI code Q.BA1.001]
+        BAT (float, optional): Time in seconds before the bolus arrives. Defaults to 0sec. [OSIPI code Q.BA1.001]
 
     Returns:
         np.ndarray: Concentrations in mM for each time point in t.
@@ -115,7 +113,7 @@ def aif_georgiou(t:np.ndarray, BAT:float=30.0)->np.ndarray:
     raise NotImplementedError(msg)
 
 
-def aif_weinmann(t:np.ndarray, BAT:float=30.0)->np.ndarray:
+def aif_weinmann(t:np.ndarray, BAT:float=0.0)->np.ndarray:
     """AIF model as defined by Weinmann et al.
 
     Note:
@@ -123,7 +121,7 @@ def aif_weinmann(t:np.ndarray, BAT:float=30.0)->np.ndarray:
 
     Args:
         t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
-        BAT (float, optional): Time in seconds before the bolus arrives. Defaults to 30sec. [OSIPI code Q.BA1.001]
+        BAT (float, optional): Time in seconds before the bolus arrives. Defaults to 0sec. [OSIPI code Q.BA1.001]
 
     Returns:
         np.ndarray: Concentrations in mM for each time point in t.

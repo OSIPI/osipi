@@ -44,21 +44,5 @@ plt.ylabel('Plasma concentration (mM)')
 plt.legend()
 plt.show()
 
-# %%
-# the dose defaults to 0.1- what happens if we change it too?
-
-ca = osipi.aif_parker(t, BAT=0, dose=0.05)
-plt.plot(t, ca, 'b-', label='BAT = 0s, dose = 0.05')
-ca = osipi.aif_parker(t, BAT=30, dose=0.1)
-plt.plot(t, ca, 'r-', label='BAT = 30s, dose = 0.1')
-ca = osipi.aif_parker(t, BAT=60, dose=0.2)
-plt.plot(t, ca, 'g-', label='BAT = 60s, dose = 0.2')
-ca = osipi.aif_parker(t, BAT=90, dose=0.3)
-plt.plot(t, ca, 'm-', label='BAT = 90s, dose = 0.3')
-plt.xlabel('Time (sec)')
-plt.ylabel('Plasma concentration (mM)')
-plt.legend()
-plt.show()
-
 # Choose the last image as a thumbnail for the gallery
 # sphinx_gallery_thumbnail_number = -1
