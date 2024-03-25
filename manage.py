@@ -3,9 +3,17 @@ import sys
 import venv
 import logging
 
-#logging root configuration
-logging.basicConfig(level=logging.INFO, # This will log all levels of messages
+# logging root configuration
+logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+
+def set_debug_mode(debug_mode):
+    if debug_mode:
+        logging.getLogger().setLevel(logging.DEBUG)
+    else:
+        logging.getLogger().setLevel(logging.INFO)
+
 
 def distribute():
     """Create new version on PyPI
@@ -53,8 +61,8 @@ def install():
     os.system(activate() + ' && ' + 'py -m pip install -r requirements.txt')
 
 
-
 if __name__ == '__main__':
 
     #install()
+    set_debug_mode(debug_mode=True)
     distribute()
