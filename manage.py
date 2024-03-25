@@ -4,7 +4,7 @@ import venv
 import logging
 
 #logging root configuration
-logging.basicConfig(level=logging.DEBUG, # This will log all levels of messages
+logging.basicConfig(level=logging.INFO, # This will log all levels of messages
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 def distribute():
@@ -27,8 +27,12 @@ def distribute():
     os.system(activate() + ' && ' + 'twine upload dist/*')
 
 def create_venv():
-    logging.info("Creating virtual environment...")
-    os.system('py -3 -m venv .venv')
+    venv_dir = os.path.join(os.getcwd(), ".venv")
+    if not os.path.exists(venv_dir):
+        logging.info("Creating virtual environment...")
+        os.system('py -3 -m venv .venv')
+    else:
+        logging.info("Virtual environment already exists.")
 
 def activate():
     """Active virtual environment"""
