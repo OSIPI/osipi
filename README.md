@@ -32,7 +32,7 @@ We welcome contributions to OSIPI! To contribute, follow these steps:
 - Make your changes and commit them with descriptive messages.
 - Push your changes to your fork.
 - Submit a pull request to the main OSIPI repository.
-#### For major changes, please open an issue first to discuss the proposed changes.
+#### As mentioned before, this project is still in the early stages of development. If you'd like to contribute by adding functionality, we recommend opening an issue first to discuss your proposed functionality and the best ways to implement it. 
 
 ## Details
 For more detail please see the [documentation](https://osipi.github.io/pypi/).
