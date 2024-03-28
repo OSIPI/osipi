@@ -2,7 +2,7 @@
 This package is under development. All the details mentioned below are long-term intentions behind the production of this package.
 
 ## OSIPI: Open Science Initiative for Perfusion Imaging
-OSIPI is a Python package developed by the Open Source Initiative for Perfusion Imaging [OSIPI](https://osipi.github.io/), a project under the Perfusion Study Group of the International Society for Magnetic Resonance in Medicine [ISMRM](https://www.ismrm.org/). It serves as the authoritative tool for perfusion MRI analysis.
+OSIPI is a Python package developed by the Open Source Initiative for Perfusion Imaging [OSIPI](https://osipi.ismrm.org/), a project under the Perfusion Study Group of the International Society for Magnetic Resonance in Medicine [ISMRM](https://www.ismrm.org/). It serves as the authoritative tool for perfusion MRI analysis.
 
 OSIPI's aim is to create open access resources for perfusion imaging research to eliminate duplicate development, to improve the reproducibility and to speed up the translation of perfusion imaging for clinical practice.
 
