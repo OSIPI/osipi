@@ -11,5 +11,6 @@ from ._tissue import (
 )
 
 from ._signal import (
-    R1_to_s_linear
+    R1_to_s_linear,
+    R1_to_s_SPGR_model
 )
