@@ -13,17 +13,17 @@ import matplotlib.pyplot as plt
 import osipi
 
 # %%
-# Convert a series of R1 values to the corresponding signal intensities using the SPGR model.
+# Convert a series of R_1 values to the corresponding signal intensities using the SPGR model.
 
-R1 = np.linspace(0.1, 10, 50)  # R1 in units of /s.
-s0 = np.float64(100)  # fully T1-relaxed signal in units of arb. unit.
-tr = np.float64(5e-3)  # repetition time in units of s.
+R_1 = np.linspace(0.1, 10, 50)  # R_1 in units of /s.
+S_0 = np.float64(100)  # fully T1-relaxed signal in units of a.u.
+TR = np.float64(5e-3)  # repetition time in units of s.
 a = np.float64(15)  # prescribed flip angle in units of deg.
-signal = osipi.R1_to_s_SPGR_model(R1, s0, tr, a)  # signal in arb. unit
-print(f'Signal: {signal}')
+S = osipi.R1_to_S_SPGR_model(R_1, S_0, TR, a)  # signal in a.u.
+print(f'Signal: {S}')
 
-# Plot signal vs. R1
-plt.plot(R1, signal, 'r-')
-plt.xlabel('R1 (/sec)')
-plt.ylabel('signal (arb. unit)')
+# Plot S vs. R_1
+plt.plot(R_1, S, 'r-')
+plt.xlabel('R_1 (/sec)')
+plt.ylabel('S (a.u.)')
 plt.show()
