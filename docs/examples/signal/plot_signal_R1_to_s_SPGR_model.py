@@ -24,6 +24,6 @@ print(f'Signal: {S}')
 
 # Plot S vs. R_1
 plt.plot(R_1, S, 'r-')
-plt.xlabel('R_1 (/sec)')
+plt.xlabel('R_1 (/s)')
 plt.ylabel('S (a.u.)')
 plt.show()
