@@ -3,7 +3,10 @@ from numpy.typing import NDArray
 
 
 def S_to_C_via_ep_SPGR(S: NDArray[np.float64], S_BL: np.float64, R_10: np.float64, TR: np.float64, a: np.float64, r_1: np.float64) -> NDArray[np.float64]:
-    """Signal to concentration via electromagnetic property (SPGR, FXL, analytical linear relaxivity)
+    """Signal to concentration via electromagnetic property (SPGR, FXL, analytical linear R_1 relaxivity)
+
+    Converts S -> R_1 -> C
+
     Args:
         S (1D array of np.float64): vector of magnitude signals in a.u. [OSIPI code Q.MS1.001]
         S_BL (np.float64): pre-contrast magnitude signal in a.u. [OSIPI code Q.MS1.001]
@@ -26,12 +29,15 @@ def S_to_C_via_ep_SPGR(S: NDArray[np.float64], S_BL: np.float64, R_10: np.float6
             - Inversion method: analytical inversion [OSIPI code G.MI1.001]
             - Forward model: longitudinal relaxation rate, linear with relaxivity model [M.EL1.003]
     """
-    R_1 = S_to_ep_SPGR(S, S_BL, R_10, TR, a)
-    return ep_to_C_R1_lin_rxy(R_1, R_10, r_1)  # concentration
+    R_1 = S_to_ep_SPGR(S, S_BL, R_10, TR, a)  # S -> R_1
+    return ep_to_C_R1_lin_rxy(R_1, R_10, r_1)  # R1 -> C
 
 
 def S_to_ep_SPGR(S: NDArray[np.float64], S_BL: np.float64, R_10: np.float64, TR: np.float64, a: np.float64) -> NDArray[np.float64]:
     """Signal to electromagnetic property conversion (analytical, SPGR, FXL)
+
+    Converts Signal to R_1
+
     Args:
         S (1D array of np.float64): vector of magnitude signals in a.u. [OSIPI code Q.MS1.001]
         S_BL (np.float64): pre-contrast magnitude signal in a.u. [OSIPI code Q.MS1.001]
@@ -46,8 +52,8 @@ def S_to_ep_SPGR(S: NDArray[np.float64], S_BL: np.float64, R_10: np.float64, TR:
         - Lexicon url: https://osipi.github.io/OSIPI_CAPLEX/perfusionProcesses/#https://osipi.github.io/OSIPI_CAPLEX/perfusionProcesses/#
         - Lexicon code: P.SE1.001
         - OSIPI name: model-based
-        - Inversion method: analytical inversion [OSIPI code G.MI1.001]
-        - Forward model: Spoiled gradient recalled echo model [OSIPI code M.SM2.002]
+            - Inversion method: analytical inversion [OSIPI code G.MI1.001]
+            - Forward model: Spoiled gradient recalled echo model [OSIPI code M.SM2.002]
         - Adapted from contribution of LEK_UoEdinburgh_UK
     """
     # check S is a 1D array of floats
@@ -64,6 +70,9 @@ def S_to_ep_SPGR(S: NDArray[np.float64], S_BL: np.float64, R_10: np.float64, TR:
 
 def ep_to_C_R1_lin_rxy(R_1: NDArray[np.float64], R_10: np.float64, r_1: np.float64):
     """Electromagnetic property inverse model: longitudinal relaxation rate, linear with relaxivity
+
+    Converts R_1 to tissue concentration
+
     Args:
         R_1 (1D array of np.float64): vector of longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.001]
         R_10 (np.float64): native longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.002]

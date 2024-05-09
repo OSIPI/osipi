@@ -20,3 +20,9 @@ r_1 = np.float64(5)
 
 C = osipi.ep_to_C_R1_lin_rxy(R_1, R_10, r_1)
 print(f'Concentration (mM): {C}')
+
+# Plot C vs. R_1
+plt.plot(R_1, C, 'r-')
+plt.xlabel('R_1 (/s)')
+plt.ylabel('C (a.u.)')
+plt.show()

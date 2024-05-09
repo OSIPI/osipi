@@ -6,7 +6,7 @@ def R1_to_S_linear(R_1: NDArray[np.float64], k: np.float64) -> NDArray[np.float6
     """Linear model for relationship between R_1 and magnitude signal, S = k.R_1
 
     Args:
-        R_1 (1D array of np.float64): vector of longitudinal relaxation rate in units of /S. [OSIPI code Q.EL1.001]
+        R_1 (1D array of np.float64): vector of longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.001]
         k (np.float64): proportionality constant in units of a.u. S [OSIPI code Q.GE1.009]
 
     Returns:
@@ -26,12 +26,12 @@ def R1_to_S_linear(R_1: NDArray[np.float64], k: np.float64) -> NDArray[np.float6
 
 
 def R1_to_S_SPGR_model(R_1: NDArray[np.float64], S_0: np.float64, TR: np.float64, a: np.float64) -> NDArray[np.float64]:
-    """Convert R_1 to steady-state signal for SPGR sequence
+    """Convert R_1 to steady-state signal for SPGR sequence.
 
     Args:
-        R_1 (1D array of np.float64): vector of longitudinal relaxation rate in units of /S. [OSIPI code Q.EL1.001]
+        R_1 (1D array of np.float64): vector of longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.001]
         S_0 (np.float64): fully T1-relaxed signal in units of a.u.. [OSIPI code Q.MS1.010]
-        TR (np.float64): repetition time in units of S. [OSIPI code Q.MS1.006]
+        TR (np.float64): repetition time in units of s. [OSIPI code Q.MS1.006]
         a (np.float64): prescribed flip angle in units of deg. [OSIPI code Q.MS1.007]
 
     Returns:
