@@ -57,8 +57,8 @@ def aif_parker(t:np.ndarray, BAT:float=0.0, Hct:float=0.0)->np.ndarray:
         -1.0 *
         (t_offset - 0.365) * (t_offset - 0.365) /
         (2.0 * 0.132 * 0.132))
-    # alpha*exp(-beta*t_offset) / (1+exp(-s(t_offset-tau)))
-    # alpha = 1.064, beta = 0.166, s = 37.772, tau = 0.482
+    # alpha*exp(-beta*t_offset) / (1+exp(-S(t_offset-tau)))
+    # alpha = 1.064, beta = 0.166, S = 37.772, tau = 0.482
     sigmoid = 1.050 * np.exp(-0.1685 * t_offset) / (1.0 + np.exp(-38.078 * (t_offset - 0.483)))
 
     pop_aif = ((gaussian1 + gaussian2 + sigmoid)) / \
