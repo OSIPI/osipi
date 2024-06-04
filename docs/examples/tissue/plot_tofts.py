@@ -40,9 +40,13 @@ plt.show()
 
 # %%
 # Comparing different discretization methods for an extracellular volume fraction of 0.2 and Ktrans of 0.2 /min
-ct = osipi.tofts(t, ca, Ktrans=Ktrans[1], ve=ve)  # Defaults to Convolution
+ct = osipi.tofts(
+    t, ca, Ktrans=Ktrans[1], ve=ve
+)  # Defaults to Convolution
 plt.plot(t, ct, "b-", label="Convolution")
-ct = osipi.tofts(t, ca, Ktrans=Ktrans[1], ve=ve, discretization_method="exp")
+ct = osipi.tofts(
+    t, ca, Ktrans=Ktrans[1], ve=ve, discretization_method="exp"
+)
 plt.plot(t, ct, "g-", label="Exponential Convolution")
 plt.title(f"Ktrans = {Ktrans[1]} /min")
 plt.xlabel("Time (sec)")

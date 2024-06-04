@@ -66,7 +66,10 @@ def tofts(
     """
     if not np.allclose(np.diff(t), np.diff(t)[0]):
         warnings.warn(
-            "Non-uniform time spacing detected. Time array may be resampled.",
+            (
+                "Non-uniform time spacing detected. Time array may be"
+                " resampled."
+            ),
             stacklevel=2,
         )
 
@@ -77,7 +80,9 @@ def tofts(
         # Convert units
         Ktrans = Ktrans / 60  # from 1/min to 1/sec
 
-        if discretization_method == "exp":  # Use exponential convolution
+        if (
+            discretization_method == "exp"
+        ):  # Use exponential convolution
             # Shift the AIF by the arterial delay time (if not zero)
             if Ta != 0:
                 f = interp1d(
@@ -118,7 +123,9 @@ def tofts(
             else:
                 # Resample at the smallest spacing
                 dt = np.min(np.diff(t))
-                t_resampled = np.linspace(t[0], t[-1], int((t[-1] - t[0]) / dt))
+                t_resampled = np.linspace(
+                    t[0], t[-1], int((t[-1] - t[0]) / dt)
+                )
                 ca_func = interp1d(
                     t,
                     ca,
@@ -219,7 +226,10 @@ def extended_tofts(
 
     if not np.allclose(np.diff(t), np.diff(t)[0]):
         warnings.warn(
-            "Non-uniform time spacing detected. Time array may be resampled.",
+            (
+                "Non-uniform time spacing detected. Time array may be"
+                " resampled."
+            ),
             stacklevel=2,
         )
 
@@ -230,7 +240,9 @@ def extended_tofts(
         # Convert units
         Ktrans = Ktrans / 60  # from 1/min to 1/sec
 
-        if discretization_method == "exp":  # Use exponential convolution
+        if (
+            discretization_method == "exp"
+        ):  # Use exponential convolution
             # Shift the AIF by the arterial delay time (if not zero)
             if Ta != 0:
                 f = interp1d(
@@ -272,7 +284,9 @@ def extended_tofts(
             else:
                 # Resample at the smallest spacing
                 dt = np.min(np.diff(t))
-                t_resampled = np.linspace(t[0], t[-1], int((t[-1] - t[0]) / dt))
+                t_resampled = np.linspace(
+                    t[0], t[-1], int((t[-1] - t[0]) / dt)
+                )
                 ca_func = interp1d(
                     t,
                     ca,
@@ -293,9 +307,9 @@ def extended_tofts(
                 convolution = np.convolve(ca_resampled, imp_resampled)
 
                 # Discard unwanted points, make sure time spacing is correct and add vp*ca term for extended model
-                ct_resampled = convolution[0 : len(t_resampled)] * t_resampled[
-                    1
-                ] + (vp * ca_resampled)
+                ct_resampled = convolution[
+                    0 : len(t_resampled)
+                ] * t_resampled[1] + (vp * ca_resampled)
 
                 # Restore time grid spacing
                 ct_func = interp1d(

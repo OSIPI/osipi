@@ -34,14 +34,18 @@ def test_tissue_tofts():
     t = np.arange(0, 6 * 60, 0.01)
     ca = osipi.aif_parker(t)
     ct_conv = osipi.tofts(t, ca, Ktrans=0.6, ve=0.2)
-    ct_exp = osipi.tofts(t, ca, Ktrans=0.6, ve=0.2, discretization_method="exp")
+    ct_exp = osipi.tofts(
+        t, ca, Ktrans=0.6, ve=0.2, discretization_method="exp"
+    )
     assert np.allclose(ct_conv, ct_exp, rtol=1e-4, atol=1e-3)
 
     # 5. Test that the ratio of the area under the ct and ca curves is approximately the extracellular volume
     t = np.arange(0, 6 * 60, 1)
     ca = osipi.aif_parker(t)
     ct_conv = osipi.tofts(t, ca, Ktrans=0.6, ve=0.2)
-    ct_exp = osipi.tofts(t, ca, Ktrans=0.6, ve=0.2, discretization_method="exp")
+    ct_exp = osipi.tofts(
+        t, ca, Ktrans=0.6, ve=0.2, discretization_method="exp"
+    )
     assert math.isclose(
         np.trapz(ct_conv, t) / np.trapz(ca, t), 0.2, abs_tol=1e-1
     )
@@ -55,13 +59,17 @@ def test_tissue_tofts():
     ct_conv = osipi.tofts(t, ca, Ktrans=0, ve=0.2)
     assert np.count_nonzero(ct_conv) == 0
 
-    ct_exp = osipi.tofts(t, ca, Ktrans=0, ve=0.2, discretization_method="exp")
+    ct_exp = osipi.tofts(
+        t, ca, Ktrans=0, ve=0.2, discretization_method="exp"
+    )
     assert np.count_nonzero(ct_exp) == 0
 
     ct_conv = osipi.tofts(t, ca, Ktrans=0.6, ve=0)
     assert np.count_nonzero(ct_conv) == 0
 
-    ct_exp = osipi.tofts(t, ca, Ktrans=0.6, ve=0, discretization_method="exp")
+    ct_exp = osipi.tofts(
+        t, ca, Ktrans=0.6, ve=0, discretization_method="exp"
+    )
     assert np.count_nonzero(ct_exp) == 0
 
 
@@ -81,7 +89,9 @@ def test_tissue_extended_tofts():
     # 3. The offset option - test that the tissue concentration is shifted from the AIF by the specified offset time
     t = np.arange(0, 6 * 60, 1)
     ca = osipi.aif_parker(t)
-    ct = osipi.extended_tofts(t, ca, Ktrans=0.6, ve=0.2, vp=0.3, Ta=60.0)
+    ct = osipi.extended_tofts(
+        t, ca, Ktrans=0.6, ve=0.2, vp=0.3, Ta=60.0
+    )
     assert (
         np.min(np.where(ct > 0.0)) - np.min(np.where(ca > 0.0)) - 1
     ) * 1 == 60.0

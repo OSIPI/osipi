@@ -10,10 +10,10 @@ repos:
 #    rev: 6.0.0
 #    hooks:
 #      - id: flake8
-#        args: [ '--max-line-length=80' ]
+#        args: [ '--max-line-length=70' ]
 
   - repo: https://github.com/psf/black
     rev: 23.3.0
     hooks:
       - id: black
-        args: [--line-length=80]
+        args: [--line-length=70]

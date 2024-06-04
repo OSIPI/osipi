@@ -67,7 +67,9 @@ def install():
     """Install requirements to a virtual environment"""
 
     logging.info("Installing requirements...")
-    os.system(activate() + " && " + "py -m pip install -r requirements.txt")
+    os.system(
+        activate() + " && " + "py -m pip install -r requirements.txt"
+    )
 
 
 if __name__ == "__main__":

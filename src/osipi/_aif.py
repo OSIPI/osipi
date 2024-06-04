@@ -1,7 +1,9 @@
 import numpy as np
 
 
-def aif_parker(t: np.ndarray, BAT: float = 0.0, Hct: float = 0.0) -> np.ndarray:
+def aif_parker(
+    t: np.ndarray, BAT: float = 0.0, Hct: float = 0.0
+) -> np.ndarray:
     """AIF model as defined by Parker et al (2005)
 
     Args:
@@ -56,7 +58,10 @@ def aif_parker(t: np.ndarray, BAT: float = 0.0, Hct: float = 0.0) -> np.ndarray:
     # A2/(SD2*sqrt(2*PI)) * exp(-(t_offset-m2)^2/(2*var2))
     # A2 = 0.336, SD2 = 0.134, m2 = 0.364
     gaussian2 = 0.997356 * np.exp(
-        -1.0 * (t_offset - 0.365) * (t_offset - 0.365) / (2.0 * 0.132 * 0.132)
+        -1.0
+        * (t_offset - 0.365)
+        * (t_offset - 0.365)
+        / (2.0 * 0.132 * 0.132)
     )
     # alpha*exp(-beta*t_offset) / (1+exp(-s(t_offset-tau)))
     # alpha = 1.064, beta = 0.166, s = 37.772, tau = 0.482
@@ -113,7 +118,10 @@ def aif_georgiou(t: np.ndarray, BAT: float = 0.0) -> np.ndarray:
     """
 
     msg = "This function is not yet implemented \n"
-    msg += "If you implement it yourself, please consider submitting it as an OSIPI code contribution"
+    msg += (
+        "If you implement it yourself, please consider submitting it"
+        " as an OSIPI code contribution"
+    )
     raise NotImplementedError(msg)
 
 
@@ -156,5 +164,8 @@ def aif_weinmann(t: np.ndarray, BAT: float = 0.0) -> np.ndarray:
         >>> plt.plot(t,ca)
     """
     msg = "This function is not yet implemented \n"
-    msg += "If you implement it yourself, please consider submitting it as an OSIPI code contribution"
+    msg += (
+        "If you implement it yourself, please consider submitting it"
+        " as an OSIPI code contribution"
+    )
     raise NotImplementedError(msg)
