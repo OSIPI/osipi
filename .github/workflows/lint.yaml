@@ -23,7 +23,7 @@ jobs:
       - name: Run isort (auto-fix)
         run: isort .
 
-      - name: Run flake8 (auto-fix)
+      - name: Run flake8 (lint only)
         run: flake8 .
 
       - name: Commit and push changes if needed
