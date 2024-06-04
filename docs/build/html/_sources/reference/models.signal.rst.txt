@@ -1,0 +1,12 @@
+Signal models
+=============
+
+.. currentmodule:: osipi
+
+.. autosummary::
+   :toctree: ../generated/api/
+   :template: autosummary.rst
+
+   signal_linear
+   signal_SPGR
+   
