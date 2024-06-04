@@ -4,7 +4,7 @@
 [project]
 name = "osipi"
 version = "0.1.2"
-dependencies = [ 
+dependencies = [
   "numpy",
   "scipy"
 ]
@@ -14,7 +14,7 @@ dependencies = [
 description = "The authorative python package for perfusion MRI"
 readme = "README.md"
 authors = [
-  { name = "Luis Torres", email = "luistorres@flywheel.io" }, 
+  { name = "Luis Torres", email = "luistorres@flywheel.io" },
   { name = "Steven Sourbron", email = "s.sourbron@sheffield.ac.uk" },
   ]
 license = { file = "LICENSE" }
@@ -53,7 +53,7 @@ tests = [
 docs = [
     "sphinx",
     "pydata-sphinx-theme",
-    "myst-parser", 
+    "myst-parser",
     "sphinx-copybutton",
     "sphinx-design",
     "sphinx-remove-toctrees",
@@ -67,10 +67,3 @@ docs = [
     "sphinxcontrib-serializinghtml",
     "sphinx-gallery",
 ]
-
-
-
-
-
-
-

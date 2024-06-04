@@ -1,11 +1,19 @@
-import numpy as np
-from scipy.interpolate import interp1d
-from ._convolution import exp_conv
 import warnings
 
+import numpy as np
+from scipy.interpolate import interp1d
 
-def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: float = 30.0,
-          discretization_method: str = "conv") -> np.ndarray:
+from ._convolution import exp_conv
+
+
+def tofts(
+    t: np.ndarray,
+    ca: np.ndarray,
+    Ktrans: float,
+    ve: float,
+    Ta: float = 30.0,
+    discretization_method: str = "conv",
+) -> np.ndarray:
     """Tofts model as defined by Tofts and Kermode (1991)
 
     Args:
@@ -57,19 +65,23 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: float = 3
         >>> plt.plot(t, ca, 'r', t, ct, 'b')
     """
     if not np.allclose(np.diff(t), np.diff(t)[0]):
-        warnings.warn('Non-uniform time spacing detected. Time array may be resampled.', stacklevel=2)
+        warnings.warn(
+            "Non-uniform time spacing detected. Time array may be resampled.",
+            stacklevel=2,
+        )
 
     if Ktrans <= 0 or ve <= 0:
         ct = 0 * ca
-        
+
     else:
         # Convert units
-        Ktrans = Ktrans/60 # from 1/min to 1/sec
+        Ktrans = Ktrans / 60  # from 1/min to 1/sec
 
-        if discretization_method == 'exp':  # Use exponential convolution
+        if discretization_method == "exp":  # Use exponential convolution
             # Shift the AIF by the arterial delay time (if not zero)
             if Ta != 0:
-                f = interp1d(t, ca, kind='linear', bounds_error=False, fill_value=0)
+                f = interp1d(t, ca, kind="linear",
+                             bounds_error=False, fill_value=0)
                 ca = (t > Ta) * f(t - Ta)
 
             Tc = ve / Ktrans
@@ -82,7 +94,8 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: float = 3
 
             # Shift the AIF by the arterial delay time (if not zero)
             if Ta != 0:
-                f = interp1d(t, ca, kind='linear', bounds_error=False, fill_value=0)
+                f = interp1d(t, ca, kind="linear",
+                             bounds_error=False, fill_value=0)
                 ca = (t > Ta) * f(t - Ta)
 
             # Check if time data grid is uniformly spaced
@@ -91,30 +104,49 @@ def tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, Ta: float = 3
                 convolution = np.convolve(ca, imp)
 
                 # Discard unwanted points and make sure time spacing is correct
-                ct = convolution[0:len(t)] * t[1]
+                ct = convolution[0: len(t)] * t[1]
             else:
                 # Resample at the smallest spacing
                 dt = np.min(np.diff(t))
-                t_resampled = np.linspace(t[0], t[-1], int((t[-1]-t[0])/dt))
-                ca_func = interp1d(t, ca, kind='quadratic', bounds_error=False, fill_value=0)
-                imp_func = interp1d(t, imp, kind='quadratic', bounds_error=False, fill_value=0)
+                t_resampled = np.linspace(
+                    t[0], t[-1], int((t[-1] - t[0]) / dt))
+                ca_func = interp1d(
+                    t, ca, kind="quadratic", bounds_error=False, fill_value=0
+                )
+                imp_func = interp1d(
+                    t, imp, kind="quadratic", bounds_error=False, fill_value=0
+                )
                 ca_resampled = ca_func(t_resampled)
                 imp_resampled = imp_func(t_resampled)
                 # Convolve impulse response with AIF
                 convolution = np.convolve(ca_resampled, imp_resampled)
 
                 # Discard unwanted points and make sure time spacing is correct
-                ct_resampled = convolution[0:len(t_resampled)] * t_resampled[1]
+                ct_resampled = convolution[0: len(
+                    t_resampled)] * t_resampled[1]
 
                 # Restore time grid spacing
-                ct_func = interp1d(t_resampled, ct_resampled, kind='quadratic', bounds_error=False, fill_value=0)
+                ct_func = interp1d(
+                    t_resampled,
+                    ct_resampled,
+                    kind="quadratic",
+                    bounds_error=False,
+                    fill_value=0,
+                )
                 ct = ct_func(t)
 
     return ct
 
 
-def extended_tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, vp: float, Ta: float = 30.0,
-          discretization_method: str = "conv") -> np.ndarray:
+def extended_tofts(
+    t: np.ndarray,
+    ca: np.ndarray,
+    Ktrans: float,
+    ve: float,
+    vp: float,
+    Ta: float = 30.0,
+    discretization_method: str = "conv",
+) -> np.ndarray:
     """Extended tofts model as defined by Tofts (1997)
 
     Args:
@@ -168,25 +200,28 @@ def extended_tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, vp: 
     """
 
     if not np.allclose(np.diff(t), np.diff(t)[0]):
-        warnings.warn('Non-uniform time spacing detected. Time array may be resampled.', stacklevel=2)
+        warnings.warn(
+            "Non-uniform time spacing detected. Time array may be resampled.",
+            stacklevel=2,
+        )
 
     if Ktrans <= 0 or ve <= 0:
         ct = vp * ca
-        
+
     else:
         # Convert units
-        Ktrans = Ktrans/60 # from 1/min to 1/sec
+        Ktrans = Ktrans / 60  # from 1/min to 1/sec
 
-        if discretization_method == 'exp':  # Use exponential convolution
+        if discretization_method == "exp":  # Use exponential convolution
             # Shift the AIF by the arterial delay time (if not zero)
             if Ta != 0:
-                f = interp1d(t, ca, kind='linear', bounds_error=False, fill_value=0)
+                f = interp1d(t, ca, kind="linear",
+                             bounds_error=False, fill_value=0)
                 ca = (t > Ta) * f(t - Ta)
 
             Tc = ve / Ktrans
             # expconv calculates convolution of ca and (1/Tc)exp(-t/Tc), add vp*ca term for extended model
             ct = (vp * ca) + ve * exp_conv(Tc, t, ca)
-
 
         else:  # Use convolution by default
             # Calculate the impulse response function
@@ -195,7 +230,8 @@ def extended_tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, vp: 
 
             # Shift the AIF by the arterial delay time (if not zero)
             if Ta != 0:
-                f = interp1d(t, ca, kind='linear', bounds_error=False, fill_value=0)
+                f = interp1d(t, ca, kind="linear",
+                             bounds_error=False, fill_value=0)
                 ca = (t > Ta) * f(t - Ta)
 
             # Check if time data grid is uniformly spaced
@@ -204,24 +240,36 @@ def extended_tofts(t: np.ndarray, ca: np.ndarray, Ktrans: float, ve: float, vp: 
                 convolution = np.convolve(ca, imp)
 
                 # Discard unwanted points, make sure time spacing is correct and add vp*ca term for extended model
-                ct = convolution[0:len(t)] * t[1] + (vp * ca)
+                ct = convolution[0: len(t)] * t[1] + (vp * ca)
             else:
                 # Resample at the smallest spacing
                 dt = np.min(np.diff(t))
-                t_resampled = np.linspace(t[0], t[-1], int((t[-1]-t[0])/dt))
-                ca_func = interp1d(t, ca, kind='quadratic', bounds_error=False, fill_value=0)
-                imp_func = interp1d(t, imp, kind='quadratic', bounds_error=False, fill_value=0)
+                t_resampled = np.linspace(
+                    t[0], t[-1], int((t[-1] - t[0]) / dt))
+                ca_func = interp1d(
+                    t, ca, kind="quadratic", bounds_error=False, fill_value=0
+                )
+                imp_func = interp1d(
+                    t, imp, kind="quadratic", bounds_error=False, fill_value=0
+                )
                 ca_resampled = ca_func(t_resampled)
                 imp_resampled = imp_func(t_resampled)
                 # Convolve impulse response with AIF
                 convolution = np.convolve(ca_resampled, imp_resampled)
 
                 # Discard unwanted points, make sure time spacing is correct and add vp*ca term for extended model
-                ct_resampled = convolution[0:len(t_resampled)] * t_resampled[1] + (vp * ca_resampled)
+                ct_resampled = convolution[0: len(t_resampled)] * t_resampled[1] + (
+                    vp * ca_resampled
+                )
 
                 # Restore time grid spacing
-                ct_func = interp1d(t_resampled, ct_resampled, kind='quadratic', bounds_error=False, fill_value=0)
+                ct_func = interp1d(
+                    t_resampled,
+                    ct_resampled,
+                    kind="quadratic",
+                    bounds_error=False,
+                    fill_value=0,
+                )
                 ct = ct_func(t)
 
     return ct
-

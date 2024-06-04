@@ -6,4 +6,3 @@ Fitting data
    :maxdepth: 2
 
    inverse
-   

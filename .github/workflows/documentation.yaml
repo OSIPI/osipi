@@ -2,7 +2,7 @@ name: Docs
 run-name: "Updating Docs as ${{ github.actor }} has pushed changes to main"
 on:
   push:
-    branches: 
+    branches:
     - main
 
 jobs:
@@ -43,4 +43,3 @@ jobs:
           force_orphan: true
 
       - run: echo "Status of job = ${{ job.status }}."
-      
