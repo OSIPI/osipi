@@ -5,7 +5,8 @@ import venv
 
 # logging root configuration
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 
 
@@ -52,8 +53,9 @@ def activate():
     os.makedirs(venv_dir, exist_ok=True)
     venv.create(venv_dir, with_pip=True)
     windows = (
-        (sys.platform == "win32") or (
-            sys.platform == "win64") or (os.name == "nt")
+        (sys.platform == "win32")
+        or (sys.platform == "win64")
+        or (os.name == "nt")
     )
     if windows:
         return os.path.join(venv_dir, "Scripts", "activate")
