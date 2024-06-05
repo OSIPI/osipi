@@ -130,7 +130,7 @@ def tofts(
 
                 # Discard unwanted points and make sure time spacing
                 # is correct
-                ct = convolution[0: len(t)] * t[1]
+                ct = convolution[0 : len(t)] * t[1]
             else:
                 # Resample at the smallest spacing
                 dt = np.min(np.diff(t))
@@ -159,7 +159,7 @@ def tofts(
                 # Discard unwanted points and make sure time spacing
                 # is correct
                 ct_resampled = (
-                    convolution[0: len(t_resampled)] * t_resampled[1]
+                    convolution[0 : len(t_resampled)] * t_resampled[1]
                 )
 
                 # Restore time grid spacing
@@ -307,7 +307,7 @@ def extended_tofts(
 
                 # Discard unwanted points, make sure time spacing is
                 # correct and add vp*ca term for extended model
-                ct = convolution[0: len(t)] * t[1] + (vp * ca)
+                ct = convolution[0 : len(t)] * t[1] + (vp * ca)
             else:
                 # Resample at the smallest spacing
                 dt = np.min(np.diff(t))
@@ -336,7 +336,7 @@ def extended_tofts(
                 # Discard unwanted points, make sure time spacing is
                 # correct and add vp*ca term for extended model
                 ct_resampled = convolution[
-                    0: len(t_resampled)
+                    0 : len(t_resampled)
                 ] * t_resampled[1] + (vp * ca_resampled)
 
                 # Restore time grid spacing
