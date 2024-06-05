@@ -17,10 +17,10 @@ jobs:
         run: |
           pip install black isort flake8
 
-      - name: Run black (auto-fix)
+      - name: Run black
         run: black .
 
-      - name: Run isort (auto-fix)
+      - name: Run isort
         run: isort .
 
       - name: Run flake8 (lint only)
