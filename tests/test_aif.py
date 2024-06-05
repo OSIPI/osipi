@@ -16,7 +16,7 @@ def test_aif_georgiou():
     t = np.arange(0, 6 * 60, 1)
     try:
         osipi.aif_georgiou(t)
-    except Exception as ex:
+    except Exception:
         assert True
     else:
         assert False
