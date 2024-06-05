@@ -26,12 +26,3 @@ jobs:
       - name: Run flake8 (lint only)
         run: flake8 .
 
-      - name: Commit and push changes if needed
-        run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
-          git add -A
-          git diff-index --quiet HEAD || git commit -m 'Apply lint auto-fixes'
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
