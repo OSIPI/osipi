@@ -17,7 +17,8 @@ import osipi
 # %%
 # Generate synthetic AIF with default settings and plot the result.
 
-# Define time points in units of seconds - in this case we use a time resolution of 0.5 sec and a total duration of 6 minutes.
+# Define time points in units of seconds - in this case we use a time
+# resolution of 0.5 sec and a total duration of 6 minutes.
 t = np.arange(0, 6 * 60, 0.5)
 
 # Create an AIF with default settings
@@ -31,7 +32,8 @@ plt.ylabel("Plasma concentration (mM)")
 plt.show()
 
 # %%
-# The bolus arrival time (BAT) defaults to 30s. What happens if we change it? Let's try, by changing it in steps of 30s:
+# The bolus arrival time (BAT) defaults to 30s. What happens if we
+# change it? Let's try, by changing it in steps of 30s:
 
 ca = osipi.aif_parker(t, BAT=0)
 plt.plot(t, ca, "b-", label="BAT = 0s")

@@ -18,10 +18,17 @@ def tofts(
 
     Args:
         t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
-        ca (np.ndarray): Arterial concentrations in mM for each time point in t. [OSIPI code Q.IC1.001]
-        Ktrans (float): Volume transfer constant in units of 1/min. [OSIPI code Q.PH1.008]
-        ve (float): Relative volume fraction of the extracellular extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
-        Ta (float, optional): Arterial delay time, i.e., difference in onset time between tissue curve and AIF in units of sec. Defaults to 30 seconds. [OSIPI code Q.PH1.007]
+        ca (np.ndarray):
+            Arterial concentrations in mM for each time point in t. [OSIPI code Q.IC1.001]
+        Ktrans (float):
+            Volume transfer constant in units of 1/min. [OSIPI code Q.PH1.008]
+        ve (float):
+            Relative volume fraction of the extracellular
+            extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
+        Ta (float, optional):
+            Arterial delay time,
+            i.e., difference in onset time between tissue curve and AIF in units of sec.
+            Defaults to 30 seconds. [OSIPI code Q.PH1.007]
         discretization_method (str, optional): Defines the discretization method. Options include
 
             – 'conv': Numerical convolution (default) [OSIPI code G.DI1.001]
@@ -36,14 +43,16 @@ def tofts(
         `extended_tofts`
 
     References:
-        - Lexicon url: https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#indicator-kinetic-models
+        - Lexicon url:
+            https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#indicator-kinetic-models
         - Lexicon code: M.IC1.004
         - OSIPI name: Tofts Model
         - Adapted from contributions by: LEK_UoEdinburgh_UK, ST_USyd_AUS, MJT_UoEdinburgh_UK
 
     Example:
 
-        Create an array of time points covering 6 min in steps of 1 sec, calculate the Parker AIF at these time points, calculate tissue concentrations
+        Create an array of time points covering 6 min in steps of 1 sec,
+        calculate the Parker AIF at these time points, calculate tissue concentrations
         using the Tofts model and plot the results.
 
         Import packages:
@@ -63,6 +72,7 @@ def tofts(
         >>> ve = 0.2 # takes values from 0 to 1
         >>> ct = osipi.tofts(t, ca, Ktrans, ve)
         >>> plt.plot(t, ca, 'r', t, ct, 'b')
+
     """
     if not np.allclose(np.diff(t), np.diff(t)[0]):
         warnings.warn(
@@ -118,8 +128,9 @@ def tofts(
                 # Convolve impulse response with AIF
                 convolution = np.convolve(ca, imp)
 
-                # Discard unwanted points and make sure time spacing is correct
-                ct = convolution[0 : len(t)] * t[1]
+                # Discard unwanted points and make sure time spacing
+                # is correct
+                ct = convolution[0: len(t)] * t[1]
             else:
                 # Resample at the smallest spacing
                 dt = np.min(np.diff(t))
@@ -145,9 +156,10 @@ def tofts(
                 # Convolve impulse response with AIF
                 convolution = np.convolve(ca_resampled, imp_resampled)
 
-                # Discard unwanted points and make sure time spacing is correct
+                # Discard unwanted points and make sure time spacing
+                # is correct
                 ct_resampled = (
-                    convolution[0 : len(t_resampled)] * t_resampled[1]
+                    convolution[0: len(t_resampled)] * t_resampled[1]
                 )
 
                 # Restore time grid spacing
@@ -175,13 +187,23 @@ def extended_tofts(
     """Extended tofts model as defined by Tofts (1997)
 
     Args:
-        t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
-        ca (np.ndarray): Arterial concentrations in mM for each time point in t. [OSIPI code Q.IC1.001]
-        Ktrans (float): Volume transfer constant in units of 1/min. [OSIPI code Q.PH1.008]
-        ve (float): Relative volume fraction of the extracellular extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
-        vp (float): Relative volyme fraction of the plasma compartment (p). [OSIPI code Q.PH1.001.[p]]
-        Ta (float, optional): Arterial delay time, i.e., difference in onset time between tissue curve and AIF in units of sec. Defaults to 30 seconds. [OSIPI code Q.PH1.007]
-        discretization_method (str, optional): Defines the discretization method. Options include
+        t (np.ndarray):
+            array of time points in units of sec. [OSIPI code Q.GE1.004]
+        ca (np.ndarray):
+            Arterial concentrations in mM for each time point in t. [OSIPI code Q.IC1.001]
+        Ktrans (float):
+            Volume transfer constant in units of 1/min. [OSIPI code Q.PH1.008]
+        ve (float):
+            Relative volume fraction of the extracellular
+            extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
+        vp (float):
+            Relative volyme fraction of the plasma compartment (p). [OSIPI code Q.PH1.001.[p]]
+        Ta (float, optional):
+            Arterial delay time, i.e., difference in onset time
+            between tissue curve and AIF in units of sec.
+            Defaults to 30 seconds. [OSIPI code Q.PH1.007]
+        discretization_method (str, optional):
+            Defines the discretization method. Options include
 
             – 'conv': Numerical convolution (default) [OSIPI code G.DI1.001]
 
@@ -195,14 +217,16 @@ def extended_tofts(
         `tofts`
 
     References:
-        - Lexicon url: https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#indicator-kinetic-models
+        - Lexicon url:
+            https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#indicator-kinetic-models
         - Lexicon code: M.IC1.005
         - OSIPI name: Extended Tofts Model
         - Adapted from contributions by: LEK_UoEdinburgh_UK, ST_USyd_AUS, MJT_UoEdinburgh_UK
 
     Example:
 
-        Create an array of time points covering 6 min in steps of 1 sec, calculate the Parker AIF at these time points, calculate tissue concentrations
+        Create an array of time points covering 6 min in steps of 1 sec,
+        calculate the Parker AIF at these time points, calculate tissue concentrations
         using the Extended Tofts model and plot the results.
 
         Import packages:
@@ -222,6 +246,7 @@ def extended_tofts(
         >>> vp = 0.3 # takes values from 0 to 1
         >>> ct = osipi.extended_tofts(t, ca, Ktrans, ve, vp)
         >>> plt.plot(t, ca, 'r', t, ct, 'b')
+
     """
 
     if not np.allclose(np.diff(t), np.diff(t)[0]):
@@ -255,7 +280,8 @@ def extended_tofts(
                 ca = (t > Ta) * f(t - Ta)
 
             Tc = ve / Ktrans
-            # expconv calculates convolution of ca and (1/Tc)exp(-t/Tc), add vp*ca term for extended model
+            # expconv calculates convolution of ca and
+            # (1/Tc)exp(-t/Tc), add vp*ca term for extended model
             ct = (vp * ca) + ve * exp_conv(Tc, t, ca)
 
         else:  # Use convolution by default
@@ -279,8 +305,9 @@ def extended_tofts(
                 # Convolve impulse response with AIF
                 convolution = np.convolve(ca, imp)
 
-                # Discard unwanted points, make sure time spacing is correct and add vp*ca term for extended model
-                ct = convolution[0 : len(t)] * t[1] + (vp * ca)
+                # Discard unwanted points, make sure time spacing is
+                # correct and add vp*ca term for extended model
+                ct = convolution[0: len(t)] * t[1] + (vp * ca)
             else:
                 # Resample at the smallest spacing
                 dt = np.min(np.diff(t))
@@ -306,9 +333,10 @@ def extended_tofts(
                 # Convolve impulse response with AIF
                 convolution = np.convolve(ca_resampled, imp_resampled)
 
-                # Discard unwanted points, make sure time spacing is correct and add vp*ca term for extended model
+                # Discard unwanted points, make sure time spacing is
+                # correct and add vp*ca term for extended model
                 ct_resampled = convolution[
-                    0 : len(t_resampled)
+                    0: len(t_resampled)
                 ] * t_resampled[1] + (vp * ca_resampled)
 
                 # Restore time grid spacing

@@ -18,15 +18,14 @@ def set_debug_mode(debug_mode):
 
 
 def distribute():
-    """Create new version on PyPI
+    """Create new version on PyPI.
 
-    IMPORTANT! First increment your version number in pyproject.toml:
-    - Increment the MAJOR version when you make incompatible API changes.
-    - Increment the MINOR version when you add functionality in a backwards compatible manner.
-    - Increment the PATCH version when you make backwards compatible bug fixes.
+    IMPORTANT! First increment your version number in pyproject.toml: - Increment the MAJOR version
+    when you make incompatible API changes. - Increment the MINOR version when you add functionality
+    in a backwards compatible manner. - Increment the PATCH version when you make backwards
+    compatible bug fixes.  You need: PyPI username and password. You need to type in the PyPI
+    password rather than copy-pasting.
 
-    You need: PyPI username and password.
-    You need to type in the PyPI password rather than copy-pasting.
     """
     create_venv()
     install()
@@ -47,7 +46,7 @@ def create_venv():
 
 
 def activate():
-    """Active virtual environment"""
+    """Active virtual environment."""
 
     venv_dir = os.path.join(os.getcwd(), ".venv")
     os.makedirs(venv_dir, exist_ok=True)
@@ -64,7 +63,7 @@ def activate():
 
 
 def install():
-    """Install requirements to a virtual environment"""
+    """Install requirements to a virtual environment."""
 
     logging.info("Installing requirements...")
     os.system(

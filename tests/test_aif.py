@@ -26,8 +26,8 @@ def test_aif_weinmann():
     # Not implemented yet so need to raise an error
     t = np.arange(0, 6 * 60, 1)
     try:
-        ca = osipi.aif_weinmann(t)
-    except:
+        osipi.aif_weinmann(t)
+    except BaseException:
         assert True
     else:
         assert False
