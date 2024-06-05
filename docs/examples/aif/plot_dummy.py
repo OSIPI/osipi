@@ -7,7 +7,6 @@ Dummy script to illustrate structure of examples folder
 """
 
 import matplotlib.pyplot as plt
-
 # %%
 # Import necessary packages
 import numpy as np

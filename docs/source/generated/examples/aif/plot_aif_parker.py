@@ -6,7 +6,6 @@ AIF with different settings.
 """
 
 import matplotlib.pyplot as plt
-
 # %%
 # Import necessary packages
 import numpy as np

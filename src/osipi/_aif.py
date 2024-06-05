@@ -1,9 +1,7 @@
 import numpy as np
 
 
-def aif_parker(
-    t: np.ndarray, BAT: float = 0.0, Hct: float = 0.0
-) -> np.ndarray:
+def aif_parker(t: np.ndarray, BAT: float = 0.0, Hct: float = 0.0) -> np.ndarray:
     """AIF model as defined by Parker et al (2005)
 
     Args:
@@ -53,19 +51,13 @@ def aif_parker(
     # A1/(SD1*sqrt(2*PI)) * exp(-(t_offset-m1)^2/(2*var1))
     # A1 = 0.833, SD1 = 0.055, m1 = 0.171
     gaussian1 = 5.73258 * np.exp(
-        -1.0
-        * (t_offset - 0.17046)
-        * (t_offset - 0.17046)
-        / (2.0 * 0.0563 * 0.0563)
+        -1.0 * (t_offset - 0.17046) * (t_offset - 0.17046) / (2.0 * 0.0563 * 0.0563)
     )
 
     # A2/(SD2*sqrt(2*PI)) * exp(-(t_offset-m2)^2/(2*var2))
     # A2 = 0.336, SD2 = 0.134, m2 = 0.364
     gaussian2 = 0.997356 * np.exp(
-        -1.0
-        * (t_offset - 0.365)
-        * (t_offset - 0.365)
-        / (2.0 * 0.132 * 0.132)
+        -1.0 * (t_offset - 0.365) * (t_offset - 0.365) / (2.0 * 0.132 * 0.132)
     )
     # alpha*exp(-beta*t_offset) / (1+exp(-s(t_offset-tau)))
     # alpha = 1.064, beta = 0.166, s = 37.772, tau = 0.482

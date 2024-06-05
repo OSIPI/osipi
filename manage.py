@@ -52,9 +52,7 @@ def activate():
     os.makedirs(venv_dir, exist_ok=True)
     venv.create(venv_dir, with_pip=True)
     windows = (
-        (sys.platform == "win32")
-        or (sys.platform == "win64")
-        or (os.name == "nt")
+        (sys.platform == "win32") or (sys.platform == "win64") or (os.name == "nt")
     )
     if windows:
         return os.path.join(venv_dir, "Scripts", "activate")
@@ -66,9 +64,7 @@ def install():
     """Install requirements to a virtual environment."""
 
     logging.info("Installing requirements...")
-    os.system(
-        activate() + " && " + "py -m pip install -r requirements.txt"
-    )
+    os.system(activate() + " && " + "py -m pip install -r requirements.txt")
 
 
 if __name__ == "__main__":
