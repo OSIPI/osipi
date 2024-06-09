@@ -1,4 +1,0 @@
-[flake8]
-max-line-length = 100
-ignore = E203, W503
-exclude = src/osipi/__init__.py

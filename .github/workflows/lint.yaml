@@ -1,6 +1,10 @@
 name: Lint and Auto-Fix Code
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   lint_and_fix:
@@ -25,4 +29,18 @@ jobs:
 
       - name: Run flake8 (lint only)
         run: flake8 .
+
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Run pre-commit
+        run: pre-commit run --all-files
 

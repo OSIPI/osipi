@@ -7,10 +7,10 @@ Simulating tissue concentrations from extended Tofts model with different settin
 """
 
 import matplotlib.pyplot as plt
+
 # %%
 # Import necessary packages
 import numpy as np
-
 import osipi
 
 # %%

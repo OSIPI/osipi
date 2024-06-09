@@ -51,9 +51,7 @@ def activate():
     venv_dir = os.path.join(os.getcwd(), ".venv")
     os.makedirs(venv_dir, exist_ok=True)
     venv.create(venv_dir, with_pip=True)
-    windows = (
-        (sys.platform == "win32") or (sys.platform == "win64") or (os.name == "nt")
-    )
+    windows = (sys.platform == "win32") or (sys.platform == "win64") or (os.name == "nt")
     if windows:
         return os.path.join(venv_dir, "Scripts", "activate")
     else:  # MacOS and Linux
