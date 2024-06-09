@@ -25,4 +25,8 @@ repos:
     rev: v6.1.2  # Use the latest version
     hooks:
       - id: rstcheck
-        args: ["--ignore-directives", "currentmodule,minigallery,autofunction,only,image-sg,rst-class,toctree,autosummary", "--ignore-roles", "ref"]
+        entry: rstcheck --ignore-messages="(Hyperlink target .* is not referenced.|No directive entry for
+          .*|Unknown directive type .*|Duplicate explicit target name.*)"
+        args: [
+        "--ignore-roles", "ref",
+        ]
