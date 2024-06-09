@@ -7,28 +7,6 @@ on:
       - main
 
 jobs:
-  lint_and_fix:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-
-      - name: Install dependencies
-        run: |
-          pip install black isort flake8
-
-      - name: Run black
-        run: black .
-
-      - name: Run isort
-        run: isort .
-
-      - name: Run flake8 (lint only)
-        run: flake8 .
 
   pre-commit:
     runs-on: ubuntu-latest
