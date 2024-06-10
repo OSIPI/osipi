@@ -7,7 +7,6 @@ on:
       - main
 
 jobs:
-
   pre-commit:
     runs-on: ubuntu-latest
     steps:
@@ -15,9 +14,16 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'  # Specify the Python version you need
 
-      - name: Install pre-commit
-        run: pip install pre-commit
+      - name: Install Poetry
+        uses: Gr1N/setup-poetry@v8
+        with:
+          poetry-version: '1.2.2'  # Specify the Poetry version you need
+
+      - name: Install dependencies
+        run: poetry install
 
       - name: Run pre-commit
-        run: pre-commit run --all-files
+        run: poetry run pre-commit run --all-files
