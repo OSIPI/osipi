@@ -608,24 +608,6 @@ files = [
 ]
 
 [[package]]
-name = "osipi"
-version = "0.1.2"
-description = "The authorative python package for perfusion MRI"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "osipi-0.1.2-py3-none-any.whl", hash = "sha256:c0d5de1275e3fb4f7efc1690202170dd6a4225a46a5256a702741bc3055579d9"},
-    {file = "osipi-0.1.2.tar.gz", hash = "sha256:5d061efbdf031f7abc592023dda5d9a37caef64a2f3d3d954cde715cd6ef3c3e"},
-]
-
-[package.dependencies]
-numpy = "*"
-
-[package.extras]
-docs = ["autodocsumm", "docutils", "myst-parser", "pydata-sphinx-theme", "sphinx", "sphinx-copybutton", "sphinx-design", "sphinx-gallery", "sphinx-remove-toctrees", "sphinxcontrib-applehelp", "sphinxcontrib-devhelp", "sphinxcontrib-htmlhelp", "sphinxcontrib-jsmath", "sphinxcontrib-qthelp", "sphinxcontrib-serializinghtml"]
-tests = ["matplotlib", "pytest"]
-
-[[package]]
 name = "packaging"
 version = "24.1"
 description = "Core utilities for Python packages"
@@ -1034,4 +1016,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "31876b9b2d6a904bf8b7f7a24c497a07e7aa65691cd80541bd65b4837a732f75"
+content-hash = "7185b732c8b873d1545bf70797c5eedbf0baa820bbc8c5aa306745da81c8f496"
