@@ -118,3 +118,7 @@ requests = "^2.32.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
+
+[tool.poetry.extras]
+docs = ["sphinx", "sphinx-rtd-theme"]
+tests = ["pytest", "pytest-cov"]
