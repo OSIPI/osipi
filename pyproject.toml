@@ -113,13 +113,28 @@ python = "^3.9"
 numpy = "^1.21.2"
 scipy = "^1.7.3"
 matplotlib = "^3.4.3"
-pre-commit = "^3.7.1"
 requests = "^2.32.3"
 
-[tool.poetry.dev-dependencies]
-pytest = "^6.2.5"
-pytest-cov = "^2.12"
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.0.0"
+pre-commit = "^3.7.1"
+pytest = "^8.2.2"
+pytest-cov = "^5.0.0"
 
-[tool.poetry.extras]
-docs = ["sphinx", "sphinx-rtd-theme"]
-tests = ["pytest", "pytest-cov"]
+[tool.poetry.group.docs.dependencies]
+sphinx = "^7.3.7"
+autodocsumm = "^0.2.12"
+docutils = "^0.21.2"
+myst-parser = "^3.0.1"
+pydata-sphinx-theme = "^0.15.3"
+sphinx-copybutton = "^0.5.2"
+sphinx-design = "^0.6.0"
+sphinx-remove-toctrees = "^1.0.0.post1"
+sphinxcontrib-applehelp = "^1.0.8"
+sphinxcontrib-devhelp = "^1.0.6"
+sphinxcontrib-htmlhelp = "^2.0.5"
+sphinxcontrib-jsmath = "^1.0.1"
+sphinxcontrib-qthelp = "^1.0.7"
+sphinxcontrib-serializinghtml = "^1.1.10"
+sphinx-gallery = "^0.16.0"
+rstcheck = {extras = ["sphinx"], version = "^6.2.1"}
