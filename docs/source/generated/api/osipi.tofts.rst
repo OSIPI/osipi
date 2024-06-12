@@ -14,5 +14,3 @@
 
 .. minigallery:: osipi.tofts
    :add-heading:
-
-

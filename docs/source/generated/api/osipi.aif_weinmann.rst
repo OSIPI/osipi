@@ -14,5 +14,3 @@
 
 .. minigallery:: osipi.aif_weinmann
    :add-heading:
-
-

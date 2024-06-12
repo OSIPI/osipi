@@ -18,9 +18,9 @@
 .. _sphx_glr_generated_examples_tissue_plot_extended_tofts.py:
 
 
-====================
+========================
 The Extended Tofts model
-====================
+========================
 
 Simulating tissue concentrations from extended Tofts model with different settings.
 

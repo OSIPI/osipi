@@ -22,7 +22,7 @@
 A dummy script
 ==============
 
-Dummy script to illustrate structure of examples folder 
+Dummy script to illustrate structure of examples folder
 
 .. GENERATED FROM PYTHON SOURCE LINES 10-11
 

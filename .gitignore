@@ -1,2 +1,6 @@
 .idea/
 /.venv
+dist
+pytest_cache
+src/osipi/__pycache__
+tests/__pycache__

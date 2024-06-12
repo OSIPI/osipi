@@ -13,6 +13,3 @@ User guide
    installation
    forward/index
    inverse/index
-
-
-   

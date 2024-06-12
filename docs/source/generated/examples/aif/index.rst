@@ -59,4 +59,3 @@ Arterial Input Functions
 
    /generated/examples/aif/plot_aif_parker
    /generated/examples/aif/plot_dummy
-

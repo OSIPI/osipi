@@ -59,4 +59,3 @@ Tissue concentrations
 
    /generated/examples/tissue/plot_tofts
    /generated/examples/tissue/plot_extended_tofts
-

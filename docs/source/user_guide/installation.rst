@@ -7,6 +7,3 @@ Installing osipi
 .. code-block:: console
 
    pip install osipi
-
-
-   
