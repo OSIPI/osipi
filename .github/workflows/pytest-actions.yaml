@@ -48,11 +48,6 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
-      - name: Install osipi
-        run: |
-          poetry install -E docs
-          poetry install -E tests
-
       - name: Test with pytest
         run: poetry run pytest --junitxml=junit/test-results.xml --cov=dbdicom tests/
 

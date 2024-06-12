@@ -35,10 +35,5 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
-      - name: Install osipi
-        run: |
-          poetry install -E docs
-          poetry install -E tests
-
       - name: Run pre-commit
         run: poetry run pre-commit run --all-files
