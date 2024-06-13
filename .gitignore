@@ -6,3 +6,4 @@ src/osipi/__pycache__
 tests/__pycache__
 .coverage
 junit
+docs/build
