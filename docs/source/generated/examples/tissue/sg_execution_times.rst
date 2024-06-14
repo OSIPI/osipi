@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.113** total execution time for 2 files **from generated/examples/tissue**:
+**00:00.279** total execution time for 2 files **from generated\examples\tissue**:
 
 .. container::
 
@@ -32,9 +32,9 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_generated_examples_tissue_plot_extended_tofts.py` (``plot_extended_tofts.py``)
-     - 00:00.113
-     - 0.0
    * - :ref:`sphx_glr_generated_examples_tissue_plot_tofts.py` (``plot_tofts.py``)
-     - 00:00.000
+     - 00:00.143
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_tissue_plot_extended_tofts.py` (``plot_extended_tofts.py``)
+     - 00:00.136
      - 0.0

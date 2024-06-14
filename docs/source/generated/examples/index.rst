@@ -8,12 +8,13 @@ Illustrating common use cases of osipi.
 
 
 
-
-
 .. raw:: html
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 
@@ -25,16 +26,15 @@ Arterial Input Functions
 
 
 
-
-
 .. raw:: html
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Simulating a Parker AIF with different settings. ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Simulating a Parker AIF with different settings.">
 
 .. only:: html
 
@@ -51,7 +51,7 @@ Arterial Input Functions
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Dummy script to illustrate structure of examples folder ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Dummy script to illustrate structure of examples folder">
 
 .. only:: html
 
@@ -66,6 +66,8 @@ Arterial Input Functions
     </div>
 
 
+.. thumbnail-parent-div-close
+
 .. raw:: html
 
     </div>
@@ -76,12 +78,11 @@ Tissue concentrations
 
 
 
-
-
 .. raw:: html
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -116,6 +117,8 @@ Tissue concentrations
       <div class="sphx-glr-thumbnail-title">The Extended Tofts model</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

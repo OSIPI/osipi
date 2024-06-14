@@ -8,12 +8,11 @@ Tissue concentrations
 
 
 
-
-
 .. raw:: html
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -48,6 +47,8 @@ Tissue concentrations
       <div class="sphx-glr-thumbnail-title">The Extended Tofts model</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

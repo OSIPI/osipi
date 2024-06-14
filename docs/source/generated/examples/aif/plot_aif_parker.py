@@ -1,7 +1,9 @@
-"""======================================
+"""
+======================================
+The Parker AIF - a play with variables
+======================================
 
-The Parker AIF - a play with variables ======================================  Simulating a Parker
-AIF with different settings.
+Simulating a Parker AIF with different settings.
 
 """
 

@@ -8,16 +8,15 @@ Arterial Input Functions
 
 
 
-
-
 .. raw:: html
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Simulating a Parker AIF with different settings. ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Simulating a Parker AIF with different settings.">
 
 .. only:: html
 
@@ -34,7 +33,7 @@ Arterial Input Functions
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Dummy script to illustrate structure of examples folder ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Dummy script to illustrate structure of examples folder">
 
 .. only:: html
 
@@ -48,6 +47,8 @@ Arterial Input Functions
       <div class="sphx-glr-thumbnail-title">A dummy script</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 
