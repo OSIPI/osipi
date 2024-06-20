@@ -1,0 +1,39 @@
+name: Lint and Auto-Fix Code
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'  # Specify the Python version you need
+
+      - name: Install Poetry
+        uses: Gr1N/setup-poetry@v8
+        with:
+          poetry-version: '1.8.3'
+
+      - name: Cache Poetry dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pypoetry
+            ~/.virtualenvs
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Run pre-commit
+        run: poetry run pre-commit run --all-files

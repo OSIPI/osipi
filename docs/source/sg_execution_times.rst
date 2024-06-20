@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.113** total execution time for 4 files **from all galleries**:
+**00:00.580** total execution time for 4 files **from all galleries**:
 
 .. container::
 
@@ -32,15 +32,15 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_generated_examples_tissue_plot_extended_tofts.py` (``../examples/tissue/plot_extended_tofts.py``)
-     - 00:00.113
+   * - :ref:`sphx_glr_generated_examples_aif_plot_aif_parker.py` (``..\examples\aif\plot_aif_parker.py``)
+     - 00:00.183
      - 0.0
-   * - :ref:`sphx_glr_generated_examples_aif_plot_aif_parker.py` (``../examples/aif/plot_aif_parker.py``)
-     - 00:00.000
+   * - :ref:`sphx_glr_generated_examples_tissue_plot_tofts.py` (``..\examples\tissue\plot_tofts.py``)
+     - 00:00.143
      - 0.0
-   * - :ref:`sphx_glr_generated_examples_aif_plot_dummy.py` (``../examples/aif/plot_dummy.py``)
-     - 00:00.000
+   * - :ref:`sphx_glr_generated_examples_tissue_plot_extended_tofts.py` (``..\examples\tissue\plot_extended_tofts.py``)
+     - 00:00.136
      - 0.0
-   * - :ref:`sphx_glr_generated_examples_tissue_plot_tofts.py` (``../examples/tissue/plot_tofts.py``)
-     - 00:00.000
+   * - :ref:`sphx_glr_generated_examples_aif_plot_dummy.py` (``..\examples\aif\plot_dummy.py``)
+     - 00:00.118
      - 0.0
