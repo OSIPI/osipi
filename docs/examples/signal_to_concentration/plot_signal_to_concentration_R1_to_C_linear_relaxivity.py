@@ -13,16 +13,16 @@ import matplotlib.pyplot as plt
 import osipi
 
 # %%
-# Convert a series of R_1 values to the corresponding indicator concentrations.
-R_1 = np.array([1, 2, 3, 4, 5, 6], dtype=np.float64)
-R_10 = np.float64(1)
-r_1 = np.float64(5)
+# Convert a series of R1 values to the corresponding indicator concentrations.
+R1 = np.array([1, 2, 3, 4, 5, 6], dtype=np.float64)
+R10 = np.float64(1)
+r1 = np.float64(5)
 
-C = osipi.ep_to_C_R1_lin_rxy(R_1, R_10, r_1)
+C = osipi.R1_to_C_linear_relaxivity(R1, R10, r1)
 print(f'Concentration (mM): {C}')
 
-# Plot C vs. R_1
-plt.plot(R_1, C, 'r-')
-plt.xlabel('R_1 (/s)')
-plt.ylabel('C (a.u.)')
+# Plot C vs. R1
+plt.plot(R1, C, 'r-')
+plt.xlabel('R1 (/s)')
+plt.ylabel('C (mM)')
 plt.show()

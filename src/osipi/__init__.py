@@ -11,12 +11,12 @@ from ._tissue import (
 )
 
 from ._signal import (
-    R1_to_S_linear,
-    R1_to_S_SPGR_model
+    signal_linear,
+    signal_SPGR
 )
 
 from ._signal_to_concentration import (
-    S_to_C_via_ep_SPGR,
-    S_to_ep_SPGR,
-    ep_to_C_R1_lin_rxy
+    S_to_C_via_R1_SPGR,
+    S_to_R1_SPGR,
+    R1_to_C_linear_relaxivity
 )
