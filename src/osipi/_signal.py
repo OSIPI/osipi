@@ -18,7 +18,7 @@ def signal_linear(R1: np.float64, k: np.float64) -> np.float64:
         - Adapted from equation given in the Lexicon
     """
     # calculate signal
-    return k*R1  # S
+    return k * R1  # S
 
 
 def signal_SPGR(R1: np.float64, S0: np.float64, TR: np.float64, a: np.float64) -> np.float64:
@@ -42,5 +42,5 @@ def signal_SPGR(R1: np.float64, S0: np.float64, TR: np.float64, a: np.float64) -
 
     # calculate signal
     a_rad = a * np.pi / 180
-    exp_TR_R1 = np.exp(-TR*R1)
-    return S0 * (((1. - exp_TR_R1) * np.sin(a_rad)) / (1. - exp_TR_R1 * np.cos(a_rad)))  # S
+    exp_TR_R1 = np.exp(-TR * R1)
+    return S0 * (((1.0 - exp_TR_R1) * np.sin(a_rad)) / (1.0 - exp_TR_R1 * np.cos(a_rad)))  # S

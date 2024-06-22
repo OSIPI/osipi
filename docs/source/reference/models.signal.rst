@@ -5,7 +5,7 @@ Signal models
 
 
 Magnitude models: DCE - R1 in the fast water exchange limit
----------------
+-----------------------------------------------------------
 
 .. autosummary::
    :toctree: ../generated/api/
@@ -13,4 +13,3 @@ Magnitude models: DCE - R1 in the fast water exchange limit
 
    signal_linear
    signal_SPGR
-   

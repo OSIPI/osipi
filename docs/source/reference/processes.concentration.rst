@@ -4,7 +4,7 @@ Concentration
 .. currentmodule:: osipi
 
 Signal to Concentration
----------------
+-----------------------
 
 .. autosummary::
    :toctree: ../generated/api/
@@ -13,7 +13,7 @@ Signal to Concentration
    S_to_C_via_R1_SPGR
 
 R1 to Concentration
----------------
+-------------------
 
 .. autosummary::
    :toctree: ../generated/api/

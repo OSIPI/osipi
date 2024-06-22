@@ -12,5 +12,3 @@ Signal to R1
    :template: autosummary.rst
 
    S_to_R1_SPGR
-
-

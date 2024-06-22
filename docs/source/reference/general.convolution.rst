@@ -4,7 +4,7 @@ Convolution
 .. currentmodule:: osipi
 
 Exponential convolution
----------------
+-----------------------
 
 .. autosummary::
    :toctree: ../generated/api/
