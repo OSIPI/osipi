@@ -32,21 +32,25 @@ def S_to_C_via_R1_SPGR(
         - Lexicon code: P.SC2.002
         - OSIPI name: ConvertSToCViaEP
         - Signal to electromagnetic property conversion method:
-            model-based [OSIPI code P.SE1.001]
-            - Inversion method: analytical inversion [OSIPI code G.MI1.001]
-            - Forward model: Spoiled gradient recalled echo model [OSIPI code M.SM2.002]
+            - model-based [OSIPI code P.SE1.001]
+                - Inversion method: analytical inversion [OSIPI code G.MI1.001]
+                - Forward model: Spoiled gradient recalled echo model [OSIPI code M.SM2.002]
         - Electromagnetic property inverse model:
-            model-based [OSIPI code P.EC1.001]
-            - Inversion method: analytical inversion [OSIPI code G.MI1.001]
-            - Forward model: longitudinal relaxation rate, linear with
-             relaxivity model [OSIPI code M.EL1.003]
+            - model-based [OSIPI code P.EC1.001]
+                - Inversion method: analytical inversion [OSIPI code G.MI1.001]
+                - Forward model: longitudinal relaxation rate, linear with
+                - relaxivity model [OSIPI code M.EL1.003]
     """
     R1 = S_to_R1_SPGR(S, S_baseline, R10, TR, a)  # S -> R1
     return R1_to_C_linear_relaxivity(R1, R10, r1)  # R1 -> C
 
 
 def S_to_R1_SPGR(
-    S: NDArray[np.float64], S_baseline: np.float64, R10: np.float64, TR: np.float64, a: np.float64
+    S: NDArray[np.float64],
+    S_baseline: np.float64,
+    R10: np.float64,
+    TR: np.float64,
+    a: np.float64,
 ) -> NDArray[np.float64]:
     """Signal to electromagnetic property conversion (analytical, SPGR, FXL)
 
