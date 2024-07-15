@@ -11,7 +11,8 @@ def S_to_C_via_R1_SPGR(
     r1: np.float64,
 ) -> NDArray[np.float64]:
     """
-    Signal to concentration via electromagnetic property (SPGR, FXL, analytical, linear R1 relaxivity)
+    Signal to concentration via
+    electromagnetic property (SPGR, FXL, analytical, linear R1 relaxivity)
 
     Converts S -> R1 -> C
 
@@ -24,7 +25,9 @@ def S_to_C_via_R1_SPGR(
         r1 (np.float64): Longitudinal relaxivity in units of /s/mM. [OSIPI code Q.EL1.015]
 
     Returns:
-         NDArray[np.float64]: Vector of indicator total (across all compartments) indicator concentration in units of mM. [OSIPI code Q.IC1.001]
+         NDArray[np.float64]:
+            Vector of indicator total (across all compartments) indicator
+            concentration in units of mM. [OSIPI code Q.IC1.001]
 
     References:
         - Lexicon URL: https://osipi.github.io/OSIPI_CAPLEX/perfusionProcesses/
@@ -37,7 +40,8 @@ def S_to_C_via_R1_SPGR(
         - Electromagnetic property inverse model:
           - model-based [OSIPI code P.EC1.001]
             - Inversion method: analytical inversion [OSIPI code G.MI1.001]
-            - Forward model: longitudinal relaxation rate, linear with relaxivity model [OSIPI code M.EL1.003]
+            - Forward model:
+                longitudinal relaxation rate, linear with relaxivity model [OSIPI code M.EL1.003]
     """
     R1 = S_to_R1_SPGR(S, S_baseline, R10, TR, a)  # S -> R1
     return R1_to_C_linear_relaxivity(R1, R10, r1)  # R1 -> C
@@ -96,19 +100,24 @@ def R1_to_C_linear_relaxivity(
     Converts R1 to tissue concentration
 
     Args:
-        R1 (1D array of np.float64): Vector of longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.001]
-        R10 (np.float64): Native longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.002]
-        r1 (np.float64): Longitudinal relaxivity in units of /s/mM. [OSIPI code Q.EL1.015]
+        R1 (1D array of np.float64):
+            Vector of longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.001]
+        R10 (np.float64):
+            Native longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.002]
+        r1 (np.float64):
+            Longitudinal relaxivity in units of /s/mM. [OSIPI code Q.EL1.015]
 
     Returns:
-        NDArray[np.float64]: Vector of indicator concentration in units of mM. [OSIPI code Q.IC1.001]
+        NDArray[np.float64]:
+            Vector of indicator concentration in units of mM. [OSIPI code Q.IC1.001]
 
     References:
         - Lexicon URL: https://osipi.github.io/OSIPI_CAPLEX/perfusionProcesses/#
         - Lexicon code: P.EC1.001
         - OSIPI name: model-based
           - Inversion method: analytical inversion [OSIPI code G.MI1.001]
-          - Forward model: longitudinal relaxation rate, linear with relaxivity model [OSIPI code M.EL1.003]
+          - Forward model:
+            longitudinal relaxation rate, linear with relaxivity model [OSIPI code M.EL1.003]
         - Adapted from equation given in lexicon
     """
     # Check R1 is a 1D array of floats
