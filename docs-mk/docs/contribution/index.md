@@ -4,6 +4,42 @@ There are multiple ways to contribute to `osipi` and we welcome them all. `osipi
 
 The way to do this is by making a pull request on GitHub. If you are not familiar with GitHub pull requests, it is not as scary as it sounds. The simplest way is to find the file that you want to edit on GitHub in your browser, edit it manually and follow the prompts to create a fork and pull request.
 
+## Making a Pull Request (PR) to the OSIPI Package
+### Step 1: Fork the Repository
+First, fork the OSIPI repository to your GitHub account and make a new branch with the your new feature or bug fix.
+
+### Step 2: Set Up Your Development Environment
+After creating a fork, you have two options:
+#### Option 1: Use Poetry
+
+1. **Install Poetry**: If you don't have Poetry installed, follow the instructions [here](https://python-poetry.org/docs/#installation).
+2. **Install Dependencies**: Run the following command in your terminal:
+    ```sh
+    poetry install
+    ```
+#### Option 2: Use Requirements File
+
+1. **Install Dependencies**: Run the following command in your terminal:
+    ```sh
+    pip install -r requirements.txt
+    ```
+
+### Step 3: Make Your Contribution
+Make your changes or add your contribution to the codebase.
+
+### Step 4: Run Pre-commit Checks
+Before pushing your changes, run pre-commit checks to ensure your code meets the project's standards.
+
+1. Run the following command in your terminal:
+    ```sh
+    pre-commit run --all-files
+    ```
+
+### Step 5: Push Your Changes and Create a PR
+1. Push your changes to your forked repository.
+2. Create a pull request (PR) to the main OSIPI repository.
+
+
 ## How to Contribute Examples
 
 One way to contribute is by providing examples of how you used `osipi` for a specific task. These are usually real-world examples with a relevant aim, perhaps to derive some results that you have published. To package these up as an example, follow these steps:
