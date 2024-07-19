@@ -7,6 +7,7 @@ import pydicom
 def read_dicom_slices_as_signal(folder_path):
     """
     Read a DICOM series from a folder path.
+    Returns the signal data as a 4D numpy array (x, y, z, t).
     """
     slices = {}
     for root, _, files in os.walk(folder_path):
@@ -37,9 +38,63 @@ def read_dicom_slices_as_signal(folder_path):
     return signal
 
 
-def signal_enhanecment(signal, baseline=0):
+def calculate_baseline(signal, baseline):
     """
-    Calculate signal enhancement.
+    Calculate the baseline signal (S0) from pre-contrast time points.
+
+    Parameters:
+    signal (numpy.ndarray): The 4D signal data (x, y, z, t).
+    baseline (int): Number of time points before contrast injection.
+
+    Returns:
+    numpy.ndarray: The baseline signal (S0).
     """
-    s0 = np.average(signal[:, :, :, :baseline], axis=-1)
-    return (signal - s0) / s0, s0
+    S0 = np.average(signal[..., :baseline], axis=-1)
+    return S0
+
+
+def signal_to_R1(signal, S0, TR):
+    """
+    Convert signal to R1 values using the Ernst equation.
+
+    Parameters:
+    signal (numpy.ndarray): The 4D signal data (x, y, z, t).
+    S0 (numpy.ndarray): The baseline signal (S0).
+    TR (float): Repetition time.
+
+    Returns:
+    numpy.ndarray: The R1 values.
+    """
+    R1 = -1 / TR * np.log(signal / S0)
+    return R1
+
+
+def calc_concentration(R1, R10, r1):
+    """
+    Calculate the concentration of the contrast agent in tissue.
+
+    Parameters:
+    R1 (numpy.ndarray): The R1 values.
+    R10 (numpy.ndarray): The pre-contrast R1 values.
+    r1 (float): Relaxivity of the contrast agent.
+
+    Returns:
+    numpy.ndarray: The concentration of the contrast agent in the tissue.
+    """
+    Ctiss = (R1 - R10) / r1
+    return Ctiss
+
+
+def signal_enhancement(signal, S0, R10, r1):
+    """
+    Calculate the signal enhancement.
+
+    Parameters:
+    signal (numpy.ndarray): The 4D signal data (x, y, z, t).
+    other parameters same as previous function
+
+    Returns:
+    numpy.ndarray: The signal enhancement.
+    """
+    E = (R10 / r1) * (signal - S0) / S0
+    return E
