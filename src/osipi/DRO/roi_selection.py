@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 from matplotlib.widgets import LassoSelector
 
 
-def roi(signal, slice_num):
+def roi(signal, slice_num, data_shape, save=False):
     """
     Select a region of interest (ROI) in a slice of a 4D signal.
     """
@@ -12,15 +12,14 @@ def roi(signal, slice_num):
     fig = plt.figure()
     ax1 = fig.add_subplot(121)
     ax1.set_title("Slice:")
-    ax1.imshow(signal[:, :, slice_num, 0], cmap="gray", interpolation="nearest")
+    ax1.imshow(signal[:, :, slice_num], cmap="gray", interpolation="nearest")
 
     # Empty array to be filled with lasso selector
-    array = np.zeros_like(signal[:, :, slice_num, 0])
+    array = np.zeros_like(signal[:, :, slice_num])
     ax2 = fig.add_subplot(122)
     ax2.set_title("numpy array:")
     mask = ax2.imshow(array, vmax=1, interpolation="nearest")
 
-    plt.show()
     # Pixel coordinates
     pix = np.arange(signal.shape[1])
     xv, yv = np.meshgrid(pix, pix)
@@ -40,9 +39,14 @@ def roi(signal, slice_num):
         mask.set_data(array)
         fig.canvas.draw_idle()
 
-    lineprops = {"color": "red", "linewidth": 4, "alpha": 0.8}
-    lasso = LassoSelector(ax1, onselect, lineprops, button=1)
-    mask_4d = np.zeros(signal.shape)
-    mask_4d[:, :, slice_num, :] = mask
-
-    return lasso, mask_4d
+    lasso = LassoSelector(ax1, onselect, button=1)
+    plt.show()
+    mask2d = mask._A._data.copy()
+    roivox = np.sum(mask2d)
+    timemask = np.tile(mask2d[:, :, np.newaxis], (1, 1, signal.shape[-1]))
+    mask4d = np.zeros(data_shape)
+    mask4d[:, :, slice_num, :] = timemask
+    if save:
+        np.save("mask/roi_mask.npy", mask4d)
+        np.save("mask/roi_voxels.npy", roivox)
+    return mask4d, roivox, lasso

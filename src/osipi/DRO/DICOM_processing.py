@@ -25,7 +25,7 @@ def read_dicom_slices_as_signal(folder_path):
 
     spatial_shape = slices[slice_location][0][1].pixel_array.shape
 
-    data_shape = (spatial_shape, spatial_shape, len(slices), len(slices[slice_location]))
+    data_shape = (spatial_shape[0], spatial_shape[1], len(slices), len(slices[slice_location]))
 
     signal = np.zeros(data_shape)
 
@@ -35,7 +35,7 @@ def read_dicom_slices_as_signal(folder_path):
         ):  # Sort by acquisition time
             signal[:, :, z, t] = slice.pixel_array
 
-    return signal
+    return signal, slices[slice_location][0][1]
 
 
 def calculate_baseline(signal, baseline):
@@ -49,7 +49,7 @@ def calculate_baseline(signal, baseline):
     Returns:
     numpy.ndarray: The baseline signal (S0).
     """
-    S0 = np.average(signal[..., :baseline], axis=-1)
+    S0 = np.average(signal[:, :, :, :baseline], axis=3, keepdims=True)
     return S0
 
 
@@ -65,7 +65,8 @@ def signal_to_R1(signal, S0, TR):
     Returns:
     numpy.ndarray: The R1 values.
     """
-    R1 = -1 / TR * np.log(signal / S0)
+    epsilon = 1e-8  # Small constant to avoid division by zero and log of zero
+    R1 = -1 / TR * np.log((signal + epsilon) / (S0 + epsilon))
     return R1
 
 
