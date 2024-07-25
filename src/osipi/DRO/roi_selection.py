@@ -47,6 +47,14 @@ def roi(signal, slice_num, data_shape, save=False):
     mask4d = np.zeros(data_shape)
     mask4d[:, :, slice_num, :] = timemask
     if save:
-        np.save("mask/roi_mask.npy", mask4d)
-        np.save("mask/roi_voxels.npy", roivox)
+        np.save("ROI_saved/aif_mask.npy", mask4d)
+        np.save("ROI_saved/roi_voxels.npy", roivox)
     return mask4d, roivox, lasso
+
+
+def ICfromROI(E, mask, roivox, numaxis):
+    Eroi = (
+        np.sum(mask * E, axis=tuple(range(0, numaxis)))
+    ) / roivox  # calculates average roi signal enhancement
+
+    return Eroi

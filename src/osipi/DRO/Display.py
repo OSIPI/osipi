@@ -29,7 +29,7 @@ def animate_mri(slices, mode="time", slice_index=0, time_index=0):
             ax.set_title(f"Slice: {z}, Time: {time_index}")
 
     anim = FuncAnimation(
-        fig=fig, func=animate, frames=frames, init_func=init, interval=100, blit=False
+        fig=fig, func=animate, frames=frames, init_func=init, interval=10000, blit=False
     )
     plt.show()
     return anim

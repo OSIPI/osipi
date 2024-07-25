@@ -2,11 +2,13 @@ import numpy as np
 from scipy import ndimage
 
 
-def median_filter(signal):
+def median_filter(param_map):
     """
     Apply a median filter to a signal.
     """
-    return ndimage.median_filter(signal, size=(3, 3, 1, 1))
+    for i in range(param_map.shape[-1]):
+        param_map[:, :, i] = ndimage.median_filter(param_map[:, :, i], size=(3, 3))
+    return param_map
 
 
 def add_gaussian_noise(signal, mean=0, std=1):

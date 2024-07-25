@@ -3,6 +3,8 @@ import os
 import numpy as np
 import pydicom
 
+from osipi.DRO.filters_and_noise import median_filter
+
 
 def read_dicom_slices_as_signal(folder_path):
     """
@@ -35,7 +37,20 @@ def read_dicom_slices_as_signal(folder_path):
         ):  # Sort by acquisition time
             signal[:, :, z, t] = slice.pixel_array
 
-    return signal, slices[slice_location][0][1]
+    return signal, slices, slices[slice_location][0][1]
+
+
+def SignalEnhancementExtract(S, datashape, baselinepoints):
+    # Take baseline average
+    S0 = np.average(S[:, :, :, 0:baselinepoints], axis=3)  # Take baseline signal
+    E = np.zeros_like(S)
+
+    # Calcualte siganl enhancement
+    for i in range(0, datashape[-1]):
+        E[:, :, :, i] = S[:, :, :, i] - S0
+        E[:, :, :, i] = median_filter(E[:, :, :, i])  # Median filter size (3,3)
+
+    return E, S0, S
 
 
 def calculate_baseline(signal, baseline):

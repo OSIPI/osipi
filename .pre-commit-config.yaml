@@ -3,7 +3,6 @@ repos:
     rev: v0.4.8  # Use the latest version
     hooks:
       - id: ruff
-        args: [--fix]  # Optional: to enable lint fixes
       - id: ruff-format
   - repo: https://github.com/pycqa/flake8
     rev: 7.0.0
@@ -12,7 +11,7 @@ repos:
         args:
           - --exclude=venv,.git,__pycache__,.eggs,.mypy_cache,.pytest_cache
           - --max-line-length=100
-          - --ignore=E203
+          - --ignore=E203, W503
           - --per-file-ignores=__init__.py:F401
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0

@@ -13,4 +13,4 @@ docs-mk/site
 docs-mk/docs/generated
 src/osipi/DRO/data
 src/osipi/DRO/__pycache__/
-src/osipi/DRO/ROI_saved/aifmask.npy
+src/osipi/DRO/ROI_saved/
