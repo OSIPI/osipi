@@ -6,7 +6,7 @@ import pydicom
 from osipi.DRO.filters_and_noise import median_filter
 
 
-def read_dicom_slices_as_signal(folder_path):
+def read_dicom_slices_as_4d_signal(folder_path):
     """
     Read a DICOM series from a folder path.
     Returns the signal data as a 4D numpy array (x, y, z, t).
