@@ -1,16 +1,27 @@
+import time
+
 import numpy as np
 from DICOM_processing import (
     SignalEnhancementExtract,
-    read_dicom_slices_as_signal,
+    read_dicom_slices_as_4d_signal,
 )
 from Display import animate_mri
+from matplotlib import pyplot as plt
 from roi_selection import ICfromROI
 
-from osipi.Conc2DROSignal import Conc2Sig_Linear, STDmap, addnoise, calcR1_R2, createR10_withref
+import osipi
+from osipi.DRO.Conc2DROSignal import Conc2Sig_Linear, STDmap, addnoise, calcR1_R2, createR10_withref
 from osipi.DRO.filters_and_noise import median_filter
-from osipi.DRO.Model import ForwardsModTofts, modifiedToftsMurase, modifiedToftsMurase1Vox
+from osipi.DRO.Model import (
+    ForwardsModTofts,
+    extended_tofts_model_1vox,
+    modifiedToftsMurase,
+    modifiedToftsMurase1Vox,
+)
 
-signal, slices, dicom_ref = read_dicom_slices_as_signal("data/subject2/12.000000-perfusion-17557")
+signal, slices, dicom_ref = read_dicom_slices_as_4d_signal(
+    "data/subject2/12.000000-perfusion-17557"
+)
 # anim = animate_mri(slices, mode="time", slice_index=7, time_index=5)
 data_shape = signal.shape
 
@@ -34,16 +45,49 @@ Ea = ICfromROI(E, aifmask, roivoxa, aifmask.ndim - 1)
 Ev = ICfromROI(E, sagmask, roivoxv, sagmask.ndim - 1)
 S0ref = ICfromROI(S0[:, :, z], sagmask[:, :, z, 0], roivoxv, sagmask.ndim - 2)
 
+max_index = np.unravel_index(np.argmax(E * aifmask, axis=None), E.shape)
+print(max_index)
+
 Hct = 0.45
 
-K1, k2, Vp = modifiedToftsMurase(Ea / (1 - Hct), E, dt, data_shape)
+E_vox = E[max_index[0], max_index[1], max_index[2], :]
+
+start_time = time.time()
+
+k1, ve, vp = extended_tofts_model_1vox(Ea, E_vox, t)
+
+end_time = time.time()
+
+execution_time = end_time - start_time
+
+print(f"The execution time of the line is: {execution_time} seconds")
+
+K1, K2, Vp = modifiedToftsMurase(Ea / (1 - Hct), E, dt, data_shape)
+
+k1_vox = K1[max_index[0], max_index[1], max_index[2]]
+k2_vox = K2[max_index[0], max_index[1], max_index[2]]
+Vp_vox = Vp[max_index[0], max_index[1], max_index[2]]
+
+ct = osipi.extended_tofts(t, Ea, k1_vox, k1_vox / k2_vox, Vp_vox)
+ct_real = E[max_index[0], max_index[1], max_index[2], :]
+ct_extended = osipi.extended_tofts(t, Ea, k1, ve, vp)
+
+plt.figure(figsize=(10, 6))
+plt.plot(t, ct, label="ct_Mudified_Tofts")
+plt.plot(t, ct_real, label="ct_Raw")
+plt.plot(t, ct_extended, label="ct_Extended_Tofts")
+plt.xlabel("Time")
+plt.ylabel("Concentration")
+plt.title("ct_raw vs model")
+plt.legend()
+plt.show()
 
 pvc_K1, pvc_k2, pvc_Vp = modifiedToftsMurase1Vox(Ea / (1 - Hct), Ev, dt, data_shape)
 pvc = abs((1 - Hct) / pvc_Vp)  # sagittal sinus Vp should be 0.55, so calc correction factor if not
 
 # Apply correction factor to fitted parameters
 cor_K1 = K1 * pvc
-cor_k2 = k2 * pvc
+cor_k2 = K2 * pvc
 cor_Vp = Vp * pvc
 # Apply Median Filter to parameters all with footprint (3,3)
 

@@ -1,5 +1,7 @@
 import numpy as np
+from scipy import integrate
 from scipy.integrate import cumtrapz, trapz
+from scipy.optimize import curve_fit
 
 
 def modifiedToftsMurase(Cp, Ctiss, dt, datashape):
@@ -95,55 +97,66 @@ def tofts(cp, c_tiss, dt, datashape):
     return ktrans, kep
 
 
-def exntended_tofts(cp, c_tiss, dt, datashape):
+# Curve fitting function for a single voxel's time series data
+
+
+def Extended_Tofts_Integral(t, Cp, Kt=0.1, ve=0.1, vp=0.2, uniform_sampling=True):
+    nt = len(t)
+    Ct = np.zeros(nt)
+    for k in range(nt):
+        tmp = vp * Cp[: k + 1] + integrate.cumtrapz(
+            np.exp(-Kt * (t[k] - t[: k + 1]) / ve) * Cp[: k + 1], t[: k + 1], initial=0.0
+        )
+        Ct[k] = tmp[-1]
+    return Ct
+
+
+def FIT_single_voxel(ct, ca, time):
+    def fit_func(t, kt, ve, vp):
+        return Extended_Tofts_Integral(t, ca, Kt=kt, ve=ve, vp=vp)
+
+    ini = [0.1, 0.1, 0.2]  # Initial guess for [Kt, ve, vp]
+    popt, pcov = curve_fit(fit_func, time, ct, p0=ini)
+    return popt, pcov
+
+
+def extended_tofts_model(ca, c_tiss, t, datashape):
     """
     Extended Tofts model for DCE-MRI DRO
-
+    ca -- arterial input function
+    c_tiss -- 4D array of tissue concentration data (x, y, z, time)
+    dt -- time interval between samples
+    datashape -- shape of the data
     """
     ktrans = np.zeros(c_tiss.shape[:-1])
-    kep = np.zeros(c_tiss.shape[:-1])
+    ve = np.zeros(c_tiss.shape[:-1])
     vp = np.zeros(c_tiss.shape[:-1])
 
     for k in range(0, datashape[2]):
+        print(f"Processing slice {k+1}/{datashape[2]}")
         for j in range(0, datashape[0]):
+            print(f"Processing row {j+1}/{datashape[0]}")
             for i in range(0, datashape[1]):
-                c = c_tiss[j, i, k, :]
-                cp_integrated = cumtrapz(cp, dx=dt, initial=0)
-                c_tiss_integrated = -cumtrapz(c_tiss[i, j, k, :], dx=dt, initial=0)
-                A = np.column_stack((cp_integrated, c_tiss_integrated, cp))
-                ktrans_voxel, kep_voxel, vp_voxel = np.linalg.lstsq(A, c, rcond=None)[0]
-                ktrans[j, i, k] = ktrans_voxel
-                kep[j, i, k] = kep_voxel
-                vp[j, i, k] = vp_voxel
+                ct = c_tiss[j, i, k, :]
+                popt, _ = FIT_single_voxel(ct, ca, t)
+                ktrans[j, i, k], ve[j, i, k], vp[j, i, k] = popt
 
-    return ktrans, kep, vp
+    return ktrans, ve, vp
 
 
-def forward_tofts(ktrans, kep, cp, vp, dt):
+def extended_tofts_model_1vox(ca, c_tiss, t):
     """
-    Forward Tofts model for DCE-MRI DRO
-
-    Parameters:
-    ktrans (numpy.ndarray): The transfer constant Ktrans.
-    kep (numpy.ndarray): The rate constant kep.
-    cp (numpy.ndarray): The plasma concentration C_p(t).
-    vp (numpy.ndarray): The plasma volume fraction v_p.
-    dt (float): The time step between measurements.
-
-    Returns:
-    numpy.ndarray: The tissue concentration C_tiss(t).
+    Extended Tofts model for DCE-MRI DRO
+    ca -- arterial input function
+    c_tiss -- 1D array of tissue concentration data (time)
+    dt -- time interval between samples
     """
-    time_points = cp.shape[-1]
-    c_tiss = np.zeros(ktrans.shape)
-    for t in range(time_points):
-        if t == 0:
-            c_tiss[..., t] = vp * cp[..., t]
-        else:
-            exp = np.exp(-kep * np.arange(t + 1)[::-1] * dt)
-            integral = trapz(cp[..., : t + 1] * exp, dx=dt, axis=-1)
-            c_tiss[..., t] = vp * cp[..., t] + ktrans * integral
 
-    return c_tiss
+    ct = c_tiss[:]
+    popt, _ = FIT_single_voxel(ct, ca, t)
+    ktrans, ve, vp = popt
+
+    return ktrans, ve, vp
 
 
 def ForwardsModTofts(K1, k2, Vp, Cp, dt):
