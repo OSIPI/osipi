@@ -1,7 +1,10 @@
+import multiprocessing as mp
+
 import numpy as np
-from scipy import integrate
-from scipy.integrate import cumtrapz, trapz
+from scipy.integrate import cumtrapz, cumulative_trapezoid, trapz
 from scipy.optimize import curve_fit
+
+import osipi
 
 
 def modifiedToftsMurase(Cp, Ctiss, dt, datashape):
@@ -73,73 +76,67 @@ def modifiedToftsMurase1Vox(Cp, Ctiss, dt, datashape):
     return K1, k2, Vp
 
 
-def tofts(cp, c_tiss, dt, datashape):
-    """
-    Tofts model for DCE-MRI DRO
-
-    ref : https://github.com/JCardenasRdz/Gage-repeatability-DCE-MRI?tab=readme-ov-file
-
-    """
-    ktrans = np.zeros(c_tiss.shape[:-1])
-    kep = np.zeros(c_tiss.shape[:-1])
-
-    for k in range(0, datashape[2]):
-        for j in range(0, datashape[0]):
-            for i in range(0, datashape[1]):
-                c = c_tiss[j, i, k, :]
-                cp_integrated = cumtrapz(cp, dx=dt, initial=0)
-                c_tiss_integrated = -cumtrapz(c_tiss[i, j, k, :], dx=dt, initial=0)
-                A = np.column_stack((cp_integrated, c_tiss_integrated))
-                ktrans_voxel, kep_voxel = np.linalg.lstsq(A, c, rcond=None)[0]
-                ktrans[j, i, k] = ktrans_voxel
-                kep[j, i, k] = kep_voxel
-
-    return ktrans, kep
-
-
-# Curve fitting function for a single voxel's time series data
-
-
 def Extended_Tofts_Integral(t, Cp, Kt=0.1, ve=0.1, vp=0.2, uniform_sampling=True):
-    nt = len(t)
-    Ct = np.zeros(nt)
-    for k in range(nt):
-        tmp = vp * Cp[: k + 1] + integrate.cumtrapz(
-            np.exp(-Kt * (t[k] - t[: k + 1]) / ve) * Cp[: k + 1], t[: k + 1], initial=0.0
-        )
-        Ct[k] = tmp[-1]
+    exp_term = np.exp(-Kt * (t[:, None] - t[None, :]) / ve)
+    exp_term = np.tril(exp_term, k=0)
+    integral_term = cumulative_trapezoid(exp_term * Cp[None, :], t, axis=1, initial=0)
+    Ct = vp * Cp + integral_term[:, -1]
+
+    return Ct
+
+
+def Tofts_Integral(t, Cp, Kt=0.1, ve=0.1):
+    exp_term = np.exp(-Kt * (t[:, None] - t[None, :]) / ve)
+    exp_term = np.tril(exp_term, k=0)
+    integral_term = cumulative_trapezoid(exp_term * Cp[None, :], t, axis=1, initial=0)
+    Ct = integral_term[:, -1]
     return Ct
 
 
 def FIT_single_voxel(ct, ca, time):
-    def fit_func(t, kt, ve, vp):
+    def fit_func_ET(t, kt, ve, vp):
         return Extended_Tofts_Integral(t, ca, Kt=kt, ve=ve, vp=vp)
 
-    ini = [0.1, 0.1, 0.2]  # Initial guess for [Kt, ve, vp]
-    popt, pcov = curve_fit(fit_func, time, ct, p0=ini)
-    return popt, pcov
+    ini = [0.1, 0.1, 0.2]
+    popt, pcov = curve_fit(fit_func_ET, time, ct, p0=ini)
+    return popt
 
 
-def extended_tofts_model(ca, c_tiss, t, datashape):
-    """
-    Extended Tofts model for DCE-MRI DRO
-    ca -- arterial input function
-    c_tiss -- 4D array of tissue concentration data (x, y, z, time)
-    dt -- time interval between samples
-    datashape -- shape of the data
-    """
+def FIT_single_voxel_tofts(ct, ca, time):
+    def fit_func_T(t, kt, ve):
+        return Tofts_Integral(t, ca, Kt=kt, ve=ve)
+
+    ini = [0.1, 0.1]
+    popt, pcov = curve_fit(fit_func_T, time, ct, p0=ini)
+    return popt
+
+
+def process_voxel(j, i, k, c_tiss, ca, t, type="ET"):
+    ct = c_tiss[j, i, k, :]
+    if type == "ET":
+        popt = FIT_single_voxel(ct, ca, t)
+    elif type == "T":
+        popt = FIT_single_voxel_tofts(ct, ca, t)
+    return j, i, k, popt
+
+
+def extended_tofts_model(ca, c_tiss, t):
     ktrans = np.zeros(c_tiss.shape[:-1])
     ve = np.zeros(c_tiss.shape[:-1])
     vp = np.zeros(c_tiss.shape[:-1])
 
-    for k in range(0, datashape[2]):
-        print(f"Processing slice {k+1}/{datashape[2]}")
-        for j in range(0, datashape[0]):
-            print(f"Processing row {j+1}/{datashape[0]}")
-            for i in range(0, datashape[1]):
-                ct = c_tiss[j, i, k, :]
-                popt, _ = FIT_single_voxel(ct, ca, t)
-                ktrans[j, i, k], ve[j, i, k], vp[j, i, k] = popt
+    tasks = [
+        (j, i, k, c_tiss, ca, t)
+        for k in range(c_tiss.shape[2])
+        for j in range(c_tiss.shape[0])
+        for i in range(c_tiss.shape[1])
+    ]
+
+    with mp.Pool(processes=mp.cpu_count()) as pool:
+        results = pool.starmap(process_voxel, tasks)
+
+    for j, i, k, popt in results:
+        ktrans[j, i, k], ve[j, i, k], vp[j, i, k] = popt
 
     return ktrans, ve, vp
 
@@ -154,9 +151,28 @@ def extended_tofts_model_1vox(ca, c_tiss, t):
 
     ct = c_tiss[:]
     popt, _ = FIT_single_voxel(ct, ca, t)
-    ktrans, ve, vp = popt
 
-    return ktrans, ve, vp
+    return popt
+
+
+def tofts_model(ca, c_tiss, t):
+    ktrans = np.zeros(c_tiss.shape[:-1])
+    ve = np.zeros(c_tiss.shape[:-1])
+
+    tasks = [
+        (j, i, k, c_tiss, ca, t, "T")
+        for k in range(c_tiss.shape[2])
+        for j in range(c_tiss.shape[0])
+        for i in range(c_tiss.shape[1])
+    ]
+
+    with mp.Pool(processes=mp.cpu_count()) as pool:
+        results = pool.starmap(process_voxel, tasks)
+
+    for j, i, k, popt in results:
+        ktrans[j, i, k], ve[j, i, k] = popt
+
+    return ktrans, ve
 
 
 def ForwardsModTofts(K1, k2, Vp, Cp, dt):
@@ -184,3 +200,44 @@ def ForwardsModTofts(K1, k2, Vp, Cp, dt):
 
         Ctiss[:, :, :, tk] = np.matmul(B, A).squeeze()
     return Ctiss
+
+
+def ForwardsModTofts_1vox(K1, k2, Vp, Cp, dt):
+    # To be carried out as matmul C=BA
+    # Where C is the output Ctiss and B the parameters
+    # With A a matrix of cumulative integrals
+
+    t = Cp.shape[0]
+
+    Ctiss = np.zeros(t)
+
+    b1 = K1 + k2 * Vp  # define combined parameter
+    B = np.zeros((1, 3))
+    A = np.zeros((3, 1))
+
+    B[0][0] = b1
+    B[0][1] = -k2
+    B[0][2] = Vp
+
+    for tk in range(1, t):
+        A[0][0] = trapz(Cp[0 : tk + 1], dx=dt)
+        A[1][0] = trapz(Ctiss[0 : tk + 1], dx=dt)
+        A[2][0] = Cp[tk]
+
+        Ctiss[tk] = np.matmul(B, A).squeeze()
+    return Ctiss
+
+
+def forward_extended_tofts(K1, Ve, Vp, Ca, time):
+    x, y, z = K1.shape
+    t = Ca.shape[0]
+    c_tiss = np.zeros((y, x, z, t))
+
+    for k in range(0, K1.shape[2]):
+        for j in range(0, K1.shape[0]):
+            for i in range(0, K1.shape[1]):
+                c_tiss[i, j, k, :] = osipi.extended_tofts(
+                    time, Ca, K1[i, j, k], Ve[i, j, k], Vp[i, j, k]
+                )
+
+    return c_tiss
