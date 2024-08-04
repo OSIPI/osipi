@@ -70,6 +70,10 @@ nav:
           - DRO functions:
               - read_mri_from_dicoms: references/dro/dro_read_mri.md
               - signal_enhancement: references/dro/signal_enhance.md
+              - Fitting:
+                  - Modified Tofts: references/dro/fit_models/modified_tofts.md
+                  - Extended Tofts: references/dro/fit_models/extended_tofts.md
+                  - Forward Tofts: references/dro/fit_models/forward_modified_tofts.md
       - Models:
           - references/models/index.md
           - AIF models:
