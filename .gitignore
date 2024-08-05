@@ -9,5 +9,5 @@ junit
 docs/build
 docs/source/generated
 docs/source/sg_execution_times.rst
-docs-mk/site
-docs-mk/docs/generated
+docs/site
+docs/docs/generated
