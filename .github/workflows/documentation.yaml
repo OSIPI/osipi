@@ -34,7 +34,6 @@ jobs:
       - name: Build MkDocs documentation
         run: |
           poetry run mkdocs build
-        working-directory: docs
 
       - name: Publish to gh-pages
         uses: peaceiris/actions-gh-pages@v3
