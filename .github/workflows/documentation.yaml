@@ -41,7 +41,7 @@ jobs:
         with:
           publish_branch: gh-pages  # default: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/site
+          publish_dir: site
           force_orphan: true
 
       - run: echo "Status of job = ${{ job.status }}."
