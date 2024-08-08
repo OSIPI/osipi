@@ -29,7 +29,7 @@ jobs:
           poetry-version: '1.8.3'
 
       - name: Install dependencies
-        run: poetry install --extras "tests docs"
+        run: poetry install
 
       - name: Build MkDocs documentation
         run: |
