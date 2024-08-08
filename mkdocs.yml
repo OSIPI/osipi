@@ -1,0 +1,109 @@
+site_name: ''
+repo_url: https://github.com/OSIPI/pypi
+theme:
+  name: material
+  logo: img/osipi.png
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - header.autohide
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.sections
+    - navigation.footer
+    - navigation.indexes
+    - toc.integrate
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
+    - content.code.select
+    - tables
+  language: en
+  palette:
+    - scheme: default
+      primary: teal
+      accent: purple
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to dark mode
+      primary: teal
+      accent: lime
+
+plugins:
+  - mkdocstrings:
+      default_handler: python
+  - gallery:
+      examples_dirs: docs/examples
+      gallery_dirs: docs/generated/gallery
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Home: index.md
+  - User Guide:
+      - Overview: user-guide/index.md
+      - Installation: user-guide/install.md
+      - Simulating data:
+          - Overview: user-guide/simulate.md
+          - Simulate: user-guide/gen_aif.md
+
+  - About: about/index.md
+  - Developer Guide: contribution/index.md
+  - References:
+      - references/index.md
+      - Index:
+          - references/models/index.md
+          - AIF models:
+              - references/models/aif_models/index.md
+              - osipi.aif_parker: references/models/aif_models/aif_parker.md
+              - osipi.aif_georgiou: references/models/aif_models/aif_georgiou.md
+              - osipi.aif_weinmann: references/models/aif_models/aif_weinmann.md
+          - Tissue models :
+              - references/models/tissue_models/index.md
+              - osipi.tofts: references/models/tissue_models/tofts.md
+              - osipi.extended_tofts: references/models/tissue_models/extended_tofts.md
+
+  - Examples: generated/gallery
+
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+  - meta
+  - toc:
+      permalink: true
+  - tables
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - pymdownx.tabbed:
+        alternate_style: true
+  - attr_list

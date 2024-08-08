@@ -112,7 +112,7 @@ readme = "README.md"
 python = "^3.9"
 numpy = "^1.21.2"
 scipy = "^1.7.3"
-matplotlib = "^3.4.3"
+matplotlib = "3.9.0"
 requests = "^2.32.3"
 
 [tool.poetry.group.dev.dependencies]
@@ -138,3 +138,7 @@ sphinxcontrib-qthelp = "^1.0.7"
 sphinxcontrib-serializinghtml = "^1.1.10"
 sphinx-gallery = "^0.16.0"
 rstcheck = {extras = ["sphinx"], version = "^6.2.1"}
+mkdocs = "^1.6.0"
+mkdocs-material = {extras = ["imaging"], version = "^9.5.27"}
+mkdocs-gallery = "^0.10.1"
+mkdocstrings = {extras = ["crystal", "python"], version = "^0.25.1"}
