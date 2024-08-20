@@ -1,5 +1,6 @@
 import logging
 import os
+import subprocess
 import sys
 import venv
 
@@ -40,7 +41,12 @@ def create_venv():
     venv_dir = os.path.join(os.getcwd(), ".venv")
     if not os.path.exists(venv_dir):
         logging.info("Creating virtual environment...")
-        os.system("py -3 -m venv .venv")
+        try:
+            python_executable = "python3" if sys.platform != "win32" else "python"
+            subprocess.check_call([python_executable, "-m", "venv", venv_dir])
+            logging.info("Virtual environment created successfully.")
+        except subprocess.CalledProcessError as e:
+            logging.error(f"Failed to create virtual environment: {e}")
     else:
         logging.info("Virtual environment already exists.")
 

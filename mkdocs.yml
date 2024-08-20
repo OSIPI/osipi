@@ -41,7 +41,9 @@ theme:
 
 plugins:
   - mkdocstrings:
-      default_handler: python
+      handlers:
+        python:
+          paths: ["src"]
   - gallery:
       examples_dirs: docs/examples
       gallery_dirs: docs/generated/gallery
