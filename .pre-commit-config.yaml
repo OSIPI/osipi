@@ -3,6 +3,7 @@ repos:
     rev: v0.4.8  # Use the latest version
     hooks:
       - id: ruff
+        args: ["--fix"]
       - id: ruff-format
   - repo: https://github.com/pycqa/flake8
     rev: 7.0.0
