@@ -35,41 +35,23 @@ We welcome contributions to OSIPI! To contribute, follow these steps:
 
 ## Development Setup
 
-There are two ways to set up your development environment for this project. You can choose the one that suits you best.
+We used poetry to manage the dependencies for this project.
 
-### Option 1: Using venv and requirements.txt
+### Using Poetry
 
-1. Clone the repository to your local machine.
-2. Navigate to the project directory.
-3. Create a virtual environment using `venv` by running the following command:
+1. If you don't have Poetry installed, you can install it using pip:
 
     ```bash
-    python -m venv venv
+    pip install poetry
     ```
 
-4. Activate the virtual environment:
-
-    - On Windows, run:
-
-        ```bash
-        .\venv\Scripts\activate
-        ```
-
-    - On Unix or MacOS, run:
-
-        ```bash
-        source venv/bin/activate
-        ```
-
-5. Install the required packages from `requirements.txt`:
+    Or, if you're using a Unix-based system, you can install it using the following command:
 
     ```bash
-    pip install -r requirements.txt
+    curl -sSL https://install.python-poetry.org | python3 -
     ```
 
-### Option 2: Using Poetry
-
-1. If you don't have Poetry installed, you can install it by following the instructions on the [official Poetry website](https://python-poetry.org/docs/#installation).
+    For more information on installing Poetry, see the [official documentation](https://python-poetry.org/docs/)
 2. Clone the repository to your local machine.
 3. Navigate to the project directory.
 4. Install the project dependencies with Poetry:
@@ -100,11 +82,10 @@ There are two ways to set up your development environment for this project. You 
     ```bash
     pre-commit run --all-files
     ```
-
-After this, `pre-commit` will automatically run the hooks each time you commit changes to the project. If any of the hooks fail,
-you'll need to fix the issues and then try committing your changes again.
-
-Also some of hooks are auto fixed if you see file was modified after running `pre-commit run --all-files` then you can add the changes and commit again.
+**NOTE:**
+- Next times you commit changes, `pre-commit` will run the hooks automatically.
+- Some of hooks automatically fix/format your files to specific standards. If you see that some of your files have been changed after a commit, don't worry! It's just `pre-commit` doing its job.
+  Add the changes and commit them again.
 
 For more details on how to contribute, visit the [Developer Guide](https://osipi.github.io/pypi/contribution/#making-a-pull-request-pr-to-the-osipi-package).
 #### As mentioned before, this project is still in the early stages of development. If you'd like to contribute by adding functionality, we recommend opening an issue first to discuss your proposed functionality and the best ways to implement it.
