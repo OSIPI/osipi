@@ -35,7 +35,7 @@ We welcome contributions to OSIPI! To contribute, follow these steps:
 
 ## Development Setup
 
-We used poetry to manage the dependencies for this project.
+We use poetry to manage the dependencies for this project.
 
 ### Using Poetry
 
@@ -83,8 +83,8 @@ We used poetry to manage the dependencies for this project.
     pre-commit run --all-files
     ```
 **NOTE:**
-- Next times you commit changes, `pre-commit` will run the hooks automatically.
-- Some of hooks automatically fix/format your files to specific standards. If you see that some of your files have been changed after a commit, don't worry! It's just `pre-commit` doing its job.
+- Next time you commit changes, `pre-commit` will run the hooks automatically.
+- Some hooks automatically fix/format your files to specific standards. If you see that some of your files have been changed after a commit, don't worry! It's just `pre-commit` doing its job.
   Add the changes and commit them again.
 
 For more details on how to contribute, visit the [Developer Guide](https://osipi.github.io/pypi/contribution/#making-a-pull-request-pr-to-the-osipi-package).
