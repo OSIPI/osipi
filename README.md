@@ -70,6 +70,16 @@ We use poetry to manage the dependencies for this project.
 
 `pre-commit` is a tool that we use to maintain high-quality code in this project. It runs checks (hooks) on your code each time you commit changes. Here's how to set it up:
 
+## Pre-Commit Hooks
+Pre-commit hooks are scripts that run automatically before a commit is made in a Git repository. They help catch common issues like syntax errors, formatting problems, and other code quality issues.
+
+### Example hooks
+- `black` - a code formatter that automatically formats your code to a consistent style.
+- `flake8` - a linter that checks your code for common errors and style issues.
+- `trailing-whitespace` - a hook that removes trailing whitespace from your files.
+- `ruff` - also a linter that checks your code for common errors and style issues.
+
+We are using pre-commit configuration file to define our hooks. You can find the configuration file [here](https://github.com/OSIPI/osipi/blob/main/.pre-commit-config.yaml)
 
 1. In the project directory, run the following command to install the `pre-commit` hooks:
 
