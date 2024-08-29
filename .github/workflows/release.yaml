@@ -3,6 +3,8 @@ name: Publish to PyPI
 
 on:
   workflow_dispatch:
+    branches:
+      - main
     inputs:
       version:
         description: 'Version to release'
@@ -19,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install Python 3.10
         uses: actions/setup-python@v4
@@ -44,8 +46,8 @@ jobs:
       - name: Create tag
         run: |
           current_version=$(python -c "import toml; print(toml.load('pyproject.toml')['tool']['poetry']['version'])")
-          git tag current_version
-          git push origin current_version
+          git tag $current_version
+          git push origin $current_version
 
       - name: Publish to PyPI
         env:
