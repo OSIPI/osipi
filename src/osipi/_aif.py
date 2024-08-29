@@ -36,9 +36,9 @@ def aif_parker(t: np.ndarray, BAT: float = 0.0, Hct: float = 0.0) -> np.ndarray:
 
         Calculate AIF and plot
 
-        >>> t = np.arange(0, 6*60, 1)
+        >>> t = np.arange(0, 6 * 60, 1)
         >>> ca = osipi.aif_parker(t)
-        >>> plt.plot(t,ca)
+        >>> plt.plot(t, ca)
         >>> plt.show()
 
     """
@@ -107,9 +107,9 @@ def aif_georgiou(t: np.ndarray, BAT: float = 0.0) -> np.ndarray:
 
         Calculate AIF and plot
 
-        >>> t = np.arange(0, 6*60, 0.1)
+        >>> t = np.arange(0, 6 * 60, 0.1)
         >>> ca = osipi.aif_georgiou(t)
-        >>> plt.plot(t,ca)
+        >>> plt.plot(t, ca)
         >>> plt.show()
 
     """
@@ -161,9 +161,9 @@ def aif_weinmann(t: np.ndarray, BAT: float = 0.0) -> np.ndarray:
 
         Calculate AIF and plot
 
-        >>> t = np.arange(0, 6*60, 0.1)
+        >>> t = np.arange(0, 6 * 60, 0.1)
         >>> ca = osipi.aif_weinmann(t)
-        >>> plt.plot(t,ca)
+        >>> plt.plot(t, ca)
 
     """
 

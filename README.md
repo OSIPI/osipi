@@ -74,10 +74,11 @@ We use poetry to manage the dependencies for this project.
 Pre-commit hooks are scripts that run automatically before a commit is made in a Git repository. They help catch common issues like syntax errors, formatting problems, and other code quality issues.
 
 ### Example hooks
-- `black` - a code formatter that automatically formats your code to a consistent style.
 - `flake8` - a linter that checks your code for common errors and style issues.
 - `trailing-whitespace` - a hook that removes trailing whitespace from your files.
 - `ruff` - also a linter that checks your code for common errors and style issues.
+- `end of file fixer` - a hook that ensures that all files end with a newline.
+- `check yaml`
 
 We are using pre-commit configuration file to define our hooks. You can find the configuration file [here](https://github.com/OSIPI/osipi/blob/main/.pre-commit-config.yaml)
 

@@ -27,8 +27,7 @@ def tofts(
             extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
         Ta (float, optional):
             Arterial delay time,
-            i.e., difference in onset time between tissue curve and AIF in units of sec.
-            Defaults to 30 seconds. [OSIPI code Q.PH1.007]
+            i.e., difference in onset time between tissue curve and AIF in units of sec. Defaults to 30 seconds. [OSIPI code Q.PH1.007]
         discretization_method (str, optional): Defines the discretization method. Options include
 
             – 'conv': Numerical convolution (default) [OSIPI code G.DI1.001]
@@ -63,15 +62,15 @@ def tofts(
 
         Calculate AIF:
 
-        >>> t = np.arange(0, 6*60, 1)
+        >>> t = np.arange(0, 6 * 60, 1)
         >>> ca = osipi.aif_parker(t)
 
         Calculate tissue concentrations and plot:
 
-        >>> Ktrans = 0.6 # in units of 1/min
-        >>> ve = 0.2 # takes values from 0 to 1
+        >>> Ktrans = 0.6  # in units of 1/min
+        >>> ve = 0.2  # takes values from 0 to 1
         >>> ct = osipi.tofts(t, ca, Ktrans, ve)
-        >>> plt.plot(t, ca, 'r', t, ct, 'b')
+        >>> plt.plot(t, ca, "r", t, ct, "b")
 
     """
     if not np.allclose(np.diff(t), np.diff(t)[0]):
@@ -208,8 +207,7 @@ def extended_tofts(
         `tofts`
 
     References:
-        - Lexicon url:
-            https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#indicator-kinetic-models
+        - Lexicon url: https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#indicator-kinetic-models
         - Lexicon code: M.IC1.005
         - OSIPI name: Extended Tofts Model
         - Adapted from contributions by: LEK_UoEdinburgh_UK, ST_USyd_AUS, MJT_UoEdinburgh_UK
@@ -227,16 +225,16 @@ def extended_tofts(
 
         Calculate AIF
 
-        >>> t = np.arange(0, 6*60, 0.1)
+        >>> t = np.arange(0, 6 * 60, 0.1)
         >>> ca = osipi.aif_parker(t)
 
         Calculate tissue concentrations and plot
 
-        >>> Ktrans = 0.6 # in units of 1/min
-        >>> ve = 0.2 # takes values from 0 to 1
-        >>> vp = 0.3 # takes values from 0 to 1
+        >>> Ktrans = 0.6  # in units of 1/min
+        >>> ve = 0.2  # takes values from 0 to 1
+        >>> vp = 0.3  # takes values from 0 to 1
         >>> ct = osipi.extended_tofts(t, ca, Ktrans, ve, vp)
-        >>> plt.plot(t, ca, 'r', t, ct, 'b')
+        >>> plt.plot(t, ca, "r", t, ct, "b")
 
     """
 
