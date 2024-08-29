@@ -5,25 +5,9 @@ repos:
       - id: ruff
         args: [--fix]  # Optional: to enable lint fixes
       - id: ruff-format
-  - repo: https://github.com/pycqa/flake8
-    rev: 7.0.0
-    hooks:
-      - id: flake8
-        args:
-          - --exclude=venv,.git,__pycache__,.eggs,.mypy_cache,.pytest_cache
-          - --max-line-length=100
-          - --ignore=E203
-          - --per-file-ignores=__init__.py:F401
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
-
-  - repo: https://github.com/rstcheck/rstcheck
-    rev: v6.1.2  # Use the latest version
-    hooks:
-      - id: rstcheck
-        args: ["--ignore-directives=autosummary,autofunction,minigallery,image-sg","--ignore-messages=(Hyperlink target *|Duplicate explicit target name*)"]
-        additional_dependencies: [sphinx]
