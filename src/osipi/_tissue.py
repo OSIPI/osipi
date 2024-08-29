@@ -334,3 +334,121 @@ def extended_tofts(
                 ct = ct_func(t)
 
     return ct
+
+
+def two_cxm(
+    t: np.ndarray,
+    ca: np.ndarray,
+    ps: float,
+    fp: float,
+    ve: float,
+    vp: float,
+    Ta: float = 30.0,
+    discretization_method: str = "conv",
+) -> np.ndarray:
+    """The 2CX model allows bi-directional exchange of indicator between vascular and
+     extra vascular extracellular compartments. Indicator is assumed to be
+        well mixed within each compartment.
+
+    Args:
+        t (np.ndarray): array of time points in units of sec.[OSIPI code Q.GE1.004]
+        ca (np.ndarray): Arterial concentrations in mM for each
+            time point in t.[OSIPI code Q.IC1.001]
+        ps (float): Permeability surface area product in units of 1/min. [OSIPI code Q.PH1.009]
+        fp (float): Plasma flow in units of mL/min/100g. [OSIPI code Q.PH1.010]
+        ve (float): Relative volume fraction of the
+            extracellular extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
+        vp (float): Relative volyme fraction of the plasma
+            compartment (p). [OSIPI code Q.PH1.001.[p]]
+        Ta (float, optional): Arterial delay time, i.e., difference in onset time between
+          tissue curve and AIF in units of sec. Defaults to 30 seconds. [OSIPI code Q.PH1.007]
+        discretization_method (str, optional): Defines the discretization method. Options include
+            – 'conv': Numerical convolution (default) [OSIPI code G.DI1.001]
+            – 'exp': Exponential convolution [OSIPI code G.DI1.006]
+    """
+
+    if not np.allclose(np.diff(t), np.diff(t)[0]):
+        warnings.warn(
+            ("Non-uniform time spacing detected. Time array may be resampled."), stacklevel=2
+        )
+
+    K_plus = (
+        1
+        / 2
+        * (
+            (fp + ps) / vp
+            + ps / vp
+            + np.sqrt((fp + ps) / vp + ps / vp) ** 2
+            - 4 * fp * ps / (vp * ve)
+        )
+    )
+    K_minus = (
+        1
+        / 2
+        * (
+            (fp + ps) / vp
+            + ps / vp
+            - np.sqrt((fp + ps) / vp + ps / vp) ** 2
+            - 4 * fp * ps / (vp * ve)
+        )
+    )
+    E_ = (K_plus + fp / vp) / (K_plus + K_minus)
+
+    exp_k_plus = np.exp(-K_plus * t)
+    exp_k_minus = np.exp(-K_minus * t)
+
+    imp = fp * exp_k_plus + E_ * (exp_k_plus - exp_k_minus)
+
+    # Shift the AIF by the arterial delay time (if not zero)
+    if Ta != 0:
+        f = interp1d(
+            t,
+            ca,
+            kind="linear",
+            bounds_error=False,
+            fill_value=0,
+        )
+        ca = (t > Ta) * f(t - Ta)
+
+    if np.allclose(np.diff(t), np.diff(t)[0]):
+        # Convolve impulse response with AIF
+        convolution = np.convolve(ca, imp) * t[1]
+
+        ct = fp * convolution
+
+    else:
+        # Resample at the smallest spacing
+        dt = np.min(np.diff(t))
+        t_resampled = np.linspace(t[0], t[-1], int((t[-1] - t[0]) / dt))
+        ca_func = interp1d(
+            t,
+            ca,
+            kind="quadratic",
+            bounds_error=False,
+            fill_value=0,
+        )
+        imp_func = interp1d(
+            t,
+            imp,
+            kind="quadratic",
+            bounds_error=False,
+            fill_value=0,
+        )
+        ca_resampled = ca_func(t_resampled)
+        imp_resampled = imp_func(t_resampled)
+        # Convolve impulse response with AIF
+        convolution = np.convolve(ca_resampled, imp_resampled) * t_resampled[1]
+
+        # Discard unwanted points and make sure time spacing is correct
+        ct_resampled = fp * convolution[0 : len(t_resampled)]
+        # Restore time grid spacing
+        ct_func = interp1d(
+            t_resampled,
+            ct_resampled,
+            kind="quadratic",
+            bounds_error=False,
+            fill_value=0,
+        )
+        ct = ct_func(t)
+
+    return ct
