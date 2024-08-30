@@ -38,7 +38,7 @@ jobs:
 
       - name: Bump version
         run: |
-          python handle_versioning.py ${{ github.event.inputs.version }}
+          poetry run python handle_versioning.py ${{ github.event.inputs.version }}
           git add pyproject.toml
           git commit -m "Bump version to ${{ github.event.inputs.version }}"
           git push
