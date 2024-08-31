@@ -62,6 +62,9 @@ jobs:
         run: |
           poetry build
 
+        permissions:
+          id-token: write
+
       - name: Publish to TestPyPI or PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
