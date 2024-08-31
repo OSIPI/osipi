@@ -31,7 +31,7 @@ line-length = 100
 
 [tool.poetry]
 name = "osipi"
-version = "0.1.2"
+version = "1.0.0"
 description = "The authorative python package for perfusion MRI"
 authors = [ "Luis Torres <luistorres@flywheel.io>", "Steven Sourbron <s.sourborn@sheffield.ac.uk>",]
 readme = "README.md"
@@ -47,9 +47,7 @@ quote-style = "double"
 indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "auto"
-
 docstring-code-format = true
-
 docstring-code-line-length = 100
 
 [tool.poetry.dependencies]
