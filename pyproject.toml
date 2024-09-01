@@ -1,112 +1,56 @@
-# https://python-poetry.org/docs/pyproject
-# minimal required information
-
 [project]
 name = "osipi"
 version = "0.1.2"
-dependencies = [
-  "numpy",
-  "scipy"
-]
-
-# optional information
-
+dependencies = [ "numpy", "scipy",]
 description = "The authorative python package for perfusion MRI"
 readme = "README.md"
-authors = [
-  { name = "Luis Torres", email = "luistorres@flywheel.io" },
-  { name = "Steven Sourbron", email = "s.sourbron@sheffield.ac.uk" },
-  ]
-license = { file = "LICENSE" }
-classifiers = [
-  # How mature is this project? Common values are
-  #   3 - Alpha
-  #   4 - Beta
-  #   5 - Production/Stable
-  'Development Status :: 3 - Alpha',
-
-  # Indicate who your project is intended for
-  'Intended Audience :: Developers',
-  'Intended Audience :: Science/Research',
-  'Topic :: Scientific/Engineering',
-  'Operating System :: OS Independent',
-
-  'License :: OSI Approved :: Apache Software License',
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3"
-]
-keywords = ['python', "medical imaging", "perfusion", "MRI"]
-
+classifiers = [ "Development Status :: 3 - Alpha", "Intended Audience :: Developers", "Intended Audience :: Science/Research", "Topic :: Scientific/Engineering", "Operating System :: OS Independent", "License :: OSI Approved :: Apache Software License", "Programming Language :: Python", "Programming Language :: Python :: 3",]
+keywords = [ "python", "medical imaging", "perfusion", "MRI",]
 requires-python = ">=3.6"
+[[project.authors]]
+name = "Luis Torres"
+email = "luistorres@flywheel.io"
+
+[[project.authors]]
+name = "Steven Sourbron"
+email = "s.sourbron@sheffield.ac.uk"
+
+[project.license]
+file = "LICENSE"
 
 [project.urls]
-"Homepage" = "https://osipi.github.io/pypi"
-
-[tool.setuptools.packages.find]
-where = ["src"]
+Homepage = "https://osipi.github.io/pypi"
 
 [project.optional-dependencies]
-tests = [
-  "pytest",
-  "matplotlib",
-]
-docs = [
-    "sphinx",
-    "pydata-sphinx-theme",
-    "myst-parser",
-    "sphinx-copybutton",
-    "sphinx-design",
-    "sphinx-remove-toctrees",
-    "autodocsumm",
-    "docutils",
-    "sphinxcontrib-applehelp",
-    "sphinxcontrib-devhelp",
-    "sphinxcontrib-htmlhelp",
-    "sphinxcontrib-jsmath",
-    "sphinxcontrib-qthelp",
-    "sphinxcontrib-serializinghtml",
-    "sphinx-gallery",
-]
+tests = [ "pytest", "matplotlib",]
+docs = [ "sphinx", "pydata-sphinx-theme", "myst-parser", "sphinx-copybutton", "sphinx-design", "sphinx-remove-toctrees", "autodocsumm", "docutils", "sphinxcontrib-applehelp", "sphinxcontrib-devhelp", "sphinxcontrib-htmlhelp", "sphinxcontrib-jsmath", "sphinxcontrib-qthelp", "sphinxcontrib-serializinghtml", "sphinx-gallery",]
 
 [tool.ruff]
-# Exclude a variety of commonly ignored directories.
-exclude = [
-    ".direnv", ".eggs", ".git", ".git-rewrite","__init__.py",
-    ".mypy_cache", ".nox", ".pants.d", ".pyenv", ".pytest_cache", ".pytype",
-    ".ruff_cache", ".svn", ".venv", ".vscode", "__pypackages__", "_build",
-    "buck-out", "build", "dist", "site-packages", "venv",
-]
-
+exclude = [ ".direnv", ".eggs", ".git", ".git-rewrite", "__init__.py", ".mypy_cache", ".nox", ".pants.d", ".pyenv", ".pytest_cache", ".pytype", ".ruff_cache", ".svn", ".venv", ".vscode", "__pypackages__", "_build", "buck-out", "build", "dist", "site-packages", "venv",]
 line-length = 100
-
-
-[tool.ruff.lint]
-# Enable Pyflakes (`F`), a subset of the pycodestyle (`E`) codes, and isort (`I`).
-select = ["E4", "E7", "E9", "F", "I"]
-ignore = []
-fixable = ["ALL"]
-unfixable = []
-
-[tool.ruff.format]
-# Like Black, use double quotes for strings.
-quote-style = "double"
-
-indent-style = "space"
-
-skip-magic-trailing-comma = false
-
-line-ending = "auto"
-
-docstring-code-format = false
-
-docstring-code-line-length = "dynamic"
 
 [tool.poetry]
 name = "osipi"
 version = "0.1.2"
 description = "The authorative python package for perfusion MRI"
-authors = ["Luis Torres <luistorres@flywheel.io>", "Steven Sourbron <s.sourborn@sheffield.ac.uk>"]
+authors = [ "Luis Torres <luistorres@flywheel.io>", "Steven Sourbron <s.sourborn@sheffield.ac.uk>",]
 readme = "README.md"
+
+[tool.ruff.lint]
+select = [ "E4", "E7", "E9", "F", "I",]
+ignore = []
+fixable = [ "ALL",]
+unfixable = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+docstring-code-format = true
+
+docstring-code-line-length = 100
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -114,6 +58,11 @@ numpy = "^1.21.2"
 scipy = "^1.7.3"
 matplotlib = "3.9.0"
 requests = "^2.32.3"
+semantic-version = "^2.10.0"
+toml = "^0.10.2"
+
+[tool.setuptools.packages.find]
+where = [ "src",]
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^7.0.0"
@@ -125,8 +74,17 @@ pytest-cov = "^5.0.0"
 autodocsumm = "^0.2.12"
 docutils = "^0.21.2"
 myst-parser = "^3.0.1"
-rstcheck = {extras = ["sphinx"], version = "^6.2.1"}
 mkdocs = "^1.6.0"
-mkdocs-material = {extras = ["imaging"], version = "^9.5.27"}
 mkdocs-gallery = "^0.10.1"
-mkdocstrings = {extras = ["crystal", "python"], version = "^0.25.1"}
+
+[tool.poetry.group.docs.dependencies.rstcheck]
+extras = [ "sphinx",]
+version = "^6.2.1"
+
+[tool.poetry.group.docs.dependencies.mkdocs-material]
+extras = [ "imaging",]
+version = "^9.5.27"
+
+[tool.poetry.group.docs.dependencies.mkdocstrings]
+extras = [ "crystal", "python",]
+version = "^0.25.1"
