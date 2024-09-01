@@ -401,7 +401,7 @@ def two_cxm(
         # Convolve impulse response with AIF
         convolution = np.convolve(ca, imp) * t[1]
 
-        ct = Fp * convolution
+        ct = Fp * convolution[0 : len(t)]
 
     else:
         # Resample at the smallest spacing
