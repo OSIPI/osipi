@@ -148,7 +148,7 @@ def test_tissue_2compartment_model():
     t = np.arange(0, 6 * 60, 1)
     ca = osipi.aif_parker(t)
     ct = osipi.two_cxm(t, ca, E=0.15, Fp=0.2, Ve=0.2, Vp=0.3)
-    assert math.isclose(np.trapz(ct, t)/np.trapz(ca, t), 0.2 + 0.3, abs_tol=1e-1)
+    assert math.isclose(np.trapz(ct, t) / np.trapz(ca, t), 0.2 + 0.3, abs_tol=1e-1)
 
 
 if __name__ == "__main__":

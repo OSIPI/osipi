@@ -363,6 +363,45 @@ def two_cxm(
         discretization_method (str, optional): Defines the discretization method. Options include
             – 'conv': Numerical convolution (default) [OSIPI code G.DI1.001]
             – 'exp': Exponential convolution [OSIPI code G.DI1.006]
+
+    Returns:
+        np.ndarray: Tissue concentrations in mM for each time point in t.
+
+    See Also:
+        `tofts`, `extended_tofts`
+
+    References:
+        - Lexicon url:
+            https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#2CXM
+        - Lexicon code: M.IC1.009
+        - OSIPI name: Two Compartment Model
+        - Adapted from contributions by: LEK_UoEdinburgh_UK, ST_USyd_AUS, MJT_UoEdinburgh_UK
+
+    Example:
+
+            Create an array of time points covering 6 min in steps of 1 sec,
+            calculate the Parker AIF at these time points, calculate tissue concentrations
+            using the 2CX model and plot the results.
+
+            Import packages:
+
+            >>> import matplotlib.pyplot as plt
+            >>> import osipi
+
+            Calculate AIF:
+
+            >>> t = np.arange(0, 6 * 60, 1)
+            >>> ca = osipi.aif_parker(t)
+
+            Calculate tissue concentrations and plot:
+
+            >>> E = 0.15  # in units of mL/min/100g
+            >>> Fp = 0.2  # in units of mL/min/100g
+            >>> Ve = 0.2  # takes values from 0 to 1
+            >>> Vp = 0.3  # takes values from 0 to 1
+            >>> ct = osipi.two_cxm(t, ca, E, Fp, Ve, Vp)
+            >>> plt.plot(t, ca, "r", t, ct, "b")
+
     """
 
     if not np.allclose(np.diff(t), np.diff(t)[0]):
