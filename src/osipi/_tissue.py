@@ -339,10 +339,10 @@ def extended_tofts(
 def two_cxm(
     t: np.ndarray,
     ca: np.ndarray,
-    ps: float,
-    fp: float,
-    ve: float,
-    vp: float,
+    E: float,
+    Fp: float,
+    Ve: float,
+    Vp: float,
     Ta: float = 30.0,
     discretization_method: str = "conv",
 ) -> np.ndarray:
@@ -354,11 +354,11 @@ def two_cxm(
         t (np.ndarray): array of time points in units of sec.[OSIPI code Q.GE1.004]
         ca (np.ndarray): Arterial concentrations in mM for each
             time point in t.[OSIPI code Q.IC1.001]
-        ps (float): Permeability surface area product in units of 1/min. [OSIPI code Q.PH1.009]
-        fp (float): Plasma flow in units of mL/min/100g. [OSIPI code Q.PH1.010]
-        ve (float): Relative volume fraction of the
+        E (float): Extraction fraction in units of mL/min/100g.
+        Fp (float): Plasma flow in units of mL/min/100g. [OSIPI code Q.PH1.003]
+        Ve (float): Relative volume fraction of the
             extracellular extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
-        vp (float): Relative volyme fraction of the plasma
+        Vp (float): Relative volyme fraction of the plasma
             compartment (p). [OSIPI code Q.PH1.001.[p]]
         Ta (float, optional): Arterial delay time, i.e., difference in onset time between
           tissue curve and AIF in units of sec. Defaults to 30 seconds. [OSIPI code Q.PH1.007]
@@ -372,32 +372,19 @@ def two_cxm(
             ("Non-uniform time spacing detected. Time array may be resampled."), stacklevel=2
         )
 
-    K_plus = (
-        1
-        / 2
-        * (
-            (fp + ps) / vp
-            + ps / vp
-            + np.sqrt((fp + ps) / vp + ps / vp) ** 2
-            - 4 * fp * ps / (vp * ve)
-        )
-    )
-    K_minus = (
-        1
-        / 2
-        * (
-            (fp + ps) / vp
-            + ps / vp
-            - np.sqrt((fp + ps) / vp + ps / vp) ** 2
-            - 4 * fp * ps / (vp * ve)
-        )
-    )
-    E_ = (K_plus + fp / vp) / (K_plus + K_minus)
+    Tp = Vp / Fp * (1 - E)
+    Te = Ve * (1 - E) / (Fp * E)
+    Tb = Vp / Fp
+
+    K_plus = 0.5 * ((1 / Tp) + (1 / Te) + np.sqrt(((1 / Tp) + (1 / Te)) ** 2 - (4 / (Te * Tb))))
+    K_minus = 0.5 * ((1 / Tp) + (1 / Te) - np.sqrt(((1 / Tp) + (1 / Te)) ** 2 - (4 / (Te * Tb))))
+
+    A = (K_plus - (1 / Tb)) / (K_plus - K_minus)
 
     exp_k_plus = np.exp(-K_plus * t)
     exp_k_minus = np.exp(-K_minus * t)
 
-    imp = fp * exp_k_plus + E_ * (exp_k_plus - exp_k_minus)
+    imp = exp_k_plus + A * (exp_k_minus - exp_k_plus)
 
     # Shift the AIF by the arterial delay time (if not zero)
     if Ta != 0:
@@ -414,7 +401,7 @@ def two_cxm(
         # Convolve impulse response with AIF
         convolution = np.convolve(ca, imp) * t[1]
 
-        ct = fp * convolution
+        ct = Fp * convolution
 
     else:
         # Resample at the smallest spacing
@@ -440,7 +427,7 @@ def two_cxm(
         convolution = np.convolve(ca_resampled, imp_resampled) * t_resampled[1]
 
         # Discard unwanted points and make sure time spacing is correct
-        ct_resampled = fp * convolution[0 : len(t_resampled)]
+        ct_resampled = Fp * convolution[0 : len(t_resampled)]
         # Restore time grid spacing
         ct_func = interp1d(
             t_resampled,

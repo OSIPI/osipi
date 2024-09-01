@@ -124,6 +124,13 @@ def test_tissue_extended_tofts():
     assert np.allclose(ct_conv, ca * 0.3, rtol=1e-4, atol=1e-3)
 
 
+def test_tissue_2compartment_model():
+    t = np.arange(0, 6 * 60, 1, dtype=float)
+    ca = osipi.aif_parker(t)
+    ct = osipi.two_cxm(t, ca, E=0.15, Fp=0.2, Ve=0.2, Vp=0.3)
+    assert np.round(np.max(ct)) < np.round(np.max(ca))
+
+
 if __name__ == "__main__":
     test_tissue_tofts()
     test_tissue_extended_tofts()
