@@ -14,3 +14,4 @@ docs-mk/docs/generated
 src/osipi/DRO/data
 src/osipi/DRO/__pycache__/
 src/osipi/DRO/ROI_saved/
+output

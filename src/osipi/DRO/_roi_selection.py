@@ -52,9 +52,9 @@ def roi(signal, slice_num, data_shape, save=False):
     return mask4d, roivox, lasso
 
 
-def ICfromROI(E, mask, roivox, numaxis):
-    Eroi = (
+def ic_from_roi(E, mask, roi_vox, numaxis):
+    E_roi = (
         np.sum(mask * E, axis=tuple(range(0, numaxis)))
-    ) / roivox  # calculates average roi signal enhancement
+    ) / roi_vox  # calculates average roi signal enhancement
 
-    return Eroi
+    return E_roi
