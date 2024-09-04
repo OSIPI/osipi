@@ -60,7 +60,7 @@ def save_dicoms(outdir, original_dicom, signal, patient_id_num, study_instance_u
     z = 0
     for entries in new_dicoms:
         t = 0
-        for snap in new_dicoms["{}".format(entries)]:
+        for snap in new_dicoms[z]:
             SOPInstanceUID = pydicom.uid.generate_uid(prefix=uidprefix)
             snap.PatientID = patient_id_num
             snap.SOPInstanceUID = SOPInstanceUID
