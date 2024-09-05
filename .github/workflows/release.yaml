@@ -58,19 +58,21 @@ jobs:
           new_version=$(poetry run python handle_versioning.py read)
           git commit -m "Bump version to $new_version"
           git push
-          echo "::set-output name=latest_version::$new_version"
+          echo "latest_version=$new_version" >> $GITHUB_ENV
 
       - name: Generate Release Notes
         id: release-notes
-        uses: github-release-notes/github-release-notes@v1
+        uses: docker://decathlon/release-notes-generator-action:2.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          version: ${{ steps.bump_version.outputs.latest_version }}
+          OUTPUT_FOLDER: temp_release_notes
+          USE_MILESTONE_TITLE: "true"
 
       - name: Create tag
         id: create_tags
         run: |
-          current_version=${{steps.bump_version.outputs.latest_version}}
+          current_version=${{env.latest_version}}
           git tag $current_version
           git push origin $current_version
 
@@ -80,9 +82,9 @@ jobs:
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-            tag_name: ${{ steps.bump_version.outputs.latest_version}}
-            release_name: Release ${{ steps.bump_version.outputs.latest_version}}
-            body: ${{ steps.release-notes.outputs.release_notes }}
+            tag_name: ${{env.latest_version}}
+            release_name: Release ${{env.latest_version}}
+            body: ${{ steps.release-notes.outputs.notes }}
             draft: false
             prerelease: false
 
