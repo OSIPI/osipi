@@ -51,7 +51,6 @@ jobs:
       - name: Bump version
         id: bump_version
         run: |
-          echo "::set-output name=previous_version::$(poetry run python handle_versioning.py read)"
           poetry run python handle_versioning.py ${{ github.event.inputs.version }}
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
@@ -61,17 +60,12 @@ jobs:
           git push
           echo "::set-output name=latest_version::$new_version"
 
-      - name: Get merged PRs
-        id: pr_notes
-        run: |
-          latest_tag=${{ steps.bumb_version.outputs.latest_version }}
-          previous_tag=${{ steps.bumb_version.outputs.previous_version }}
-          if [ -z "$previous_tag" ]; then
-            pr_descriptions=$(git log $latest_tag --merges --pretty=format:"%s%n%b" --grep='Merge pull request')
-          else
-            pr_descriptions=$(git log $previous_tag..$latest_tag --merges --pretty=format:"%s%n%b" --grep='Merge pull request')
-          fi
-          echo "::set-output name=pr_descriptions::$pr_descriptions"
+      - name: Generate Release Notes
+        id: release-notes
+        uses: github-release-notes/github-release-notes@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          version: ${{ steps.bump_version.outputs.latest_version }}
 
       - name: Create tag
         id: create_tags
@@ -81,16 +75,14 @@ jobs:
           git push origin $current_version
 
       - name: Create release
+        id: create_release
         uses: actions/create-release@v1
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             tag_name: ${{ steps.bump_version.outputs.latest_version}}
             release_name: Release ${{ steps.bump_version.outputs.latest_version}}
-            body: |
-                Added Features:
-
-                ${{steps.pr_notes.outputs.pr_descriptions}}
+            body: ${{ steps.release-notes.outputs.release_notes }}
             draft: false
             prerelease: false
 
