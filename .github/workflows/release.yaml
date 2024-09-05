@@ -57,11 +57,38 @@ jobs:
           git commit -m "Bump version to ${{ github.event.inputs.version }}"
           git push
 
+      - name: Get merged PRs
+        id: pr_notes
+        run: |
+            last_tag = $(git describe --tags --abbrev=0 HEAD^)
+            if [ -z "$last_tag" ]; then
+                last_tag=$(git rev-list --max-parents=0 HEAD)
+                merged_prs=$(git log --oneline --merges --pretty=format:"* %s" $last_tag..HEAD | grep -i 'Merge pull request')
+            else
+                merged_prs="No previous tag found, this is the first release"
+            fi
+            echo "::set-output name=merged_prs::$merged_prs"
+
       - name: Create tag
         run: |
           current_version=$( poetry run python -c "import toml; print(toml.load('pyproject.toml')['tool']['poetry']['version'])")
           git tag $current_version
           git push origin $current_version
+          echo "::set-output name=version::$current_version"
+
+      - name: Create release
+        uses: actions/create-release@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+            tag_name: ${{ github.event.outputs.version }}
+            release_name: Release ${{ github.event.outputs.version }}
+            body: |
+                Added Features:
+
+                ${{github.events.outputs.merged_prs}}
+            draft: false
+            prerelease: false
 
       - name: Build package
         run: |
