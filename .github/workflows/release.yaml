@@ -59,7 +59,7 @@ jobs:
           new_version=$(poetry run python handle_versioning.py read)
           git commit -m "Bump version to $new_version"
           git push
-          echo "::set-output name=latest_version::$new_version
+          echo "::set-output name=latest_version::$new_version"
 
       - name: Get merged PRs
         id: pr_notes
