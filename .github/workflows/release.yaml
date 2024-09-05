@@ -49,44 +49,48 @@ jobs:
         run: poetry install
 
       - name: Bump version
+        id: bump_version
         run: |
+          echo "::set-output name=previous_version::$(poetry run python handle_versioning.py read)"
           poetry run python handle_versioning.py ${{ github.event.inputs.version }}
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           git add pyproject.toml
-          git commit -m "Bump version to ${{ github.event.inputs.version }}"
+          new_version=$(poetry run python handle_versioning.py read)
+          git commit -m "Bump version to $new_version"
           git push
+          echo "::set-output name=latest_version::$new_version
 
       - name: Get merged PRs
         id: pr_notes
         run: |
-            last_tag = $(git describe --tags --abbrev=0 HEAD^)
-            if [ -z "$last_tag" ]; then
-                last_tag=$(git rev-list --max-parents=0 HEAD)
-                merged_prs=$(git log --oneline --merges --pretty=format:"* %s" $last_tag..HEAD | grep -i 'Merge pull request')
-            else
-                merged_prs="No previous tag found, this is the first release"
-            fi
-            echo "::set-output name=merged_prs::$merged_prs"
+          latest_tag=${{ steps.bumb_version.outputs.latest_version }}
+          previous_tag=${{ steps.bumb_version.outputs.previous_version }}
+          if [ -z "$previous_tag" ]; then
+            pr_descriptions=$(git log $latest_tag --merges --pretty=format:"%s%n%b" --grep='Merge pull request')
+          else
+            pr_descriptions=$(git log $previous_tag..$latest_tag --merges --pretty=format:"%s%n%b" --grep='Merge pull request')
+          fi
+          echo "::set-output name=pr_descriptions::$pr_descriptions"
 
       - name: Create tag
+        id: create_tags
         run: |
-          current_version=$( poetry run python -c "import toml; print(toml.load('pyproject.toml')['tool']['poetry']['version'])")
+          current_version=$(steps.bump_version.outputs.latest_version)
           git tag $current_version
           git push origin $current_version
-          echo "::set-output name=version::$current_version"
 
       - name: Create release
         uses: actions/create-release@v1
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-            tag_name: ${{ github.event.outputs.version }}
-            release_name: Release ${{ github.event.outputs.version }}
+            tag_name: ${{ steps.bump_version.outputs.latest_version}}
+            release_name: Release ${{ steps.bump_version.outputs.latest_version}}
             body: |
                 Added Features:
 
-                ${{github.events.outputs.merged_prs}}
+                ${{steps.pr_notes.outputs.pr_descriptions}}
             draft: false
             prerelease: false
 
