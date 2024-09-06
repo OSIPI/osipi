@@ -67,7 +67,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           OUTPUT_FOLDER: temp_release_notes
-          USE_MILESTONE_TITLE: "true"
+          MILESTONE_NUMBER: ${{ github.event.milestone.number || '' }}
 
       - name: Create tag
         id: create_tags
