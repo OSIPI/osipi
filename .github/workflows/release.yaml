@@ -26,6 +26,8 @@ on:
 permissions:
   contents: write
   id-token: write
+  pull-requests: read
+  issues: read
 
 
 jobs:
@@ -60,14 +62,11 @@ jobs:
           git push
           echo "latest_version=$new_version" >> $GITHUB_ENV
 
-      - name: Generate Release Notes
+      - name: Generate release notes
         id: release-notes
-        uses: docker://decathlon/release-notes-generator-action:2.0.1
+        uses: release-drafter/release-drafter@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          OUTPUT_FOLDER: temp_release_notes
-          MILESTONE_NUMBER: ${{ github.event.milestone.number || '' }}
 
       - name: Create tag
         id: create_tags
@@ -84,7 +83,7 @@ jobs:
         with:
             tag_name: ${{env.latest_version}}
             release_name: Release ${{env.latest_version}}
-            body: ${{ steps.release-notes.outputs.notes }}
+            body: ${{ steps.release-notes.outputs.release_notes }}
             draft: false
             prerelease: false
 
