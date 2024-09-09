@@ -39,7 +39,7 @@ if __name__ == "__main__":
     command = sys.argv[1]
     if command == "read":
         current_version = read_version()
-        print(f"Current version is {current_version}")
+        print(f"{current_version}")
 
     else:
         bump_version(command)
