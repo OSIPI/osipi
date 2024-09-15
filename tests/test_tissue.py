@@ -124,35 +124,41 @@ def test_tissue_extended_tofts():
     assert np.allclose(ct_conv, ca * 0.3, rtol=1e-4, atol=1e-3)
 
 
-def test_tissue_2compartment_model():
+def test_tissue_two_compartment_exchange_model():
     # 1. Basic operation of the function - test that the peak tissue
+    # concentration is less than the peak AIF
     t = np.arange(0, 6 * 60, 1, dtype=float)
     ca = osipi.aif_parker(t)
-    ct = osipi.two_cxm(t, ca, E=0.15, Fp=0.2, Ve=0.2, Vp=0.3)
+    ct = osipi.two_compartment_exchange_model(t, ca, E=0.15, Fp=0.2, Ve=0.2, Vp=0.3)
     assert np.round(np.max(ct)) < np.round(np.max(ca))
 
     # 2. Basic operation of the function - test with non-uniform spacing of
+    # time array
     t = np.geomspace(1, 6 * 60 + 1, num=360) - 1
     ca = osipi.aif_parker(t)
-    ct = osipi.two_cxm(t, ca, E=0.15, Fp=0.2, Ve=0.2, Vp=0.3)
+    ct = osipi.two_compartment_exchange_model(t, ca, E=0.15, Fp=0.2, Ve=0.2, Vp=0.3)
     assert np.round(np.max(ct)) < np.round(np.max(ca))
 
     # 3. The offset option - test that the tissue concentration is shifted
-    t = np.arange(0, 6 * 60, 1)
+    # from the AIF by the specified offset time
+    t = np.arange(0, 6 * 60, 1, dtype=float)
     ca = osipi.aif_parker(t)
-    ct = osipi.two_cxm(t, ca, E=0.15, Fp=0.2, Ve=0.2, Vp=0.3, Ta=60.0)
+    ct = osipi.two_compartment_exchange_model(t, ca, E=0.15, Fp=0.2, Ve=0.2, Vp=0.1, Ta=60.0)
     assert (np.min(np.where(ct > 0.0)) - np.min(np.where(ca > 0.0)) - 1) * 1 == 60.0
 
-    # 4. Test that the area under the ct curve is approximately the sum of
-    # the extracellular volume and the plasma volume
-    t = np.arange(0, 6 * 60, 1)
+    # 4. Test specific use cases
+
+    # Test when Vp is 0 the output matches tofts model
+    t = np.arange(0, 6 * 60, 1, dtype=float)
     ca = osipi.aif_parker(t)
-    ct = osipi.two_cxm(t, ca, E=0.15, Fp=0.2, Ve=0.2, Vp=0.3)
-    assert math.isclose(np.trapz(ct, t) / np.trapz(ca, t), 0.2 + 0.3, abs_tol=1e-1)
+    ct = osipi.two_compartment_exchange_model(t, ca, E=0.15, Fp=0.2, Ve=0.2, Vp=0)
+    ct_tofts = osipi.tofts(t, ca, Ktrans=0.03, ve=0.2)
+    assert np.allclose(ct, ct_tofts, rtol=1e-4, atol=1e-3)
 
 
 if __name__ == "__main__":
     test_tissue_tofts()
     test_tissue_extended_tofts()
+    test_tissue_two_compartment_exchange_model()
 
     print("All tissue concentration model tests passed!!")

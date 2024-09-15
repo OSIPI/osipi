@@ -1,6 +1,7 @@
 # osipi.Two Compartment Exchange Model
 
-::: osipi.two_cxm
+::: osipi.two_compartment_exchange_model
+
 
 ## Example using `osipi.two_cxm`
 

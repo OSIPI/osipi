@@ -8,7 +8,7 @@ from ._aif import (
 from ._tissue import (
     tofts,
     extended_tofts,
-    two_cxm
+    two_compartment_exchange_model
 )
 
 from ._signal import (

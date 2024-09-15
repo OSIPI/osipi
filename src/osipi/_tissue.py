@@ -334,7 +334,7 @@ def extended_tofts(
     return ct
 
 
-def two_cxm(
+def two_compartment_exchange_model(
     t: np.ndarray,
     ca: np.ndarray,
     E: float,
@@ -342,9 +342,8 @@ def two_cxm(
     Ve: float,
     Vp: float,
     Ta: float = 30.0,
-    discretization_method: str = "conv",
 ) -> np.ndarray:
-    """The 2CX model allows bi-directional exchange of indicator between vascular and
+    """The 2 compartment exchange model allows bi-directional exchange of indicator between vascular and
      extra vascular extracellular compartments. Indicator is assumed to be
         well mixed within each compartment.
 
@@ -352,8 +351,8 @@ def two_cxm(
         t (np.ndarray): array of time points in units of sec.[OSIPI code Q.GE1.004]
         ca (np.ndarray): Arterial concentrations in mM for each
             time point in t.[OSIPI code Q.IC1.001]
-        E (float): Extraction fraction in units of mL/min/100g.
-        Fp (float): Plasma flow in units of mL/min/100g. [OSIPI code Q.PH1.003]
+        E (float): Extraction fraction in units of mL/min/100mL.
+        Fp (float): Plasma flow in units of mL/min/100mL. [OSIPI code Q.PH1.003]
         Ve (float): Relative volume fraction of the
             extracellular extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
         Vp (float): Relative volyme fraction of the plasma
@@ -395,14 +394,24 @@ def two_cxm(
 
             Calculate tissue concentrations and plot:
 
-            >>> E = 0.15  # in units of mL/min/100g
-            >>> Fp = 0.2  # in units of mL/min/100g
-            >>> Ve = 0.2  # takes values from 0 to 1
+            >>> E = 0.15  # in units of mL/min/100mL
+            >>> Fp = 5  # in units of mL/min/100mL
+            >>> Ve = 0.1  # takes values from 0 to 1
             >>> Vp = 0.3  # takes values from 0 to 1
-            >>> ct = osipi.two_cxm(t, ca, E, Fp, Ve, Vp)
+            >>> ct = osipi.two_compartment_exchange_model(t, ca, E, Fp, Ve, Vp)
             >>> plt.plot(t, ca, "r", t, ct, "b")
 
     """
+
+    if Vp == 0:
+        Ktrans = E * Fp
+
+        ct = tofts(t, ca, Ktrans, Ve)
+        return ct
+
+    # Convert units
+    t /= 60.0
+    Ta /= 60.0
 
     if not np.allclose(np.diff(t), np.diff(t)[0]):
         warnings.warn(
