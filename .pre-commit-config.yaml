@@ -19,3 +19,5 @@ repos:
         entry: poetry run python check_coverage.py
         language: system
         pass_filenames: false
+        args:
+          - --check
