@@ -27,10 +27,10 @@ ca = osipi.aif_parker(t)
 # Plot the tissue concentrations for an extracellular volume fraction
 # of 0.2, plasma volume fraction of 0.3, extraction fraction of 0.15
 # and flow rate of 0.2 ml/min
-Ps = 0.15  # Extraction fraction
-Fp = 20  # Flow rate in ml/min
-Ve = 0.1  # Extracellular volume fraction
-Vp = 0.02  # Plasma volume fraction
+Ps = 0.05  # Permeability surface area product in ml/min
+Fp = 10  # Flow rate in ml/min
+Ve = 0.2  # Extracellular volume fraction
+Vp = 0.01  # Plasma volume fraction
 ct = osipi.two_compartment_exchange_model(t, ca, Fp=Fp, Ps=Ps, Ve=Ve, Vp=Vp)
 plt.plot(t, ct, "b-", label=f" Fp = {Fp},Ps = {Ps}, Ve = {Ve}, Vp = {Vp}")
 plt.xlabel("Time (sec)")

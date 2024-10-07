@@ -3,7 +3,7 @@
 ::: osipi.two_compartment_exchange_model
 
 
-## Example using `osipi.two_cxm`
+## Example using `osipi.two_compartment_exchange_model`
 
 <figure class="mkd-glr-thumbcontainer" tooltip="Simulating tissue concentrations from two compartment exchange model with different settings.">
     <img alt="The Two Compartment Exchange Model" src="..\..\..\..\generated\gallery\tissue\images\thumb\mkd_glr_plot_two_cxm_thumb.png" />
