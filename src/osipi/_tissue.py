@@ -2,6 +2,7 @@ import warnings
 
 import numpy as np
 from scipy.interpolate import interp1d
+from scipy.signal import convolve
 
 from ._convolution import exp_conv
 
@@ -337,151 +338,38 @@ def extended_tofts(
 def two_compartment_exchange_model(
     t: np.ndarray,
     ca: np.ndarray,
-    E: float,
     Fp: float,
+    Ps: float,
     Ve: float,
     Vp: float,
     Ta: float = 30.0,
 ) -> np.ndarray:
-    """The 2 compartment exchange model allows bi-directional exchange of indicator between vascular and
-     extra vascular extracellular compartments. Indicator is assumed to be
-        well mixed within each compartment.
+    fp_per_s = Fp / (60.0 * 100.0)
+    ps_per_s = Ps / 60.0
+    v = Ve + Vp
+    T = v / fp_per_s
+    tc = Vp / fp_per_s
+    te = Ve / ps_per_s
 
-    Args:
-        t (np.ndarray): array of time points in units of sec.[OSIPI code Q.GE1.004]
-        ca (np.ndarray): Arterial concentrations in mM for each
-            time point in t.[OSIPI code Q.IC1.001]
-        E (float): Extraction fraction in units of mL/min/100mL.
-        Fp (float): Plasma flow in units of mL/min/100mL. [OSIPI code Q.PH1.003]
-        Ve (float): Relative volume fraction of the
-            extracellular extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
-        Vp (float): Relative volyme fraction of the plasma
-            compartment (p). [OSIPI code Q.PH1.001.[p]]
-        Ta (float, optional): Arterial delay time, i.e., difference in onset time between
-          tissue curve and AIF in units of sec. Defaults to 30 seconds. [OSIPI code Q.PH1.007]
-        discretization_method (str, optional): Defines the discretization method. Options include
-            – 'conv': Numerical convolution (default) [OSIPI code G.DI1.001]
-            – 'exp': Exponential convolution [OSIPI code G.DI1.006]
+    sig_p = ((T + te) + np.sqrt((T + te) ** 2 - 4 * tc * te)) / (2 * tc * te)
+    sig_n = ((T + tc) - np.sqrt((T + tc) ** 2 - 4 * tc * te)) / (2 * tc * te)
 
-    Returns:
-        np.ndarray: Tissue concentrations in mM for each time point in t.
+    irf_cp = (
+        Vp
+        * sig_p
+        * sig_n
+        * ((1 - te * sig_n) * np.exp(-t * sig_n) + (te * sig_p - 1.0) * np.exp(-t * sig_p))
+        / (sig_p - sig_n)
+    )
 
-    See Also:
-        `tofts`, `extended_tofts`
+    irf_ce = Ve * sig_p * sig_n * (np.exp(-t * sig_n) - np.exp(-t * sig_p)) / (sig_p - sig_n)
+    irf_cp[[0]] /= 2
+    irf_ce[[0]] /= 2
 
-    References:
-        - Lexicon url:
-            https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#2CXM
-        - Lexicon code: M.IC1.009
-        - OSIPI name: Two Compartment Model
-        - Adapted from contributions by: LEK_UoEdinburgh_UK, ST_USyd_AUS, MJT_UoEdinburgh_UK
+    dt = np.min(np.diff(t))
 
-    Example:
+    Cp = dt * convolve(ca, irf_cp, mode="full", method="auto")[: len(t)]
+    Ce = dt * convolve(ca, irf_ce, mode="full", method="auto")[: len(t)]
 
-            Create an array of time points covering 6 min in steps of 1 sec,
-            calculate the Parker AIF at these time points, calculate tissue concentrations
-            using the 2CX model and plot the results.
-
-            Import packages:
-
-            >>> import matplotlib.pyplot as plt
-            >>> import osipi
-
-            Calculate AIF:
-
-            >>> t = np.arange(0, 6 * 60, 1)
-            >>> ca = osipi.aif_parker(t)
-
-            Calculate tissue concentrations and plot:
-
-            >>> E = 0.15  # in units of mL/min/100mL
-            >>> Fp = 5  # in units of mL/min/100mL
-            >>> Ve = 0.1  # takes values from 0 to 1
-            >>> Vp = 0.3  # takes values from 0 to 1
-            >>> ct = osipi.two_compartment_exchange_model(t, ca, E, Fp, Ve, Vp)
-            >>> plt.plot(t, ca, "r", t, ct, "b")
-
-    """
-
-    if Vp == 0:
-        Ktrans = E * Fp
-
-        ct = tofts(t, ca, Ktrans, Ve)
-        return ct
-
-    # Convert units
-    t /= 60.0
-    Ta /= 60.0
-
-    if not np.allclose(np.diff(t), np.diff(t)[0]):
-        warnings.warn(
-            ("Non-uniform time spacing detected. Time array may be resampled."), stacklevel=2
-        )
-
-    Tp = Vp / Fp * (1 - E)
-    Te = Ve * (1 - E) / (Fp * E)
-    Tb = Vp / Fp
-
-    K_plus = 0.5 * ((1 / Tp) + (1 / Te) + np.sqrt(((1 / Tp) + (1 / Te)) ** 2 - (4 / (Te * Tb))))
-    K_minus = 0.5 * ((1 / Tp) + (1 / Te) - np.sqrt(((1 / Tp) + (1 / Te)) ** 2 - (4 / (Te * Tb))))
-
-    A = (K_plus - (1 / Tb)) / (K_plus - K_minus)
-
-    exp_k_plus = np.exp(-K_plus * t)
-    exp_k_minus = np.exp(-K_minus * t)
-
-    imp = exp_k_plus + A * (exp_k_minus - exp_k_plus)
-
-    # Shift the AIF by the arterial delay time (if not zero)
-    if Ta != 0:
-        f = interp1d(
-            t,
-            ca,
-            kind="linear",
-            bounds_error=False,
-            fill_value=0,
-        )
-        ca = (t > Ta) * f(t - Ta)
-
-    if np.allclose(np.diff(t), np.diff(t)[0]):
-        # Convolve impulse response with AIF
-        convolution = np.convolve(ca, imp) * t[1]
-
-        ct = Fp * convolution[0 : len(t)]
-
-    else:
-        # Resample at the smallest spacing
-        dt = np.min(np.diff(t))
-        t_resampled = np.linspace(t[0], t[-1], int((t[-1] - t[0]) / dt))
-        ca_func = interp1d(
-            t,
-            ca,
-            kind="quadratic",
-            bounds_error=False,
-            fill_value=0,
-        )
-        imp_func = interp1d(
-            t,
-            imp,
-            kind="quadratic",
-            bounds_error=False,
-            fill_value=0,
-        )
-        ca_resampled = ca_func(t_resampled)
-        imp_resampled = imp_func(t_resampled)
-        # Convolve impulse response with AIF
-        convolution = np.convolve(ca_resampled, imp_resampled) * t_resampled[1]
-
-        # Discard unwanted points and make sure time spacing is correct
-        ct_resampled = Fp * convolution[0 : len(t_resampled)]
-        # Restore time grid spacing
-        ct_func = interp1d(
-            t_resampled,
-            ct_resampled,
-            kind="quadratic",
-            bounds_error=False,
-            fill_value=0,
-        )
-        ct = ct_func(t)
-
-    return ct
+    Ct = Cp + Ce
+    return Ct
