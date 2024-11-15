@@ -59,6 +59,9 @@ nav:
       - Simulating data:
           - Overview: user-guide/simulate.md
           - Simulate: user-guide/gen_aif.md
+      - Fitting data:
+          - Overview: user-guide/fitting.md
+          - Fit: user-guide/fit_tissue.md
 
   - About: about/index.md
   - Developer Guide: contribution/index.md
