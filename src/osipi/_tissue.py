@@ -339,9 +339,9 @@ def two_compartment_exchange_model(
     t: np.ndarray,
     ca: np.ndarray,
     Fp: float,
-    Ps: float,
-    Ve: float,
-    Vp: float,
+    PS: float,
+    ve: float,
+    vp: float,
     Ta: float = 30.0,
 ) -> np.ndarray:
     """Two compartment exchange model
@@ -350,22 +350,50 @@ def two_compartment_exchange_model(
     between the plasma and extracellular compartments(EES) is permitted.
 
     Args:
-        t: 1D array of times(s).
-        ca: Arterial concentrations in mM for each time point in t.
-        Fp: Blood plasma flow rate into a unit tissue volume in ml/min.
-        Ps: Permeability surface area product in ml/min.
-        Ve: Extracellular volume fraction.
-        Vp: Plasma volume fraction.
-        Ta: Arterial delay time, i.e., difference in onset time between tissue curve and AIF in units of sec.
+        t: 1D array of times(s). [OSIPI code is Q.GE1.004]
+        ca: Arterial concentrations in mM for each time point in t. [OSIPI code is Q.IC1.001.[a]]
+        Fp: Blood plasma flow rate into a unit tissue volume in ml/min. [OSIPI code is Q.PH1.002]
+        PS: Permeability surface area product in ml/min. [OSIPI code is Q.PH1.004]
+        ve: Extracellular volume fraction. [OSIPI code Q.PH1.001.[e]]
+        vp: Plasma volume fraction. [OSIPI code Q.PH1.001.[p]]
+        Ta: Arterial delay time, i.e.,
+            difference in onset time between tissue curve and AIF in units of sec. [OSIPI code Q.PH1.007]
 
     Returns:
         Ct: Tissue concentrations in mM
+
+    See Also:
+        `extended_tofts`
 
     References:
         - Lexicon url: https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#indicator-kinetic-models
         - Lexicon code: M.IC1.009
         - OSIPI name: Two Compartment Exchange Model
         - Adapted from contributions by: MJT_UoEdinburgh_UK
+
+    Example:
+        Create an array of time points covering 6 min in steps of 1 sec,
+        calculate the Parker AIF at these time points, calculate tissue concentrations
+        using the Two Compartment Exchange model and plot the results.
+
+        >>> import matplotlib.pyplot as plt
+        >>> import osipi
+
+        Calculate AIF
+
+        >>> t = np.arange(0, 6 * 60, 0.1)
+        >>> ca = osipi.aif_parker(t)
+
+        Plot the tissue concentrations for an extracellular volume fraction
+        of 0.2, plasma volume fraction of 0.1, permeability serface area of 5 ml/min
+        and flow rate of 10 ml/min
+
+        >>> PS = 5  # Permeability surface area product in ml/min
+        >>> Fp = 10  # Flow rate in ml/min
+        >>> ve = 0.2  # Extracellular volume fraction
+        >>> vp = 0.1  # Plasma volume fraction
+        >>> ct = osipi.two_compartment_exchange_model(t, ca, Fp, PS, ve, vp)
+        >>> plt.plot(t, ca, 'r', t, ct, 'g')
 
     """
     if not np.allclose(np.diff(t), np.diff(t)[0]):
@@ -376,40 +404,51 @@ def two_compartment_exchange_model(
 
     # Convert units
     fp_per_s = Fp / (60.0 * 100.0)
-    ps_per_s = Ps / 60.0
+    ps_per_s = PS / (60.0 * 100.0)
 
     # Calculate the impulse response function
-    v = Ve + Vp
+    v = ve + vp
 
     # Mean transit time
     T = v / fp_per_s
-    tc = Vp / fp_per_s
-    te = Ve / ps_per_s
+    tc = vp / fp_per_s
+    te = ve / ps_per_s
+
+    upsample_factor = 1
+    n = t.size
+    n_upsample = (n - 1) * upsample_factor + 1
+    t_upsample = np.linspace(t[0], t[-1], n_upsample)
+    tau_upsample = t_upsample - t[0]
 
     sig_p = ((T + te) + np.sqrt((T + te) ** 2 - 4 * tc * te)) / (2 * tc * te)
-    sig_n = ((T + tc) - np.sqrt((T + tc) ** 2 - 4 * tc * te)) / (2 * tc * te)
+    sig_n = ((T + te) - np.sqrt((T + te) ** 2 - 4 * tc * te)) / (2 * tc * te)
 
     # Calculate the impulse response function for the plasma compartment and EES
 
     irf_cp = (
-        Vp
+        vp
         * sig_p
         * sig_n
-        * ((1 - te * sig_n) * np.exp(-t * sig_n) + (te * sig_p - 1.0) * np.exp(-t * sig_p))
+        * ((1 - te * sig_n) * np.exp(-tau_upsample * sig_n) + (te * sig_p - 1.0) * np.exp(-tau_upsample * sig_p))
         / (sig_p - sig_n)
     )
 
-    irf_ce = Ve * sig_p * sig_n * (np.exp(-t * sig_n) - np.exp(-t * sig_p)) / (sig_p - sig_n)
+    irf_ce = ve * sig_p * sig_n * (np.exp(-tau_upsample * sig_n) - np.exp(-tau_upsample * sig_p)) / (sig_p - sig_n)
 
     irf_cp[[0]] /= 2
     irf_ce[[0]] /= 2
 
-    dt = np.min(np.diff(t))
+    dt = np.min(np.diff(t)) / upsample_factor
 
     # get concentration in plasma and EES
 
     Cp = dt * convolve(ca, irf_cp, mode="full", method="auto")[: len(t)]
     Ce = dt * convolve(ca, irf_ce, mode="full", method="auto")[: len(t)]
+
+    t_upsample = np.linspace(t[0], t[-1], n_upsample)
+
+    Cp = np.interp(t, t_upsample, Cp)
+    Ce = np.interp(t,t_upsample, Ce)
 
     # get tissue concentration
     Ct = Cp + Ce
