@@ -393,7 +393,7 @@ def two_compartment_exchange_model(
         >>> ve = 0.2  # Extracellular volume fraction
         >>> vp = 0.1  # Plasma volume fraction
         >>> ct = osipi.two_compartment_exchange_model(t, ca, Fp, PS, ve, vp)
-        >>> plt.plot(t, ca, 'r', t, ct, 'g')
+        >>> plt.plot(t, ca, "r", t, ct, "g")
 
     """
     if not np.allclose(np.diff(t), np.diff(t)[0]):
@@ -429,11 +429,20 @@ def two_compartment_exchange_model(
         vp
         * sig_p
         * sig_n
-        * ((1 - te * sig_n) * np.exp(-tau_upsample * sig_n) + (te * sig_p - 1.0) * np.exp(-tau_upsample * sig_p))
+        * (
+            (1 - te * sig_n) * np.exp(-tau_upsample * sig_n)
+            + (te * sig_p - 1.0) * np.exp(-tau_upsample * sig_p)
+        )
         / (sig_p - sig_n)
     )
 
-    irf_ce = ve * sig_p * sig_n * (np.exp(-tau_upsample * sig_n) - np.exp(-tau_upsample * sig_p)) / (sig_p - sig_n)
+    irf_ce = (
+        ve
+        * sig_p
+        * sig_n
+        * (np.exp(-tau_upsample * sig_n) - np.exp(-tau_upsample * sig_p))
+        / (sig_p - sig_n)
+    )
 
     irf_cp[[0]] /= 2
     irf_ce[[0]] /= 2
@@ -448,7 +457,7 @@ def two_compartment_exchange_model(
     t_upsample = np.linspace(t[0], t[-1], n_upsample)
 
     Cp = np.interp(t, t_upsample, Cp)
-    Ce = np.interp(t,t_upsample, Ce)
+    Ce = np.interp(t, t_upsample, Ce)
 
     # get tissue concentration
     Ct = Cp + Ce
