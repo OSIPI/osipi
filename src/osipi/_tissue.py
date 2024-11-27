@@ -396,6 +396,11 @@ def two_compartment_exchange_model(
         >>> plt.plot(t, ca, "r", t, ct, "g")
 
     """
+    if vp == 0:
+        E = 1 - np.exp(-PS / Fp)
+        Ktrans = E * Fp
+        return tofts(t, ca, Ktrans, ve, Ta, discretization_method="conv")
+
     if not np.allclose(np.diff(t), np.diff(t)[0]):
         warnings.warn(
             ("Non-uniform time spacing detected. Time array may be" " resampled."),
@@ -449,8 +454,17 @@ def two_compartment_exchange_model(
 
     dt = np.min(np.diff(t)) / upsample_factor
 
-    # get concentration in plasma and EES
+    if Ta != 0:
+        f = interp1d(
+            t,
+            ca,
+            kind="linear",
+            bounds_error=False,
+            fill_value=0,
+        )
+        ca = (t > Ta) * f(t - Ta)
 
+    # get concentration in plasma and EES
     Cp = dt * convolve(ca, irf_cp, mode="full", method="auto")[: len(t)]
     Ce = dt * convolve(ca, irf_ce, mode="full", method="auto")[: len(t)]
 

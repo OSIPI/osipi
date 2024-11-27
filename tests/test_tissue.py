@@ -125,7 +125,33 @@ def test_tissue_extended_tofts():
 
 
 def test_tissue_two_compartment_exchange_model():
-    pass
+    # 1. Basic operation of the function - test that the peak tissue
+    # concentration is less than the peak AIF
+    t = np.linspace(0, 6 * 60, 360)
+    ca = osipi.aif_parker(t)
+    ct = osipi.two_compartment_exchange_model(t, ca, Fp=10, PS=5, ve=0.2, vp=0.3)
+    assert np.round(np.max(ct)) < np.round(np.max(ca))
+
+    # 2. Basic operation of the function - test with non-uniform spacing of
+    # time array
+    t = np.geomspace(1, 6 * 60 + 1, num=360) - 1
+    ca = osipi.aif_parker(t)
+    ct = osipi.two_compartment_exchange_model(t, ca, Fp=10, PS=5, ve=0.2, vp=0.3)
+    assert np.round(np.max(ct)) < np.round(np.max(ca))
+
+    # 3. The offset option - test that the tissue concentration is shifted
+    # from the AIF by the specified offset time
+    t = np.arange(0, 6 * 60, 1)
+    ca = osipi.aif_parker(t)
+    ct = osipi.two_compartment_exchange_model(t, ca, Fp=10, PS=5, ve=0.2, vp=0.3, Ta=60.0)
+    assert (np.min(np.where(ct > 0.0)) - np.min(np.where(ca > 0.0)) - 1) * 1 == 60.0
+
+    # 4. Handle case where VP is 0, it should behave like the tofts model
+    t = np.arange(0, 6 * 60, 1)
+    ca = osipi.aif_parker(t)
+    ct = osipi.two_compartment_exchange_model(t, ca, Fp=10, PS=5, ve=0.2, vp=0)
+    ct_tofts = osipi.tofts(t, ca, Ktrans=3.93, ve=0.2)
+    assert np.allclose(ct, ct_tofts, rtol=1e-4, atol=1e-3)
 
 
 if __name__ == "__main__":
