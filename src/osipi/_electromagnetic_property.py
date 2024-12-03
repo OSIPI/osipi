@@ -38,3 +38,37 @@ def R1_to_C_linear_relaxivity(
     elif not (r1 >= 0):
         raise ValueError("r1 must be positive")
     return (R1 - R10) / r1  # C
+
+
+def C_to_R1_linear_relaxivity(
+    C: NDArray[np.float64], R10: np.float64, r1: np.float64
+) -> NDArray[np.float64]:
+    """
+    Electromagnetic property forward model:
+    - longitudinal relaxation rate, linear with relaxivity
+
+    Converts tissue concentration to R1
+
+    Args:
+        C (1D array of np.float64):
+            Vector of indicator concentrations in units of mM. [OSIPI code Q.IC1.001]
+        R10 (np.float64):
+            Native longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.002]
+        r1 (np.float64):
+            Longitudinal relaxivity in units of /s/mM. [OSIPI code Q.EL1.015]
+
+    Returns:
+        NDArray[np.float64]:
+            Vector of longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.001]
+
+    References:
+        - Lexicon URL: https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#
+        - Lexicon code: M.EL1.003
+        - Adapted from equation given in lexicon
+    """
+    # Check C is a 1D array of floats
+    if not (isinstance(C, np.ndarray) and C.ndim == 1 and C.dtype == np.float64):
+        raise TypeError("C must be a 1D NumPy array of np.float64")
+    elif not (r1 >= 0):
+        raise ValueError("r1 must be positive")
+    return R10 + r1 * C  # R1
