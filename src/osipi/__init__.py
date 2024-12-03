@@ -17,6 +17,10 @@ from ._signal import (
 
 from ._signal_to_concentration import (
     S_to_C_via_R1_SPGR,
-    S_to_R1_SPGR,
-    R1_to_C_linear_relaxivity
+    S_to_R1_SPGR
+)
+
+from ._electromagnetic_property import (
+    R1_to_C_linear_relaxivity,
+    C_to_R1_linear_relaxivity
 )
