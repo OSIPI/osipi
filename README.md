@@ -98,8 +98,8 @@ We are using pre-commit configuration file to define our hooks. You can find the
 - Some hooks automatically fix/format your files to specific standards. If you see that some of your files have been changed after a commit, don't worry! It's just `pre-commit` doing its job.
   Add the changes and commit them again.
 
-For more details on how to contribute, visit the [Developer Guide](https://osipi.github.io/pypi/contribution/#making-a-pull-request-pr-to-the-osipi-package).
+For more details on how to contribute, visit the [Developer Guide](https://osipi.github.io/osipi/contribution/).
 #### As mentioned before, this project is still in the early stages of development. If you'd like to contribute by adding functionality, we recommend opening an issue first to discuss your proposed functionality and the best ways to implement it.
 
 ## Details
-For more detail please see the [documentation](https://osipi.github.io/pypi/).
+For more detail please see the [documentation](https://osipi.github.io/osipi/).
