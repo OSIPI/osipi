@@ -28,7 +28,7 @@ ca = osipi.aif_parker(t)
 # of 0.2, plasma volume fraction of 0.1, permeability serface area of 5 ml/min
 # and flow rate of 10 ml/min
 PS = 15  # Permeability surface area product in ml/min
-Fp = [10, 25]  # Flow rate in ml/min
+Fp = [5, 25]  # Flow rate in ml/min
 ve = 0.1  # Extracellular volume fraction
 vp = [0.1, 0.02]  # Plasma volume fraction
 

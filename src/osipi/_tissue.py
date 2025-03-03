@@ -396,6 +396,25 @@ def two_compartment_exchange_model(
         >>> plt.plot(t, ca, "r", t, ct, "g")
 
     """
+    # Input validation
+    if t.size != ca.size:
+        raise ValueError(f"t and ca must have the same size, got {t.size} and {ca.size}")
+
+    for param, name in [(Fp, "Fp"), (PS, "PS"), (ve, "ve"), (vp, "vp")]:
+        if not (np.isscalar(param) and np.isreal(param)):
+            raise TypeError(f"{name} must be a numeric scalar value, got {type(param).__name__}")
+
+    if Fp <= 0:
+        raise ValueError(f"Fp must be positive, got {Fp}")
+    if PS < 0:
+        raise ValueError(f"PS must be non-negative, got {PS}")
+    if not (0 <= ve <= 1):
+        raise ValueError(f"ve must be in range [0, 1], got {ve}")
+    if not (0 <= vp <= 1):
+        raise ValueError(f"vp must be in range [0, 1], got {vp}")
+    if (ve + vp) > 1:
+        raise ValueError(f"Sum of ve ({ve}) and vp ({vp}) exceeds 1")
+
     if vp == 0:
         E = 1 - np.exp(-PS / Fp)
         Ktrans = E * Fp

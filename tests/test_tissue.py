@@ -162,5 +162,40 @@ def test_2cxm_zero_vp_matches_tofts(time_array, aif):
     assert np.allclose(ct, ct_tofts, rtol=1e-4, atol=1e-3)
 
 
+def test_2cxm_invalid_inputs(time_array, aif):
+    """Test invalid inputs raise appropriate errors"""
+    # Test mismatched array sizes
+    with pytest.raises(ValueError, match="t and ca must have the same size"):
+        osipi.two_compartment_exchange_model(time_array[:10], aif, Fp=10, PS=5, ve=0.2, vp=0.1)
+
+    # Test invalid parameter types and values
+    invalid_params = [
+        ({"Fp": [10]}, TypeError, "Fp must be a numeric scalar value"),  # Non-scalar Fp
+        ({"PS": "five"}, TypeError, "PS must be a numeric scalar value"),  # Non-numeric PS
+        ({"ve": np.array([0.2])}, TypeError, "ve must be a numeric scalar value"),  # Array ve
+        ({"vp": None}, TypeError, "vp must be a numeric scalar value"),  # None value
+        ({"Fp": -5}, ValueError, "Fp must be positive"),  # Negative Fp
+        ({"PS": -1}, ValueError, "PS must be non-negative"),  # Negative PS
+        ({"ve": -0.1}, ValueError, "ve must be in range \[0, 1\]"),  # ve < 0
+        ({"vp": 1.1}, ValueError, "vp must be in range \[0, 1\]"),  # vp > 1
+        (
+            {"ve": 0.8, "vp": 0.3},
+            ValueError,
+            "Sum of ve \(0.8\) and vp \(0.3\) exceeds 1",
+        ),  # ve + vp > 1
+    ]
+
+    for params, err_type, err_msg in invalid_params:
+        with pytest.raises(err_type, match=err_msg):
+            osipi.two_compartment_exchange_model(
+                time_array,
+                aif,
+                Fp=10 if "Fp" not in params else params["Fp"],
+                PS=5 if "PS" not in params else params["PS"],
+                ve=0.2 if "ve" not in params else params["ve"],
+                vp=0.1 if "vp" not in params else params["vp"],
+            )
+
+
 if __name__ == "__main__":
     pytest.main([__file__])
