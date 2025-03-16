@@ -24,22 +24,24 @@ theme:
     - content.code.copy
     - content.code.select
     - tables
+    
   language: en
   palette:
     - scheme: default
       primary: teal
       accent: purple
       toggle:
-        icon: material/toggle-switch
+        icon: material/weather-sunny
         name: Switch to dark mode
     - scheme: slate
       toggle:
-        icon: material/toggle-switch
+        icon: material/weather-night
         name: Switch to dark mode
       primary: teal
       accent: lime
 
 plugins:
+  - search
   - mkdocstrings:
       handlers:
         python:
