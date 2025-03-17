@@ -1,15 +1,16 @@
 import numpy as np
+from numpy.typing import NDArray
 
 
-def signal_linear(R1: np.float64, k: np.float64) -> np.float64:
+def signal_linear(R1: NDArray[np.float64], k: NDArray[np.float64]) -> NDArray[np.float64]:
     """Linear model for relationship between R1 and magnitude signal
 
     Args:
-        R1 (np.float64): longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.001]
-        k (np.float64): proportionality constant in a.u. S [OSIPI code Q.GE1.009]
+        R1 (NDArray[np.float64]): longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.001]
+        k (NDArray[np.float64]): proportionality constant in a.u. S [OSIPI code Q.GE1.009]
 
     Returns:
-        np.float64: magnitude signal in a.u. [OSIPI code Q.MS1.001]
+        NDArray[np.float64]: magnitude signal in a.u. [OSIPI code Q.MS1.001]
 
     References:
         - Lexicon url: https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#LinModel_SM2
@@ -21,17 +22,22 @@ def signal_linear(R1: np.float64, k: np.float64) -> np.float64:
     return k * R1  # S
 
 
-def signal_SPGR(R1: np.float64, S0: np.float64, TR: np.float64, a: np.float64) -> np.float64:
+def signal_SPGR(
+    R1: NDArray[np.float64],
+    S0: NDArray[np.float64],
+    TR: NDArray[np.float64],
+    a: NDArray[np.float64],
+) -> NDArray[np.float64]:
     """Steady-state signal for SPGR sequence.
 
     Args:
-        R1 (np.float64): longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.001]
-        S0 (np.float64): fully T1-relaxed signal in a.u. [OSIPI code Q.MS1.010]
-        TR (np.float64): repetition time in units of s. [OSIPI code Q.MS1.006]
-        a (np.float64): prescribed flip angle in units of deg. [OSIPI code Q.MS1.007]
+        R1 (NDArray[np.float64]): longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.001]
+        S0 (NDArray[np.float64]): fully T1-relaxed signal in a.u. [OSIPI code Q.MS1.010]
+        TR (NDArray[np.float64]): repetition time in units of s. [OSIPI code Q.MS1.006]
+        a (NDArray[np.float64]): prescribed flip angle in units of deg. [OSIPI code Q.MS1.007]
 
     Returns:
-        np.float64: magnitude signal in a.u. [OSIPI code Q.MS1.001]
+        NDArray[np.float64]: magnitude signal in a.u. [OSIPI code Q.MS1.001]
 
     References:
         - Lexicon url: https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#SPGR%20model
