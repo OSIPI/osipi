@@ -24,7 +24,7 @@ theme:
     - content.code.copy
     - content.code.select
     - tables
-    
+
   language: en
   palette:
     - scheme: default
