@@ -74,6 +74,22 @@ def tofts(
         >>> plt.plot(t, ca, "r", t, ct, "b")
 
     """
+
+    # Input validation
+    if t.size != ca.size:
+        raise ValueError(f"t and ca must have the same size, got {t.size} and {ca.size}")
+
+    for param, name in [(Ktrans, "Ktrans"), (ve, "ve"), (Ta, "Ta")]:
+        if not (np.isscalar(param) and np.isreal(param)):
+            raise TypeError(f"{name} must be a numeric scalar value, got {type(param).__name__}")
+
+    if Ktrans < 0:
+        raise ValueError(f"Ktrans must be non-negative, got {Ktrans}")
+    if not (0 <= ve <= 1):
+        raise ValueError(f"ve must be in range [0, 1], got {ve}")
+    if Ta < 0:
+        raise ValueError(f"Ta must be non-negative, got {Ta}")
+
     if not np.allclose(np.diff(t), np.diff(t)[0]):
         warnings.warn(
             ("Non-uniform time spacing detected. Time array may be" " resampled."),
@@ -238,6 +254,24 @@ def extended_tofts(
         >>> plt.plot(t, ca, "r", t, ct, "b")
 
     """
+    # Input validation
+    if t.size != ca.size:
+        raise ValueError(f"t and ca must have the same size, got {t.size} and {ca.size}")
+
+    for param, name in [(Ktrans, "Ktrans"), (ve, "ve"), (vp, "vp")]:
+        if not (np.isscalar(param) and np.isreal(param)):
+            raise TypeError(f"{name} must be a numeric scalar value, got {type(param).__name__}")
+
+    if not (0 <= ve <= 1):
+        raise ValueError(f"ve must be in range [0, 1], got {ve}")
+    if not (0 <= vp <= 1):
+        raise ValueError(f"vp must be in range [0, 1], got {vp}")
+    if not (0 <= ve + vp <= 1):
+        raise ValueError(f"Sum of ve ({ve}) and vp ({vp}) exceeds 1")
+    if Ta < 0:
+        raise ValueError(f"Ta must be non-negative, got {Ta}")
+    if Ktrans < 0:
+        raise ValueError(f"Ktrans must be non-negative, got {Ktrans}")
 
     if not np.allclose(np.diff(t), np.diff(t)[0]):
         warnings.warn(
@@ -412,7 +446,7 @@ def two_compartment_exchange_model(
         raise ValueError(f"ve must be in range [0, 1], got {ve}")
     if not (0 <= vp <= 1):
         raise ValueError(f"vp must be in range [0, 1], got {vp}")
-    if (ve + vp) > 1:
+    if not (0 <= ve + vp <= 1):
         raise ValueError(f"Sum of ve ({ve}) and vp ({vp}) exceeds 1")
 
     if vp == 0:
