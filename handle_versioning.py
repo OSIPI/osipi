@@ -2,7 +2,6 @@ import semantic_version
 import toml
 import sys
 
-
 def read_version(full=False):
     """Reads the project version from pyproject.toml."""
     try:
