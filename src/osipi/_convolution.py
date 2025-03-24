@@ -1,13 +1,19 @@
 import numpy as np
+from numpy.typing import NDArray
 
 
-def exp_conv(T: float, t: np.ndarray, a: np.ndarray) -> np.ndarray:
+def exp_conv(
+    T: np.floating, t: NDArray[np.floating], a: NDArray[np.floating]
+) -> NDArray[np.floating]:
     """Exponential convolution operation of (1/T)exp(-t/T) with a.
 
-    Args:     T (float): exponent in time units     t (np.ndarray): array of time points     a
-    (np.ndarray): array to be convolved with time exponential  Returns:     np.ndarray: convolved
-    array
+    Args:
+        T (np.floating): exponent in time units
+        t (NDArray[np.floating]): array of time points
+        a (NDArray[np.floating]): array to be convolved with time exponential
 
+    Returns:
+        NDArray[np.floating]: convolved array
     """
     if T == 0:
         return a
