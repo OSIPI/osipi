@@ -1,10 +1,11 @@
 from typing import Union
-from numpy.typing import NDArray
+
 import numpy as np
+from numpy.typing import NDArray
+
 
 def signal_linear(
-    R1: Union[np.float64, NDArray[np.float64]],
-    k: Union[np.float64, NDArray[np.float64]]
+    R1: Union[np.float64, NDArray[np.float64]], k: Union[np.float64, NDArray[np.float64]]
 ) -> Union[np.float64, NDArray[np.float64]]:
     """
     Linear model for the relationship between R1 and magnitude signal.
@@ -23,7 +24,7 @@ def signal_SPGR(
     R1: Union[np.float64, NDArray[np.float64]],
     S0: Union[np.float64, NDArray[np.float64]],
     TR: Union[np.float64, NDArray[np.float64]],
-    a: Union[np.float64, NDArray[np.float64]]
+    a: Union[np.float64, NDArray[np.float64]],
 ) -> Union[np.float64, NDArray[np.float64]]:
     """
     Steady-state signal for SPGR sequence.
