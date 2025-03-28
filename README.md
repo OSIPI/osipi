@@ -53,18 +53,26 @@ We use poetry to manage the dependencies for this project.
 
 ### Using Poetry
 
-1. If you don't have Poetry installed, you can install it using pip:
-
+1. If you don't have Poetry installed 
+   option 1: you can install it using pip:
+   
    ```bash
    pip install poetry
    ```
 
-   Or, if you're using a Unix-based system, you can install it using the following command:
+  option 2: if you're using a Unix-based system, you can install it using the following command:
 
    ```bash
    curl -sSL https://install.python-poetry.org | python3 -
    ```
 
+  Option 3: Install via pipx (If Other Methods Fail):
+  If pipx is not already installed, you can follow any of the options in the [pipx installation guide](https://pipx.pypa.io/stable/installation/)
+  
+  ```bash
+    pipx install poetry
+   ```
+  
    For more information on installing Poetry, see the [official documentation](https://python-poetry.org/docs/)
 
 2. Clone the repository to your local machine.
