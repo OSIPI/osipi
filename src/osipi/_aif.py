@@ -1,18 +1,21 @@
 import numpy as np
+from numpy.typing import NDArray
 
 
-def aif_parker(t: np.ndarray, BAT: float = 0.0, Hct: float = 0.0) -> np.ndarray:
+def aif_parker(
+    t: NDArray[np.floating], BAT: np.floating = 0.0, Hct: np.floating = 0.0
+) -> NDArray[np.floating]:
     """AIF model as defined by Parker et al (2005)
 
     Args:
-        t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
-        BAT (float, optional):
+        t (NDArray[np.floating]): array of time points in units of sec. [OSIPI code Q.GE1.004]
+        BAT (np.floating, optional):
             Time in seconds before the bolus arrives. Defaults to 0. [OSIPI code Q.BA1.001]
-        Hct (float, optional):
+        Hct (np.floating, optional):
             Hematocrit. Defaults to 0.0. [OSIPI code Q.PH1.012]
 
     Returns:
-        np.ndarray: Concentrations in mM for each time point in t.
+        NDArray[np.floating]: Concentrations in mM for each time point in t.
 
     See Also:
         `aif_georgiou`
@@ -68,7 +71,7 @@ def aif_parker(t: np.ndarray, BAT: float = 0.0, Hct: float = 0.0) -> np.ndarray:
     return pop_aif
 
 
-def aif_georgiou(t: np.ndarray, BAT: float = 0.0) -> np.ndarray:
+def aif_georgiou(t: NDArray[np.floating], BAT: np.floating = 0.0) -> NDArray[np.floating]:
     """AIF model as defined by Georgiou et al.
 
     Note:
@@ -77,12 +80,12 @@ def aif_georgiou(t: np.ndarray, BAT: float = 0.0) -> np.ndarray:
         so nobody ever has to write this function again!
 
     Args:
-        t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
-        BAT (float, optional):
+        t (NDArray[np.floating]): array of time points in units of sec. [OSIPI code Q.GE1.004]
+        BAT (np.floating, optional):
             Time in seconds before the bolus arrives. Defaults to 0sec. [OSIPI code Q.BA1.001]
 
     Returns:
-        np.ndarray: Concentrations in mM for each time point in t.
+        NDArray[np.floating]: Concentrations in mM for each time point in t.
 
     See Also:
         `aif_parker`
@@ -122,7 +125,7 @@ def aif_georgiou(t: np.ndarray, BAT: float = 0.0) -> np.ndarray:
     raise NotImplementedError(msg)
 
 
-def aif_weinmann(t: np.ndarray, BAT: float = 0.0) -> np.ndarray:
+def aif_weinmann(t: NDArray[np.floating], BAT: np.floating = 0.0) -> NDArray[np.floating]:
     """AIF model as defined by Weinmann et al.
 
     Note:
@@ -131,12 +134,12 @@ def aif_weinmann(t: np.ndarray, BAT: float = 0.0) -> np.ndarray:
         so nobody ever has to write this function again!
 
     Args:
-        t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
-        BAT (float, optional):
+        t (NDArray[np.floating]): array of time points in units of sec. [OSIPI code Q.GE1.004]
+        BAT (np.floating, optional):
             Time in seconds before the bolus arrives. Defaults to 0sec. [OSIPI code Q.BA1.001]
 
     Returns:
-        np.ndarray: Concentrations in mM for each time point in t.
+        NDArray[np.floating]: Concentrations in mM for each time point in t.
 
     See Also:
         `aif_parker`

@@ -1,31 +1,32 @@
 import warnings
 
 import numpy as np
+from numpy.typing import NDArray
 from scipy.interpolate import interp1d
 
 from ._convolution import exp_conv
 
 
 def tofts(
-    t: np.ndarray,
-    ca: np.ndarray,
-    Ktrans: float,
-    ve: float,
-    Ta: float = 30.0,
+    t: NDArray[np.floating],
+    ca: NDArray[np.floating],
+    Ktrans: np.floating,
+    ve: np.floating,
+    Ta: np.floating = 30.0,
     discretization_method: str = "conv",
-) -> np.ndarray:
+) -> NDArray[np.floating]:
     """Tofts model as defined by Tofts and Kermode (1991)
 
     Args:
-        t (np.ndarray): array of time points in units of sec. [OSIPI code Q.GE1.004]
-        ca (np.ndarray):
+        t (NDArray[np.floating]): array of time points in units of sec. [OSIPI code Q.GE1.004]
+        ca (NDArray[np.floating]):
             Arterial concentrations in mM for each time point in t. [OSIPI code Q.IC1.001]
-        Ktrans (float):
+        Ktrans (np.floating):
             Volume transfer constant in units of 1/min. [OSIPI code Q.PH1.008]
-        ve (float):
+        ve (np.floating):
             Relative volume fraction of the extracellular
             extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
-        Ta (float, optional):
+        Ta (np.floating, optional):
             Arterial delay time,
             i.e., difference in onset time between tissue curve and AIF in units of sec. Defaults to 30 seconds. [OSIPI code Q.PH1.007]
         discretization_method (str, optional): Defines the discretization method. Options include
@@ -36,7 +37,7 @@ def tofts(
 
 
     Returns:
-        np.ndarray: Tissue concentrations in mM for each time point in t.
+        NDArray[np.floating]: Tissue concentrations in mM for each time point in t.
 
     See Also:
         `extended_tofts`
@@ -166,29 +167,29 @@ def tofts(
 
 
 def extended_tofts(
-    t: np.ndarray,
-    ca: np.ndarray,
-    Ktrans: float,
-    ve: float,
-    vp: float,
-    Ta: float = 30.0,
+    t: NDArray[np.floating],
+    ca: NDArray[np.floating],
+    Ktrans: np.floating,
+    ve: np.floating,
+    vp: np.floating,
+    Ta: np.floating = 30.0,
     discretization_method: str = "conv",
-) -> np.ndarray:
+) -> NDArray[np.floating]:
     """Extended tofts model as defined by Tofts (1997)
 
     Args:
-        t (np.ndarray):
+        t (NDArray[np.floating]):
             array of time points in units of sec. [OSIPI code Q.GE1.004]
-        ca (np.ndarray):
+        ca (NDArray[np.floating]):
             Arterial concentrations in mM for each time point in t. [OSIPI code Q.IC1.001]
-        Ktrans (float):
+        Ktrans (np.floating):
             Volume transfer constant in units of 1/min. [OSIPI code Q.PH1.008]
-        ve (float):
+        ve (np.floating):
             Relative volume fraction of the extracellular
             extravascular compartment (e). [OSIPI code Q.PH1.001.[e]]
-        vp (float):
+        vp (np.floating):
             Relative volyme fraction of the plasma compartment (p). [OSIPI code Q.PH1.001.[p]]
-        Ta (float, optional):
+        Ta (np.floating, optional):
             Arterial delay time, i.e., difference in onset time
             between tissue curve and AIF in units of sec.
             Defaults to 30 seconds. [OSIPI code Q.PH1.007]
@@ -201,7 +202,7 @@ def extended_tofts(
 
 
     Returns:
-        np.ndarray: Tissue concentrations in mM for each time point in t.
+        NDArray[np.floating]: Tissue concentrations in mM for each time point in t.
 
     See Also:
         `tofts`

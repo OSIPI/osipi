@@ -5,13 +5,13 @@ from ._electromagnetic_property import R1_to_C_linear_relaxivity
 
 
 def S_to_C_via_R1_SPGR(
-    S: NDArray[np.float64],
-    S_baseline: np.float64,
-    R10: np.float64,
-    TR: np.float64,
-    a: np.float64,
-    r1: np.float64,
-) -> NDArray[np.float64]:
+    S: NDArray[np.floating],
+    S_baseline: np.floating,
+    R10: np.floating,
+    TR: np.floating,
+    a: np.floating,
+    r1: np.floating,
+) -> NDArray[np.floating]:
     """
     Signal to concentration via
     electromagnetic property (SPGR, FXL, analytical, linear R1 relaxivity)
@@ -19,15 +19,15 @@ def S_to_C_via_R1_SPGR(
     Converts S -> R1 -> C
 
     Args:
-        S (1D array of np.float64): Vector of magnitude signals in a.u. [OSIPI code Q.MS1.001]
-        S_baseline (np.float64): Pre-contrast magnitude signal in a.u. [OSIPI code Q.MS1.001]
-        R10 (np.float64): Native longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.002]
-        TR (np.float64): Repetition time in units of s. [OSIPI code Q.MS1.006]
-        a (np.float64): Prescribed flip angle in units of deg. [OSIPI code Q.MS1.007]
-        r1 (np.float64): Longitudinal relaxivity in units of /s/mM. [OSIPI code Q.EL1.015]
+        S (1D array of np.floating): Vector of magnitude signals in a.u. [OSIPI code Q.MS1.001]
+        S_baseline (np.floating): Pre-contrast magnitude signal in a.u. [OSIPI code Q.MS1.001]
+        R10 (np.floating): Native longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.002]
+        TR (np.floating): Repetition time in units of s. [OSIPI code Q.MS1.006]
+        a (np.floating): Prescribed flip angle in units of deg. [OSIPI code Q.MS1.007]
+        r1 (np.floating): Longitudinal relaxivity in units of /s/mM. [OSIPI code Q.EL1.015]
 
     Returns:
-         NDArray[np.float64]:
+         NDArray[np.floating]:
             Vector of indicator total (across all compartments) indicator
             concentration in units of mM. [OSIPI code Q.IC1.001]
 
@@ -50,26 +50,26 @@ def S_to_C_via_R1_SPGR(
 
 
 def S_to_R1_SPGR(
-    S: NDArray[np.float64],
-    S_baseline: np.float64,
-    R10: np.float64,
-    TR: np.float64,
-    a: np.float64,
-) -> NDArray[np.float64]:
+    S: NDArray[np.floating],
+    S_baseline: np.floating,
+    R10: np.floating,
+    TR: np.floating,
+    a: np.floating,
+) -> NDArray[np.floating]:
     """
     Signal to electromagnetic property conversion (analytical, SPGR, FXL)
 
     Converts Signal to R1
 
     Args:
-        S (1D array of np.float64): Vector of magnitude signals in a.u. [OSIPI code Q.MS1.001]
-        S_baseline (np.float64): Pre-contrast magnitude signal in a.u. [OSIPI code Q.MS1.001]
-        R10 (np.float64): Native longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.002]
-        TR (np.float64): Repetition time in units of s. [OSIPI code Q.MS1.006]
-        a (np.float64): Prescribed flip angle in units of deg. [OSIPI code Q.MS1.007]
+        S (1D array of np.floating): Vector of magnitude signals in a.u. [OSIPI code Q.MS1.001]
+        S_baseline (np.floating): Pre-contrast magnitude signal in a.u. [OSIPI code Q.MS1.001]
+        R10 (np.floating): Native longitudinal relaxation rate in units of /s. [OSIPI code Q.EL1.002]
+        TR (np.floating): Repetition time in units of s. [OSIPI code Q.MS1.006]
+        a (np.floating): Prescribed flip angle in units of deg. [OSIPI code Q.MS1.007]
 
     Returns:
-        NDArray[np.float64]: Vector of R1 in units of /s. [OSIPI code Q.EL1.001]
+        NDArray[np.floating]: Vector of R1 in units of /s. [OSIPI code Q.EL1.001]
 
     References:
         - Lexicon URL: https://osipi.github.io/OSIPI_CAPLEX/perfusionProcesses/#
@@ -80,8 +80,8 @@ def S_to_R1_SPGR(
         - Adapted from contribution of LEK_UoEdinburgh_UK
     """
     # Check S is a 1D array of floats
-    if not (isinstance(S, np.ndarray) and S.ndim == 1 and S.dtype == np.float64):
-        raise TypeError("S must be a 1D NumPy array of np.float64")
+    if not (isinstance(S, np.ndarray) and S.ndim == 1 and np.issubdtype(S.dtype, np.floating)):
+        raise TypeError("S must be a 1D NumPy array of np.floating")
 
     a_rad = a * np.pi / 180
     # Estimate fully T1-relaxed signal S0 in units of a.u. [OSIPI code Q.MS1.010], then R1
