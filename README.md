@@ -55,9 +55,9 @@ We use poetry to manage the dependencies for this project.
 
 1. If you don't have Poetry installed 
 
-     Option 1: Install via pipx:
+     Option 1: install via pipx:
 
-      If pipx is not already installed, you can follow any of the options in the [pipx installation guide](https://pipx.pypa.io/stable/installation/)
+      if pipx is not already installed, you can follow any of the options in the [pipx installation guide](https://pipx.pypa.io/stable/installation/)
     
       ```bash
       pipx install poetry
