@@ -13,3 +13,4 @@ docs/site
 docs/generated
 site
 src/osipi.egg-info
+venv
