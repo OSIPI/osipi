@@ -48,10 +48,10 @@ We welcome contributions to OSIPI! To contribute, follow these steps:
 - Submit a pull request to the main OSIPI repository.
 
 ## Development Setup
+### Step 0: Create a Virtual Environment Using your Preferred Method:
 
-We use poetry to manage the dependencies for this project.
-
-### Using Poetry
+### 1. Using Poetry
+  We use poetry to manage the dependencies for this project.
 
 1. If you don't have Poetry installed
 
@@ -75,8 +75,6 @@ We use poetry to manage the dependencies for this project.
      pip install poetry
      ```
 
-
-
    For more information on installing Poetry, see the [official documentation](https://python-poetry.org/docs/)
 
 2. Clone the repository to your local machine.
@@ -92,6 +90,35 @@ We use poetry to manage the dependencies for this project.
    ```bash
    poetry shell
    ```
+### 2. Using a Virtual Environment (venv)
+  If you prefer not to use Poetry, you can create a virtual environment using the built-in `venv` module:
+
+1. Create a virtual environment:
+
+    Run the following command in your project directory:
+    ```bash
+    python -m venv venv
+    ```
+2. Activate the virtual environment:
+   - On Windows:
+
+    ```bash
+    .\venv\Scripts\activate
+    ```
+
+   - On macOS and Linux:
+
+    ```bash
+    source venv/bin/activate
+    ```
+3. Install the project dependencies:
+
+   Once your virtual environment is active, use pip to install any Python package.
+   For example, to install numpy, run the following:
+
+    ```bash
+    pip install numpy
+    ```
 
 ## Setting up pre-commit
 
